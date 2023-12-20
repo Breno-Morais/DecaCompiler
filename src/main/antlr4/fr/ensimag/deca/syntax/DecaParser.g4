@@ -3,7 +3,7 @@ parser grammar DecaParser;
 options {
     // Default language but name it anyway
     //
-    language  = Java;
+    language = Java;
 
     // Use a superclass to implement all helper
     // methods, instance variables and overrides
@@ -19,7 +19,6 @@ options {
     // parser if the lexer changes.
     //
     tokenVocab = DecaLexer;
-
 }
 
 // which packages should be imported?

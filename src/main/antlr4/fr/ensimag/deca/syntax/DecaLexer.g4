@@ -12,5 +12,44 @@ options {
 }
 
 // Deca lexer rules.
-DUMMY_TOKEN: .; // A FAIRE : Règle bidon qui reconnait tous les caractères.
-                // A FAIRE : Il faut la supprimer et la remplacer par les vraies règles.
+//Ajouter trucs de Loan
+READFLOAT: 'readFloat';
+PRINT: 'print';
+PRINTLN: 'println';
+PRINTLNX: 'printlnx';
+PRINTX: 'printx';
+PROTECTED: 'protected';
+RETURN: 'return';
+THIS: 'this';
+TRUE: 'true';
+WHILE: 'while';
+
+//Symboles spéciaux
+INF: '<';
+SUP: '>';
+AFFECT: '=';
+PLUS: '+';
+MINUS: '-';
+TIMES: '*';
+DIV: '/';
+PCENT: '%';
+DOT: '.';
+COMMA: ',';
+OPARENT: '(';
+CPARENT: ')';
+OBRACE: '{';
+CBRACE: '}';
+NOT: '!';
+EQ: '==';
+SEMI: ';';
+NEQ: '!=';
+SUPEQ: '>=';
+INFEQ: '<=';
+AND: '&&';
+OR: '||';
+
+//Chaines de caractère
+STRING_CAR: ~('"' | '\\' | EOL);   //comment écrire '\' ? Je sais plus
+STRING: '"' (STRING_CAR | '\\"' | '\\\\')* '"';
+MULTI_LINE_STRING: '"' (STRING_CAR | EOL | '\\"' | '\\\\')* '"';
+
