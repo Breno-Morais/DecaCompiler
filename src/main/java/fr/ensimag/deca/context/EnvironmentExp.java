@@ -38,6 +38,10 @@ public class EnvironmentExp {
         private static final long serialVersionUID = -2733379901827316441L;
     }
 
+    public HashMap<Symbol, ExpDefinition> getSymbolDef() {
+        return symbolDef;
+    }
+
     /**
      * Return the definition of the symbol in the environment, or null if the
      * symbol is undefined.
@@ -48,7 +52,7 @@ public class EnvironmentExp {
             return def;
         } else {
             if (this.parentEnvironment != null){
-                def = this.parentEnvironment.symbolDef.get(key);
+                def = this.parentEnvironment.getSymbolDef().get(key);
             }
         }
         return def;
