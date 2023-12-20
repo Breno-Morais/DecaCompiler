@@ -79,25 +79,35 @@ list_decl_var[ListDeclVar l, AbstractIdentifier t]
     : dv1=decl_var[$t] {
         $l.add($dv1.tree);
         } (COMMA dv2=decl_var[$t] {
+            //TODO
         }
       )*
     ;
 
 decl_var[AbstractIdentifier t] returns[AbstractDeclVar tree]
 @init   {
+            AbstractIdentifier type;
+            AbstractIdentifier varName;
+            AbstractInitialization initialization;
         }
     : i=ident {
+            $varName = $i.tree;
         }
       (EQUALS e=expr {
+            $initialization = $e.tree;
         }
       )? {
+            $tree = new DeclVar($t, $varName, $initialization);
         }
+    SEMI
     ;
 
-list_inst returns[ListInst tree]
+list_inst returns[ListInst tree]   //Revoir celle là
 @init {
+    $tree = new ListInst();
 }
     : (inst {
+            $tree.add($inst.tree);
         }
       )*
     ;
@@ -105,37 +115,49 @@ list_inst returns[ListInst tree]
 inst returns[AbstractInst tree]
     : e1=expr SEMI {
             assert($e1.tree != null);
+            $tree = $e1.tree;
         }
     | SEMI {
+        //on renvoie rien de spécial
         }
     | PRINT OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
+            $tree = new print(false, $list_exp.tree);
         }
     | PRINTLN OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
+            $tree = new println(false, $list_exp.tree);
         }
     | PRINTX OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
+            //$tree = $list_expr.tree;
         }
     | PRINTLNX OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
+            //$tree = $list_expr.tree;
         }
     | if_then_else {
             assert($if_then_else.tree != null);
+            $tree = $if_then_else.tree;
         }
     | WHILE OPARENT condition=expr CPARENT OBRACE body=list_inst CBRACE {
             assert($condition.tree != null);
             assert($body.tree != null);
+            //$tree = $condition.tree;
+            //$tree = $body.tree;
         }
     | RETURN expr SEMI {
             assert($expr.tree != null);
+            $tree = expr.tree;
         }
     ;
 
 if_then_else returns[IfThenElse tree]
 @init {
+
 }
     : if1=IF OPARENT condition=expr CPARENT OBRACE li_if=list_inst CBRACE {
+
         }
       (ELSE elsif=IF OPARENT elsif_cond=expr CPARENT OBRACE elsif_li=list_inst CBRACE {
         }
@@ -268,6 +290,7 @@ mult_expr returns[AbstractExpr tree]
     | e1=mult_expr PERCENT e2=unary_expr {
             assert($e1.tree != null);                                                                          
             assert($e2.tree != null);
+            $tree =
         }
     ;
 
@@ -280,12 +303,14 @@ unary_expr returns[AbstractExpr tree]
         }
     | select_expr {
             assert($select_expr.tree != null);
+            $tree = $select_expr.tree;
         }
     ;
 
 select_expr returns[AbstractExpr tree]
     : e=primary_expr {
             assert($e.tree != null);
+            $tree = $e.tree;
         }
     | e1=select_expr DOT i=ident {
             assert($e1.tree != null);
@@ -325,6 +350,7 @@ primary_expr returns[AbstractExpr tree]
         }
     | literal {
             assert($literal.tree != null);
+            $tree = $literal.tree;
         }
     ;
 
@@ -340,6 +366,7 @@ literal returns[AbstractExpr tree]
     | fd=FLOAT {
         }
     | STRING {
+            $tree = new StringLiteral(STRING);
         }
     | TRUE {
         }

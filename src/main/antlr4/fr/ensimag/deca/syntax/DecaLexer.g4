@@ -34,8 +34,8 @@ TRUE: 'true';
 WHILE: 'while';
 
 //Identificateurs
-LETTER: ( 'a' .. 'z' | 'A'..'Z');
-DIGIT: '0' .. '9';
+fragment LETTER: ( 'a' .. 'z' | 'A'..'Z');
+fragment DIGIT: '0' .. '9';
 IDENT: (LETTER | '$' | '_')(LETTER | DIGIT | '$' | '_')*;
 
 //Séparateurs
@@ -76,11 +76,11 @@ INT: '0' | POSITIVE_DIGIT DIGIT*;
 NUM: DIGIT+;
 SIGN: ('+' | '-');
 EXP: ('E' | 'e') SIGN? NUM;
-DEC: NUM '.' NUM;
-FLOATDEC: (DEC + DEC EXP)('F' | 'f')?;
-DIGITHEX: ('0' .. '9') | ('A' .. 'F') | ('a' .. 'f');
-NUMHEX: DIGITHEX+;
-FLOATHEX: ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN? NUM ('F' | 'f')?;
+fragment DEC: NUM '.' NUM;
+fragment FLOATDEC: (DEC + DEC EXP)('F' | 'f')?;
+fragment DIGITHEX: ('0' .. '9') | ('A' .. 'F') | ('a' .. 'f');
+fragment NUMHEX: DIGITHEX+;
+fragment FLOATHEX: ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN? NUM ('F' | 'f')?;
 FLOAT: FLOATDEC | FLOATHEX;
 
 //Chaines de caractère
