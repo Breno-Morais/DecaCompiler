@@ -34,15 +34,15 @@ TRUE: 'true';
 WHILE: 'while';
 
 //Identificateurs
-LETTER: ( 'a' .. 'z' | 'A'..'Z');
-DIGIT: '0' .. '9';
+fragment LETTER: ( 'a' .. 'z' | 'A'..'Z');
+fragment DIGIT: '0' .. '9';
 IDENT: (LETTER | '$' | '_')(LETTER | DIGIT | '$' | '_')*;
 
 //Séparateurs
 ESPACE: ' ' {skip();};
-EOL: '\n';
-RETOURCHARIOT: '\r';
-TAB: '\t';
+EOL: '\n' {skip();};
+RETOURCHARIOT: '\r' {skip();};
+TAB: '\t' {skip();};
 
 //Symboles spéciaux
 LT: '<';
@@ -69,18 +69,18 @@ AND: '&&';
 OR: '||';
 
 //Littéraux entiers
-POSITIVE_DIGIT: '1' .. '9';
+fragment POSITIVE_DIGIT: '1' .. '9';
 INT: '0' | POSITIVE_DIGIT DIGIT*;
 
 //Littéraux flottants
-NUM: DIGIT+;
-SIGN: ('+' | '-');
-EXP: ('E' | 'e') SIGN? NUM;
-DEC: NUM '.' NUM;
-FLOATDEC: (DEC + DEC EXP)('F' | 'f')?;
-DIGITHEX: ('0' .. '9') | ('A' .. 'F') | ('a' .. 'f');
-NUMHEX: DIGITHEX+;
-FLOATHEX: ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN? NUM ('F' | 'f')?;
+fragment NUM: DIGIT+;
+fragment SIGN: ('+' | '-')?;
+fragment EXP: ('E' | 'e') SIGN NUM;
+fragment DEC: NUM '.' NUM;
+fragment FLOATDEC: (DEC | DEC EXP)('F' | 'f')?;
+fragment DIGITHEX: ('0' .. '9') | ('A' .. 'F') | ('a' .. 'f');
+fragment NUMHEX: DIGITHEX+;
+fragment FLOATHEX: ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN NUM ('F' | 'f')?;
 FLOAT: FLOATDEC | FLOATHEX;
 
 //Chaines de caractère
@@ -93,5 +93,5 @@ COMMENT: '/*' .*? '*/' {skip();};
 
 //Inclusion de fichier
 FILENAME:  (LETTER | DIGIT | '.' | '-' | '_')+;
-INCLUDE: '#include' (' ')* '"' FILENAME '"' { doInclude(getText()); };
+INCLUDE: '#include' (' ')* '"' FILENAME '"' {doInclude(getText());};
 
