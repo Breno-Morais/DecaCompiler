@@ -12,7 +12,16 @@ options {
 }
 
 // Deca lexer rules.
-//Ajouter trucs de Loan
+ASM: 'asm';
+CLASS: 'class';
+EXTENDS: 'extends';
+ELSE: 'else';
+FALSE: 'false';
+IF: 'if';
+INSTANCEOF: 'instanceof';
+NEW: 'new';
+NULL: 'null';
+READINT: 'readInt';
 READFLOAT: 'readFloat';
 PRINT: 'print';
 PRINTLN: 'println';
@@ -23,6 +32,17 @@ RETURN: 'return';
 THIS: 'this';
 TRUE: 'true';
 WHILE: 'while';
+
+//Identificateurs
+LETTER: ( 'a' .. 'z' | 'A'..'Z');
+DIGIT: '0' .. '9';
+IDENT: (LETTER | '$' | '_')(LETTER | DIGIT | '$' | '_')*;
+
+//Séparateurs
+ESPACE: ' ' {skip();};
+EOL: '\n';
+RETOURCHARIOT: '\r';
+TAB: '\t';
 
 //Symboles spéciaux
 INF: '<';
@@ -48,8 +68,30 @@ INFEQ: '<=';
 AND: '&&';
 OR: '||';
 
+//Littéraux entiers
+POSITIVE_DIGIT: '1' .. '9';
+INT: '0' | POSITIVE_DIGIT DIGIT*;
+
+//Littéraux flottants
+NUM: DIGIT+;
+SIGN: ('+' | '-' |);
+EXP: ('E' | 'e') SIGN NUM;
+DEC: NUM '.' NUM;
+FLOATDEC: (DEC + DEC EXP)('F' | 'f' | );
+DIGITHEX: ('0' .. '9') | ('A' .. 'F') | ('a' .. 'f');
+NUMHEX: DIGITHEX+;
+FLOATHEX: ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN NUM ('F' | 'f' |);
+FLOAT: FLOATDEC | FLOATHEX;
+
 //Chaines de caractère
-STRING_CAR: ~('"' | '\\' | EOL);   //comment écrire '\' ? Je sais plus
+STRING_CAR: ~('"' | '\n' | '\\');
 STRING: '"' (STRING_CAR | '\\"' | '\\\\')* '"';
 MULTI_LINE_STRING: '"' (STRING_CAR | EOL | '\\"' | '\\\\')* '"';
+
+//Commentaires
+COMMENT: '/*' .*? '*/' {skip();};
+
+//Inclusion de fichier
+FILENAME:  (LETTER | DIGIT | '.' | '-' | '_')+;
+INCLUDE: '#include' (' ')* '"' FILENAME '"'; //ACTION A RAJOUTERPAGE 55 POLY
 
