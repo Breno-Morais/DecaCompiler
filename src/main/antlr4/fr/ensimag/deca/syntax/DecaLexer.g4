@@ -45,26 +45,26 @@ RETOURCHARIOT: '\r';
 TAB: '\t';
 
 //Symboles spéciaux
-INF: '<';
-SUP: '>';
-AFFECT: '=';
+LT: '<';
+GT: '>';
+EQUALS: '=';
 PLUS: '+';
 MINUS: '-';
 TIMES: '*';
-DIV: '/';
-PCENT: '%';
+SLASH: '/';
+PERCENT: '%';
 DOT: '.';
 COMMA: ',';
 OPARENT: '(';
 CPARENT: ')';
 OBRACE: '{';
 CBRACE: '}';
-NOT: '!';
-EQ: '==';
+EXCLAM: '!';
+EQEQ: '==';
 SEMI: ';';
 NEQ: '!=';
-SUPEQ: '>=';
-INFEQ: '<=';
+GEQ: '>=';
+LEQ: '<=';
 AND: '&&';
 OR: '||';
 
@@ -72,15 +72,17 @@ OR: '||';
 POSITIVE_DIGIT: '1' .. '9';
 INT: '0' | POSITIVE_DIGIT DIGIT*;
 
+//Fragment empty string
+fragment EMPTY_SIGN: ;
 //Littéraux flottants
 NUM: DIGIT+;
-SIGN: ('+' | '-' |);
+SIGN: ('+' | '-' | EMPTY_SIGN);
 EXP: ('E' | 'e') SIGN NUM;
 DEC: NUM '.' NUM;
-FLOATDEC: (DEC + DEC EXP)('F' | 'f' | );
+FLOATDEC: (DEC + DEC EXP)('F' | 'f' | EMPTY_SIGN);
 DIGITHEX: ('0' .. '9') | ('A' .. 'F') | ('a' .. 'f');
 NUMHEX: DIGITHEX+;
-FLOATHEX: ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN NUM ('F' | 'f' |);
+FLOATHEX: ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN NUM ('F' | 'f' | EMPTY_SIGN);
 FLOAT: FLOATDEC | FLOATHEX;
 
 //Chaines de caractère
@@ -93,5 +95,5 @@ COMMENT: '/*' .*? '*/' {skip();};
 
 //Inclusion de fichier
 FILENAME:  (LETTER | DIGIT | '.' | '-' | '_')+;
-INCLUDE: '#include' (' ')* '"' FILENAME '"'; //ACTION A RAJOUTERPAGE 55 POLY
+INCLUDE: '#include' (' ')* '"' FILENAME '"' { doInclude(getText()); };
 
