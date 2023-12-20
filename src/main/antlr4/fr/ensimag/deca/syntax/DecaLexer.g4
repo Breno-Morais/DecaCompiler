@@ -72,17 +72,15 @@ OR: '||';
 POSITIVE_DIGIT: '1' .. '9';
 INT: '0' | POSITIVE_DIGIT DIGIT*;
 
-//Fragment empty string
-fragment EMPTY_SIGN: ;
 //Littéraux flottants
 NUM: DIGIT+;
-SIGN: ('+' | '-' | EMPTY_SIGN);
-EXP: ('E' | 'e') SIGN NUM;
+SIGN: ('+' | '-');
+EXP: ('E' | 'e') SIGN? NUM;
 DEC: NUM '.' NUM;
-FLOATDEC: (DEC + DEC EXP)('F' | 'f' | EMPTY_SIGN);
+FLOATDEC: (DEC + DEC EXP)('F' | 'f')?;
 DIGITHEX: ('0' .. '9') | ('A' .. 'F') | ('a' .. 'f');
 NUMHEX: DIGITHEX+;
-FLOATHEX: ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN NUM ('F' | 'f' | EMPTY_SIGN);
+FLOATHEX: ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN? NUM ('F' | 'f')?;
 FLOAT: FLOATDEC | FLOATHEX;
 
 //Chaines de caractère
