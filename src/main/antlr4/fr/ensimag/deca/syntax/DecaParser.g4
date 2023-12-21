@@ -151,20 +151,40 @@ inst returns[AbstractInst tree]
     | RETURN expr SEMI {
             assert($expr.tree != null);
 
-           // TODO: Review
+           // TODO: Review return
            $tree = $expr.tree;
         }
     ;
 
 if_then_else returns[IfThenElse tree]
 @init {
+    /*
+     We keep track of the lastest else branch so we can change to add a new 'if' instruction
+     or a normal ending instruction list
+    */
+    ListInst curElseBranch = new ListInst();
 }
     : if1=IF OPARENT condition=expr CPARENT OBRACE li_if=list_inst CBRACE {
+            // Create a If instruction with a empty else branch
+            $tree = new IfThenElse($condition.tree, $li_if.tree, curElseBranch);
         }
       (ELSE elsif=IF OPARENT elsif_cond=expr CPARENT OBRACE elsif_li=list_inst CBRACE {
+            // Create a new empty else branch
+            ListInst newElseBranch = new ListInst()
+
+            // Create a new if instruction and add to the previous else
+            curElseBranch.add(new IfThenElse($elsif_cond.tree, $elsif_li.tree, newElseBranch));
+
+            // Keep track of the new lastest else branch
+            curElseBranch = newElseBranch;
         }
       )*
       (ELSE OBRACE li_else=list_inst CBRACE {
+            // Copy the contents through a iterator to not lose the original reference
+            Iterator<AbstractInst> iterator = $li_else.tree.iterator();
+            while (iterator.hasNext()) {
+                curElseBranch.add(iterator.next());
+            }
         }
       )?
     ;
