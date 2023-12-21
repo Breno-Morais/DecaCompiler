@@ -89,7 +89,7 @@ STRING: '"' (STRING_CAR | '\\"' | '\\\\')* '"';
 MULTI_LINE_STRING: '"' (STRING_CAR | EOL | '\\"' | '\\\\')* '"';
 
 //Commentaires
-COMMENT: '/*' .*? '*/' {skip();};
+COMMENT: ('/*' .*? '*/') | ('//' .*? '\n') {skip();};
 
 //Inclusion de fichier
 FILENAME:  (LETTER | DIGIT | '.' | '-' | '_')+;
