@@ -67,7 +67,6 @@ GEQ: '>=';
 LEQ: '<=';
 AND: '&&';
 OR: '||';
-EOF: 'EOF';
 
 //Littéraux entiers
 fragment POSITIVE_DIGIT: '1' .. '9';
@@ -90,7 +89,7 @@ STRING: '"' (STRING_CAR | '\\"' | '\\\\')* '"';
 MULTI_LINE_STRING: '"' (STRING_CAR | EOL | '\\"' | '\\\\')* '"';
 
 //Commentaires
-COMMENT: '/*' .*? '*/' {skip();};
+COMMENT: ('/*' .*? '*/') | ('//' .*? '\n') {skip();};
 
 //Inclusion de fichier
 FILENAME:  (LETTER | DIGIT | '.' | '-' | '_')+;
