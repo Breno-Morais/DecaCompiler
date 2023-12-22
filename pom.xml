@@ -268,6 +268,17 @@
                             <goal>exec</goal>
                         </goals>
                     </execution>
+                    <execution>
+                    	<id>unit-test-EnvironmentExp</id>
+                    	<configuration>
+                    		<mainClass>fr.ensimag.deca.context.TestEnvironmentExp</mainClass>
+                    		<classpathScope>test</classpathScope>
+                    	</configuration>
+                    	<phase>test</phase>
+                    	<goals>
+                    		<goal>java</goal>
+                    	</goals>
+                    </execution>
                 </executions>
             </plugin>
 
