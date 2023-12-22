@@ -24,9 +24,21 @@ public class SymbolTable {
      * If a symbol already exists with the same name in this table, then return
      * this Symbol. Otherwise, create a new Symbol and add it to the table.
      */
+
     public Symbol create(String name) {
-        return new Symbol(name);
+        // Vérifie si le symbole existe déjà dans la table
+        if (map.containsKey(name)) {
+            // Retourne le symbole existant
+            return map.get(name);
+        } else {
+            // Crée un nouveau symbole, l'ajoute à la table et le retourne
+            Symbol nouveau = new Symbol(name);
+            map.put(name, nouveau);
+            return nouveau;
+        }
     }
+
+
 
     public static class Symbol {
         // Constructor is private, so that Symbol instances can only be created
