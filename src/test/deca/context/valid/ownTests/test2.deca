@@ -1,13 +1,17 @@
 // Description:
-//    Programme minimaliste utilisant une affectation et println.
+//    Programme qui teste tous les litéraux
 //
 // Resultats:
-//    1
+//    ...
 //
 // Historique:
 //    cree le 22/12/2024
 
 {
-    float i = 0.5;
+    int i = 1;
+    float f = 1.5;
+    String s = "salut";
+    Boolean b = true;
+    int a = null;
     //println(i, "salut");
 }

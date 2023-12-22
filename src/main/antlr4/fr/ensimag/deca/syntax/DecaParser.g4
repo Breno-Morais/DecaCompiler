@@ -412,8 +412,8 @@ literal returns[AbstractExpr tree]
     : INT {
         $tree = new IntLiteral(Integer.parseInt($INT.text));
         }
-    | fd=FLOAT {
-            //$tree = new FloatLiteral(Float.parseFloat($FLOAT.text));
+    | FLOAT {
+            $tree = new FloatLiteral(Float.parseFloat($FLOAT.text));
         }
     | STRING {
             $tree = new StringLiteral($STRING.text);
@@ -429,6 +429,7 @@ literal returns[AbstractExpr tree]
         }
     | NULL {
             $tree = new StringLiteral("null");
+            //$tree = new NullType(getDecacCompiler().symbolTable.create("null"));
         }
     ;
 
