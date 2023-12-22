@@ -90,9 +90,10 @@ decl_var[AbstractIdentifier t] returns[AbstractDeclVar tree]
             AbstractInitialization init = new NoInitialization();
         }
     : i=ident {
-
+            assert($i.tree != null);
         }
       (EQUALS e=expr {
+            assert($e.tree != null);
             init = new Initialization($e.tree);
         }
       )? {
@@ -424,7 +425,7 @@ literal returns[AbstractExpr tree]
             $tree = new BooleanLiteral(false);
         }
     | THIS {
-            //$tree = new Identifier(new Symbol("this"));   //la méthode symbol existe pas
+            $tree = new Identifier(getDecacCompiler().symbolTable.create("this"));
         }
     | NULL {
             $tree = new StringLiteral("null");
@@ -433,7 +434,7 @@ literal returns[AbstractExpr tree]
 
 ident returns[AbstractIdentifier tree]
     : IDENT {
-        //$tree = new Identifier(new Symbol($IDENT.text));   //La méthode symbol existe pas
+            $tree = new Identifier(getDecacCompiler().symbolTable.create($IDENT.text));
         }
     ;
 
