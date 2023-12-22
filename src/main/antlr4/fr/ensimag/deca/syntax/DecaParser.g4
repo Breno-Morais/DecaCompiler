@@ -78,8 +78,10 @@ decl_var_set[ListDeclVar l]
 
 list_decl_var[ListDeclVar l, AbstractIdentifier t]
     : dv1=decl_var[$t] {
+        assert($dv1.tree != null);
         $l.add($dv1.tree);
         } (COMMA dv2=decl_var[$t] {
+            assert($dv2.tree != null);
             $l.add($dv2.tree);
         }
       )*
@@ -149,23 +151,51 @@ inst returns[AbstractInst tree]
     | RETURN expr SEMI {
             assert($expr.tree != null);
 
-            // TODO: Review
-            $tree = $expr.tree;
+            $tree = new Return($expr.tree);
         }
     ;
 
 if_then_else returns[IfThenElse tree]
 @init {
+    /*
+     We keep track of the lastest else branch so we can change to add a new 'if' instruction
+     or a normal ending instruction list
+    */
+    ListInst curElseBranch = new ListInst();
 }
     : if1=IF OPARENT condition=expr CPARENT OBRACE li_if=list_inst CBRACE {
+            assert($condition.tree != null);
+            assert($li_if.tree != null);
+
+            // Create a If instruction with a empty else branch
+            $tree = new IfThenElse($condition.tree, $li_if.tree, curElseBranch);
         }
       (ELSE elsif=IF OPARENT elsif_cond=expr CPARENT OBRACE elsif_li=list_inst CBRACE {
+            assert($elsif_cond.tree != null);
+            assert($elsif_li.tree != null);
+
+            // Create a new empty else branch
+            ListInst newElseBranch = new ListInst();
+
+            // Create a new if instruction and add to the previous else
+            curElseBranch.add(new IfThenElse($elsif_cond.tree, $elsif_li.tree, newElseBranch));
+
+            // Keep track of the new lastest else branch
+            curElseBranch = newElseBranch;
         }
       )*
       (ELSE OBRACE li_else=list_inst CBRACE {
+            assert($li_else.tree != null);
+
+            // Copy the contents through a iterator to not lose the original reference
+            Iterator<AbstractInst> iterator = $li_else.tree.iterator();
+            while (iterator.hasNext()) {
+                curElseBranch.add(iterator.next());
+            }
         }
       )?
     ;
+
 
 list_expr returns[ListExpr tree]
 @init {
@@ -200,7 +230,7 @@ assign_expr returns[AbstractExpr tree]
             assert($e.tree != null);
             assert($e2.tree != null);
 
-            $tree = new Assign($e.tree, $e2.tree);
+            $tree = new Assign((AbstractLValue) $e.tree, $e2.tree);
         }
       | /* epsilon */ {
             assert($e.tree != null);
@@ -279,9 +309,7 @@ inequality_expr returns[AbstractExpr tree]
             assert($e1.tree != null);
             assert($type.tree != null);
 
-            // TODO: I'm uncertain of how this should be represented in the abstract tree
-            AbstractExpr e1TypeAsId = new Identifier($e1.tree.getType().getName());
-            $tree = new Equals(e1TypeAsId, $type.tree);
+            $tree = new InstanceOf($e1.tree, $type.tree);
         }
     ;
 
@@ -393,7 +421,6 @@ primary_expr returns[AbstractExpr tree]
             assert($type.tree != null);
             assert($expr.tree != null);
 
-            // TODO: create a operation to cast
             $tree = new Cast($expr.tree, $type.tree);
         }
     | literal {
@@ -411,7 +438,7 @@ type returns[AbstractIdentifier tree]
 
 literal returns[AbstractExpr tree]
     : INT {
-        $tree = new IntLiteral(Integer.parseInt($INT.text));
+            $tree = new IntLiteral(Integer.parseInt($INT.text));
         }
     | FLOAT {
             $tree = new FloatLiteral(Float.parseFloat($FLOAT.text));
