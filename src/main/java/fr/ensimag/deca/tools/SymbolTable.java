@@ -26,15 +26,12 @@ public class SymbolTable {
      */
 
     public Symbol create(String name) {
-        // Vérifie si le symbole existe déjà dans la table
         if (map.containsKey(name)) {
-            // Retourne le symbole existant
             return map.get(name);
-        } else {
-            // Crée un nouveau symbole, l'ajoute à la table et le retourne
-            Symbol nouveau = new Symbol(name);
-            map.put(name, nouveau);
-            return nouveau;
+        }else{
+            Symbol newSymbol = new Symbol(name);
+            map.put(name, newSymbol);
+            return newSymbol;
         }
     }
 
