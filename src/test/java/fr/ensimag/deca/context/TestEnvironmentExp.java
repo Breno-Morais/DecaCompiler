@@ -59,7 +59,7 @@ public class TestEnvironmentExp {
     }
 
     @Test
-    public void testParent() throws EnvironmentExp.DoubleDefException {
+    public void testParent(){
         //On delcalre l'environment
         try {
             environment.declare(x, def);
