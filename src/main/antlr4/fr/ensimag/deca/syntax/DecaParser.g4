@@ -144,7 +144,7 @@ inst returns[AbstractInst tree]
     | WHILE OPARENT condition=expr CPARENT OBRACE body=list_inst CBRACE {
             assert($condition.tree != null);
             assert($body.tree != null);
-            //$tree = While($condition.tree, $body.tree);
+            $tree = new While($condition.tree, $body.tree);
         }
     | RETURN expr SEMI {
             assert($expr.tree != null);
@@ -199,6 +199,8 @@ assign_expr returns[AbstractExpr tree]
         EQUALS e2=assign_expr {
             assert($e.tree != null);
             assert($e2.tree != null);
+
+            $tree = new Assign($e.tree, $e2.tree);
         }
       | /* epsilon */ {
             assert($e.tree != null);
@@ -385,15 +387,14 @@ primary_expr returns[AbstractExpr tree]
     | NEW ident OPARENT CPARENT {
             assert($ident.tree != null);
 
-            $tree = $ident.tree;
-            // NEW is a instruction, don't know where to add
+            $tree = new New($ident.tree);
         }
     | cast=OPARENT type CPARENT OPARENT expr CPARENT {
             assert($type.tree != null);
             assert($expr.tree != null);
 
             // TODO: create a operation to cast
-            $tree = $expr.tree;
+            $tree = new Cast($expr.tree, $type.tree);
         }
     | literal {
             assert($literal.tree != null);
@@ -412,8 +413,8 @@ literal returns[AbstractExpr tree]
     : INT {
         $tree = new IntLiteral(Integer.parseInt($INT.text));
         }
-    | fd=FLOAT {
-            //$tree = new FloatLiteral(Float.parseFloat($FLOAT.text));
+    | FLOAT {
+            $tree = new FloatLiteral(Float.parseFloat($FLOAT.text));
         }
     | STRING {
             $tree = new StringLiteral($STRING.text);
