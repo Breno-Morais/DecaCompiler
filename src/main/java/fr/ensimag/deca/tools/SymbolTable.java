@@ -24,6 +24,7 @@ public class SymbolTable {
      * If a symbol already exists with the same name in this table, then return
      * this Symbol. Otherwise, create a new Symbol and add it to the table.
      */
+
     public Symbol create(String name) {
         if (map.containsKey(name)) {
             return map.get(name);
@@ -33,6 +34,8 @@ public class SymbolTable {
             return newSymbol;
         }
     }
+
+
 
     public static class Symbol {
         // Constructor is private, so that Symbol instances can only be created
