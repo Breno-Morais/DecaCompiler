@@ -1,10 +1,7 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
@@ -30,9 +27,23 @@ public class DeclVar extends AbstractDeclVar {
     }
 
     @Override
-    protected void verifyDeclVar(DecacCompiler compiler,
-            EnvironmentExp localEnv, ClassDefinition currentClass)
-            throws ContextualError {
+    protected void verifyDeclVar(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
+        EnvironmentType env_Type = compiler.environmentType;
+        TypeDefinition type_Def = env_Type.defOfType(this.type.getName());
+
+        if(type_Def == null || type_Def.getType().isVoid()){   //ici, on vérifie si le type que on utilise existe et qu'il n'est pas void
+            throw new ContextualError("Erreur de type", getLocation());
+        }
+
+        try{
+            localEnv.declare(this.varName.getName(), new VariableDefinition(type_Def.getType(), this.getLocation()));
+        }catch(EnvironmentExp.DoubleDefException e){
+            throw new ContextualError("Erreur, le type est déjà déclaré", this.getLocation());
+        }
+
+        initialization.verifyInitialization(compiler, type_Def.getType(), localEnv, currentClass);
+
+
     }
 
     
@@ -42,8 +53,7 @@ public class DeclVar extends AbstractDeclVar {
     }
 
     @Override
-    protected
-    void iterChildren(TreeFunction f) {
+    protected void iterChildren(TreeFunction f) {
         type.iter(f);
         varName.iter(f);
         initialization.iter(f);
