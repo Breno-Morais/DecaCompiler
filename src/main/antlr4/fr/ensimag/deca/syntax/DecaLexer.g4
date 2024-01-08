@@ -92,6 +92,6 @@ MULTI_LINE_STRING: '"' (STRING_CAR | EOL | '\\"' | '\\\\')* '"';
 COMMENT: ('/*' .*? '*/') | ('//' .*? '\n') {skip();};
 
 //Inclusion de fichier
-FILENAME:  (LETTER | DIGIT | '.' | '-' | '_')+;
+fragment FILENAME:  (LETTER | DIGIT | '.' | '-' | '_')+;
 INCLUDE: '#include' (' ')* '"' FILENAME '"' {doInclude(getText());};
 
