@@ -23,7 +23,6 @@ public class StringType extends Type {
     @Override
     public boolean sameType(Type otherType) {
         return otherType.isString();
-        // throw new UnsupportedOperationException("not yet implemented");
     }
 
 

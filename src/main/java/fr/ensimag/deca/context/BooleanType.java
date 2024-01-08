@@ -24,7 +24,6 @@ public class BooleanType extends Type {
     @Override
     public boolean sameType(Type otherType) {
         return otherType.isBoolean();
-        //throw new UnsupportedOperationException("not yet implemented");
     }
 
 
