@@ -98,8 +98,6 @@ public abstract class AbstractExpr extends AbstractInst {
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
         verifyExpr(compiler, localEnv, currentClass);
-
-        //throw new UnsupportedOperationException("not yet implemented");
     }
 
     /**

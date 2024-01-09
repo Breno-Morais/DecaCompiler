@@ -18,7 +18,10 @@ public class ReadInt extends AbstractReadExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        //We want to check that the return type is an INT
+        if(!this.verifyExpr(compiler, localEnv, currentClass).isInt())
+            throw new UnsupportedOperationException("an INT was expected");
+        return compiler.environmentType.INT;
     }
 
 
