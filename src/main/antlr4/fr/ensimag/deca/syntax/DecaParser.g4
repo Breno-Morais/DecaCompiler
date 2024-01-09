@@ -62,6 +62,7 @@ block returns[ListDeclVar decls, ListInst insts]
             assert($list_inst.tree != null);
             $decls = $list_decl.tree;
             $insts = $list_inst.tree;
+
         }
     ;
 
@@ -93,13 +94,17 @@ decl_var[AbstractIdentifier t] returns[AbstractDeclVar tree]
         }
     : i=ident {
             assert($i.tree != null);
+            $tree = new DeclVar($t, $i.tree, init);
+            setLocation($tree, $i.start);
         }
       (EQUALS e=expr {
             assert($e.tree != null);
             init = new Initialization($e.tree);
+            $tree = new DeclVar($t, $i.tree, init);
+            setLocation($tree, $EQUALS);
         }
       )? {
-            $tree = new DeclVar($t, $i.tree, init);
+
         }
     ;
 
@@ -129,6 +134,7 @@ inst returns[AbstractInst tree]
     | PRINTLN OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
             $tree = new Println(false, $list_expr.tree);
+            setLocation($tree, $PRINTLN);
 
         }
     | PRINTX OPARENT list_expr CPARENT SEMI {
@@ -231,6 +237,7 @@ assign_expr returns[AbstractExpr tree]
             assert($e2.tree != null);
 
             $tree = new Assign((AbstractLValue) $e.tree, $e2.tree);
+            setLocation($tree, $e.start);
         }
       | /* epsilon */ {
             assert($e.tree != null);
@@ -340,16 +347,19 @@ mult_expr returns[AbstractExpr tree]
             assert($e1.tree != null);
             assert($e2.tree != null);
             $tree = new Multiply($e1.tree, $e2.tree);
+            setLocation($tree, $TIMES);
         }
     | e1=mult_expr SLASH e2=unary_expr {
             assert($e1.tree != null);
             assert($e2.tree != null);
             $tree = new Divide($e1.tree, $e2.tree);
+            setLocation($tree, $SLASH);
         }
     | e1=mult_expr PERCENT e2=unary_expr {
             assert($e1.tree != null);
             assert($e2.tree != null);
             $tree = new Modulo($e1.tree, $e2.tree);
+            setLocation($tree, $PERCENT);
         }
     ;
 
@@ -407,6 +417,7 @@ primary_expr returns[AbstractExpr tree]
         }
     | READINT OPARENT CPARENT {
             $tree = new ReadInt();
+            setLocation($tree, $READINT);
         }
     | READFLOAT OPARENT CPARENT {
             $tree = new ReadFloat();
@@ -441,9 +452,11 @@ literal returns[AbstractExpr tree]
         }
     | FLOAT {
             $tree = new FloatLiteral(Float.parseFloat($FLOAT.text));
+            setLocation($tree, $FLOAT);
         }
     | STRING {
             $tree = new StringLiteral($STRING.text);
+            setLocation($tree, $STRING);
         }
     | TRUE {
             $tree = new BooleanLiteral(true);
@@ -462,6 +475,7 @@ literal returns[AbstractExpr tree]
 ident returns[AbstractIdentifier tree]
     : IDENT {
             $tree = new Identifier(getDecacCompiler().symbolTable.create($IDENT.text));
+            setLocation($tree, $IDENT);
         }
     ;
 

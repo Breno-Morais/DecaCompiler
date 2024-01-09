@@ -16,7 +16,8 @@ import org.apache.log4j.Logger;
  * @date 01/01/2024
  */
 public class Identifier extends AbstractIdentifier {
-    
+    private static final Logger LOG = Logger.getLogger(Identifier.class);
+
     @Override
     protected void checkDecoration() {
         if (getDefinition() == null) {
@@ -157,8 +158,19 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+                           ClassDefinition currentClass) throws ContextualError {
+        LOG.debug("Verify Expression : start");
+        ExpDefinition expDef = localEnv.get(getName());
+        if (expDef == null){
+            throw new ContextualError(getName() +" is an invalid expression" + "'", getLocation());
+        } else {
+            this.setDefinition(expDef);
+            Type exprType = expDef.getType();
+            setType(exprType);
+
+            LOG.debug("Verify Expression : end");
+            return exprType;
+        }
     }
 
     /**
@@ -167,10 +179,17 @@ public class Identifier extends AbstractIdentifier {
      */
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
-        EnvironmentType env_Type = compiler.environmentType;
-
-        //TODO
-        return null;
+        LOG.debug("Verify Type : start");
+        TypeDefinition typeDef = compiler.environmentType.defOfType(getName());
+        if (typeDef == null){
+            throw new ContextualError (getName()+" is an invalid type "+ "'", getLocation());
+        } else {
+            this.setDefinition(typeDef);
+            Type type =typeDef.getType();
+            setType(type);
+            LOG.debug("verify type: end");
+            return type;
+        }
     }
     
     

@@ -12,8 +12,8 @@ import org.apache.log4j.Logger;
  * @date 01/01/2024
  */
 public class DeclVar extends AbstractDeclVar {
+    private static final Logger LOG = Logger.getLogger(Program.class);
 
-    private static final Logger LOG = Logger.getLogger(Main.class);
     
     final private AbstractIdentifier type;
     final private AbstractIdentifier varName;
@@ -30,7 +30,7 @@ public class DeclVar extends AbstractDeclVar {
 
     @Override
     protected void verifyDeclVar(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
-        LOG.debug("verify DeclVal: start");
+        LOG.debug("Verify DeclVar : start");
         EnvironmentType env_Type = compiler.environmentType;
         TypeDefinition type_Def = env_Type.defOfType(this.type.getName());
 
@@ -45,8 +45,8 @@ public class DeclVar extends AbstractDeclVar {
         }
 
         initialization.verifyInitialization(compiler, type_Def.getType(), localEnv, currentClass);
+        LOG.debug("Verify DeclVar : end");
 
-        LOG.debug("verify DeclVal: end");
     }
 
     
