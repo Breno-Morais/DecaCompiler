@@ -170,6 +170,7 @@ public class Identifier extends AbstractIdentifier {
         EnvironmentType env_Type = compiler.environmentType;
 
         //TODO
+        return null;
     }
     
     
