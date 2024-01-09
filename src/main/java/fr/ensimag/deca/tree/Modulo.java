@@ -20,7 +20,12 @@ public class Modulo extends AbstractOpArith {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        Type leftType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
+        Type rightType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
+        //both types must be INT
+        if(leftType.isInt() && rightType.isInt())
+            return leftType;
+        throw new ContextualError("an INT was expected in Modulo", getLocation());
     }
 
 
@@ -28,5 +33,4 @@ public class Modulo extends AbstractOpArith {
     protected String getOperatorName() {
         return "%";
     }
-
 }

@@ -21,7 +21,9 @@ public class Not extends AbstractUnaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        if(!this.verifyExpr(compiler, localEnv, currentClass).isBoolean())
+            throw new ContextualError("a BOOL was expected in Not", getLocation());
+        return compiler.environmentType.BOOLEAN;
     }
 
     @Override

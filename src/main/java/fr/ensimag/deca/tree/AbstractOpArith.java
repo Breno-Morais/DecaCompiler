@@ -20,7 +20,7 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
 
     public Type new_type(DecacCompiler compiler, Type leftType, Type rightType) throws ContextualError{
         //We want to check that the type is either Int or Float, and if it is neither, we throw an exception
-        if((!leftType.isInt() && !leftType.isFloat()) || (!rightType.isInt() && !rightType.isFloat())){
+        if(this.isArithType(leftType) || this.isArithType(rightType)){
             throw new ContextualError("The type is neither Int nor Float in AbstractOpArith", getLocation());
         }
 

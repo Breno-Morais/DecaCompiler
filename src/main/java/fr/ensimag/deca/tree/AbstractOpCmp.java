@@ -20,8 +20,13 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
-
+        //On veut vérifier que les deux éléments sont des types Arith
+        Type leftType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
+        Type rightType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
+        if(this.areBothArith(leftType, rightType)){
+            return compiler.environmentType.BOOLEAN;
+        }
+        throw new ContextualError("one Operator is not an Arith type", getLocation());
     }
 
 

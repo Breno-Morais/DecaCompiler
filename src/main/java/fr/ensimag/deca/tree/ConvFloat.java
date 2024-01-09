@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -19,8 +20,10 @@ public class ConvFloat extends AbstractUnaryExpr {
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass) {
-        throw new UnsupportedOperationException("not yet implemented");
+            ClassDefinition currentClass) throws ContextualError {
+        if(this.verifyExpr(compiler, localEnv, currentClass).isInt() || this.verifyExpr(compiler, localEnv, currentClass).isFloat())
+            throw new ContextualError("a Arith type was expected in ConvFloat", getLocation());
+        return compiler.environmentType.FLOAT;
     }
 
     @Override

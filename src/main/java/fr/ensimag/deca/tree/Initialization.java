@@ -35,9 +35,11 @@ public class Initialization extends AbstractInitialization {
     protected void verifyInitialization(DecacCompiler compiler, Type t,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        //TODO
-        //il faut regarder si les types coincides (int i = 5)
-        expression.verifyRValue(compiler, localEnv, currentClass, t);
+
+        Type exprType = expression.verifyExpr(compiler, localEnv, currentClass);
+        if(!exprType.sameType(t)){
+            throw new ContextualError("not the Type expected in Initialization", getLocation());
+        }
     }
 
 

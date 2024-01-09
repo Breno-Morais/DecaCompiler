@@ -84,7 +84,7 @@ public abstract class AbstractExpr extends AbstractInst {
             throws ContextualError {
         Type type = this.verifyExpr(compiler, localEnv, currentClass);
         // UTILISER ISSUBCLASS QUAND ON FERA DE L'OBJET
-            if (type.sameType(expectedType)){
+        if (type.sameType(expectedType)){
             return this;
         } else if (type.isInt() && expectedType.isFloat()) {
             return new ConvFloat(this);
@@ -116,6 +116,21 @@ public abstract class AbstractExpr extends AbstractInst {
             throw new ContextualError("Ce n'est pas une condition !", getLocation());
         }
     }
+
+    public boolean areBothArith(Type leftType, Type rightType) throws ContextualError{
+        if(isArithType(leftType) && isArithType(rightType)){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isArithType(Type unaryType) throws ContextualError{
+        if (unaryType.isFloat() || unaryType.isInt()){
+            return true;
+        }
+        return false;
+    }
+
 
     /**
      * Generate code to print the expression
