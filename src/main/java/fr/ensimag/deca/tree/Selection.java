@@ -1,39 +1,43 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
+import fr.ensimag.deca.tools.DecacInternalError;
+import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.deca.tools.SymbolTable;
+import org.apache.commons.lang.Validate;
 
-public class Selection extends AbstractBinaryExpr {
-    private ListExpr params = new ListExpr();
+import java.io.PrintStream;
 
-    public Selection(AbstractExpr leftOperand, AbstractExpr rightOperand) {
-        super(leftOperand, rightOperand);
-    }
+public class Selection extends AbstractLValue {
+    private AbstractExpr obj;
+    private AbstractIdentifier field;
 
-    public Selection(AbstractExpr leftOperand, AbstractExpr rightOperand, ListExpr params) {
-        super(leftOperand, rightOperand);
-        this.params = params;
-    }
-
-    @Override
-    protected String getOperatorName() {
-        return ".";
+    public Selection(AbstractExpr obj, AbstractIdentifier field) {
+        this.obj = obj;
+        this.field = field;
     }
 
     @Override
-    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
-                           ClassDefinition currentClass) throws ContextualError {
+    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
-    public ListExpr getParams() {
-        return params;
+    @Override
+    public void decompile(IndentPrintStream s) {
+        obj.decompile(s);
+        s.print(".");
+        field.decompile(s);
     }
 
-    public void setParams(ListExpr params) {
-        this.params = params;
+    @Override
+    protected void prettyPrintChildren(PrintStream s, String prefix) {
+        obj.prettyPrint(s, prefix, false);
+        field.prettyPrint(s, prefix, true);
+    }
+
+    @Override
+    protected void iterChildren(TreeFunction f) {
+
     }
 }

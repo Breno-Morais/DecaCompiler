@@ -6,10 +6,6 @@ import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import java.io.PrintStream;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -37,10 +33,10 @@ public class Identifier extends AbstractIdentifier {
     /**
      * Like {@link #getDefinition()}, but works only if the definition is a
      * ClassDefinition.
-     *
+     * 
      * This method essentially performs a cast, but throws an explicit exception
      * when the cast fails.
-     *
+     * 
      * @throws DecacInternalError
      *             if the definition is not a class definition.
      */
@@ -59,10 +55,10 @@ public class Identifier extends AbstractIdentifier {
     /**
      * Like {@link #getDefinition()}, but works only if the definition is a
      * MethodDefinition.
-     *
+     * 
      * This method essentially performs a cast, but throws an explicit exception
      * when the cast fails.
-     *
+     * 
      * @throws DecacInternalError
      *             if the definition is not a method definition.
      */
@@ -81,10 +77,10 @@ public class Identifier extends AbstractIdentifier {
     /**
      * Like {@link #getDefinition()}, but works only if the definition is a
      * FieldDefinition.
-     *
+     * 
      * This method essentially performs a cast, but throws an explicit exception
      * when the cast fails.
-     *
+     * 
      * @throws DecacInternalError
      *             if the definition is not a field definition.
      */
@@ -103,10 +99,10 @@ public class Identifier extends AbstractIdentifier {
     /**
      * Like {@link #getDefinition()}, but works only if the definition is a
      * VariableDefinition.
-     *
+     * 
      * This method essentially performs a cast, but throws an explicit exception
      * when the cast fails.
-     *
+     * 
      * @throws DecacInternalError
      *             if the definition is not a field definition.
      */
@@ -124,10 +120,10 @@ public class Identifier extends AbstractIdentifier {
 
     /**
      * Like {@link #getDefinition()}, but works only if the definition is a ExpDefinition.
-     *
+     * 
      * This method essentially performs a cast, but throws an explicit exception
      * when the cast fails.
-     *
+     * 
      * @throws DecacInternalError
      *             if the definition is not a field definition.
      */
@@ -195,7 +191,8 @@ public class Identifier extends AbstractIdentifier {
             return type;
         }
     }
-
+    
+    
     private Definition definition;
 
 

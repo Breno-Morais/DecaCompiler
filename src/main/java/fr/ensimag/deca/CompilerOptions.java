@@ -44,6 +44,7 @@ public class CompilerOptions {
     
     public void parseArgs(String[] args) throws CLIException {
         // A FAIRE : parcourir args pour positionner les options correctement.
+        parcoursArgs(args);
         Logger logger = Logger.getRootLogger();
         // map command-line debug option to log4j's level.
         switch (getDebug()) {
@@ -67,10 +68,65 @@ public class CompilerOptions {
             logger.info("Java assertions disabled");
         }
 
-        throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    private void parcoursArgs(String[] args){
+        //Application des options
+        int j = 0;
+        for (int i = 0; i < args.length; i++){
+            if (args[i].charAt(0) != '-') {
+                j = i;
+                break;
+            }
+            switch (args[i]){
+                case "-b":
+                    printBanner = true;
+                    break;
+                case "-p":
+                    // TODO
+                    break;
+                case "-v":
+                    // TODO
+                    break;
+                case "-n":
+                    // TODO
+                    break;
+                case "-r X":
+                    // TODO ET ATTENTION AU X
+                    break;
+                case "-d":
+                    debug++;
+                    break;
+                case "-P":
+                    parallel = true;
+                    break;
+            }
+        }
+        //Ajout des fichiers src dans sourceFiles
+        for (int k = j; k < args.length; k++){
+            sourceFiles.add(new File(args[k]));
+        }
     }
 
     protected void displayUsage() {
-        throw new UnsupportedOperationException("not yet implemented");
+        System.out.println("-b      (banner)        : displays a banner with the team name");
+        System.out.println("-p      (parse)         : stops decac after the tree construction step\n" +
+                "                          step, and displays the decompiled tree\n" +
+                "                          (i.e. if there is only one source file to compile\n" +
+                "                          to compile, the output should be a syntactically correct\n" +
+                "                          deca program)");
+        System.out.println("-v      (verification)  : stops decac after verification step\n" +
+                "                          (produces no output if no error)");
+        System.out.println("-n      (no check)      : removes the runtime tests specified in\n" +
+                "                          11.1 and 11.3 of the Deca semantics.");
+        System.out.println("-r X    (registers)     : limits available unmarked registers to\n" +
+                "                          R0 ... R{X-1}, with 4 <= X <= 16");
+        System.out.println("-d      (debug)         : enables debug traces. Repeat\n" +
+                "                          several times to get more\n" +
+                "                          traces.");
+        System.out.println("-P      (parallel)      : if there are several source files,\n" +
+                "                          starts compiling the files in\n" +
+                "                          in parallel (to speed up compilation)");
+        System.out.println("Note: The '-p' and '-v' options are incompatible.");
     }
 }

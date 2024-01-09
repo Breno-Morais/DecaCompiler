@@ -11,6 +11,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
+import org.apache.log4j.Logger;
 
 /**
  * Print statement (print, println, ...).
@@ -19,7 +20,7 @@ import org.apache.commons.lang.Validate;
  * @date 01/01/2024
  */
 public abstract class AbstractPrint extends AbstractInst {
-
+    private static final Logger LOG = Logger.getLogger(AbstractPrint.class);
     private boolean printHex;
     private ListExpr arguments = new ListExpr();
     
@@ -39,12 +40,14 @@ public abstract class AbstractPrint extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
+        LOG.debug("Verify Instruction AbstractPrint: start");
         for (AbstractExpr expr : arguments.getList()){
             Type type = expr.verifyExpr(compiler, localEnv, currentClass);
             if (!type.isInt() && !type.isFloat() && !type.isString()){
                 throw new ContextualError("Type incompatible avec le print !", getLocation());
             }
         }
+        LOG.debug("Verify Instruction AbstractPrint: end");
     }
 
     @Override
@@ -60,7 +63,10 @@ public abstract class AbstractPrint extends AbstractInst {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+        String strPrint = "print" + getSuffix() + (getPrintHex() ? "x" : "") + "(";
+        s.print(strPrint);
+        getArguments().decompile(s);
+        s.print(");");
     }
 
     @Override

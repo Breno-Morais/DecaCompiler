@@ -6,6 +6,7 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Definition;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.tools.IndentPrintStream;
 
 /**
  * Assignment, i.e. lvalue = expr.
@@ -29,14 +30,13 @@ public class Assign extends AbstractBinaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        AbstractExpr abstrExpr = verifyRValue(compiler, localEnv, currentClass, );
-
+        //AbstractExpr abstrExpr = verifyRValue(compiler, localEnv, currentClass, );
+        //TODO
+        return null;
     }
-
 
     @Override
     protected String getOperatorName() {
         return "=";
     }
-
 }

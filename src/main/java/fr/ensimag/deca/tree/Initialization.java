@@ -35,13 +35,16 @@ public class Initialization extends AbstractInitialization {
     protected void verifyInitialization(DecacCompiler compiler, Type t,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
+        //TODO
+        //il faut regarder si les types coincides (int i = 5)
         expression.verifyRValue(compiler, localEnv, currentClass, t);
     }
 
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        s.print(" = ");
+        expression.decompile(s);
     }
 
     @Override
