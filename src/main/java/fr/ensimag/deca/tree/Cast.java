@@ -5,6 +5,7 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.tools.IndentPrintStream;
 
 public class Cast extends AbstractUnaryExpr {
     private AbstractIdentifier type;
@@ -12,6 +13,15 @@ public class Cast extends AbstractUnaryExpr {
     public Cast(AbstractExpr operand, AbstractIdentifier type) {
         super(operand);
         this.type = type;
+    }
+
+    @Override
+    public void decompile(IndentPrintStream s) {
+        s.print("(");
+        type.decompile(s);
+        s.print(") (");
+        getOperand().decompile(s);
+        s.print(")");
     }
 
     @Override

@@ -6,6 +6,7 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Definition;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.tools.IndentPrintStream;
 
 /**
  * Assignment, i.e. lvalue = expr.
@@ -38,5 +39,4 @@ public class Assign extends AbstractBinaryExpr {
     protected String getOperatorName() {
         return "=";
     }
-
 }
