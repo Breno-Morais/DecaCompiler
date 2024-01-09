@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
  * @date 01/01/2024
  */
 public abstract class AbstractPrint extends AbstractInst {
-    private static final Logger LOG = Logger.getLogger(ListDeclClass.class);
+    private static final Logger LOG = Logger.getLogger(AbstractPrint.class);
     private boolean printHex;
     private ListExpr arguments = new ListExpr();
     

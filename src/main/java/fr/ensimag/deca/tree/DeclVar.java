@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
  */
 public class DeclVar extends AbstractDeclVar {
     private static final Logger LOG = Logger.getLogger(Program.class);
+
     
     final private AbstractIdentifier type;
     final private AbstractIdentifier varName;
