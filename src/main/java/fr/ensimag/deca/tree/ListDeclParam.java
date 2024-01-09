@@ -5,6 +5,11 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 public class ListDeclParam extends TreeList<AbstractDeclParam> {
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        String delim = "";
+        for (AbstractDeclParam i : this.getList()) {
+            s.print(delim);
+            i.decompile(s);
+            delim = ",";
+        }
     }
 }

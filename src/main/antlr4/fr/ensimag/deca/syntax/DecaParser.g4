@@ -462,7 +462,7 @@ literal returns[AbstractExpr tree]
             $tree = new BooleanLiteral(false);
         }
     | THIS {
-            $tree = new This();
+            $tree = new This(false);
         }
     | NULL {
             $tree = new Null();

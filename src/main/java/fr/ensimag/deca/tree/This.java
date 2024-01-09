@@ -9,7 +9,13 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 
 import java.io.PrintStream;
 
-public class This extends AbstractExpr{
+public class This extends AbstractExpr {
+    private boolean impl;
+
+    public This(boolean impl) {
+        this.impl = impl;
+    }
+
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
                            ClassDefinition currentClass) throws ContextualError {
@@ -18,7 +24,8 @@ public class This extends AbstractExpr{
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+        if(!impl)
+            s.print("this");
     }
 
     @Override
