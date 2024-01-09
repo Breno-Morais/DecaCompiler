@@ -30,7 +30,7 @@ public class Assign extends AbstractBinaryExpr {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
         //AbstractExpr abstrExpr = verifyRValue(compiler, localEnv, currentClass, );
-        //throw new ContextualError("erreur", getLocation());
+        //TODO
         return null;
     }
 
