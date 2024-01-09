@@ -23,7 +23,13 @@ public class DeclField extends AbstractDeclField {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print("class { ... A FAIRE ... }");
+        visibility.decompile(s);
+        s.print(" ");
+        type.decompile(s);
+        s.print(" ");
+        field.decompile(s);
+        initialization.decompile(s);
+        s.print(";");
     }
 
     @Override

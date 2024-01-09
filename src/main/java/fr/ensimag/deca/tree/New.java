@@ -5,6 +5,7 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.tools.IndentPrintStream;
 
 public class New extends AbstractUnaryExpr {
 
@@ -13,11 +14,17 @@ public class New extends AbstractUnaryExpr {
     }
 
     @Override
+    public void decompile(IndentPrintStream s) {
+        s.print("new ");
+        getOperand().decompile(s);
+        s.print("()");
+    }
+
+    @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
                            ClassDefinition currentClass) throws ContextualError {
         throw new UnsupportedOperationException("not yet implemented");
     }
-
 
     @Override
     protected String getOperatorName() {

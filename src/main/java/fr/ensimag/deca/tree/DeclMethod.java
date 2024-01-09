@@ -20,7 +20,13 @@ public class DeclMethod extends AbstractDeclMethod {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print("class { ... A FAIRE ... }");
+        type.decompile(s);
+        s.print(" ");
+        name.decompile(s);
+        s.print("(");
+        parameters.decompile(s);
+        s.print(")");
+        methodBody.decompile(s);
     }
 
     @Override

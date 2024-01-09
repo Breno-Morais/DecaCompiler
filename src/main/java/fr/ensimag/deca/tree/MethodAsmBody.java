@@ -13,7 +13,10 @@ public class MethodAsmBody extends AbstractMethodBody {
 
     @Override
     public void decompile(IndentPrintStream s) {
-
+        s.print("asm(");
+        code.decompile(s);
+        s.print(");");
+        s.println();
     }
 
     @Override

@@ -22,7 +22,14 @@ public class MethodCall extends AbstractExpr {
 
     @Override
     public void decompile(IndentPrintStream s) {
-
+        if (obj != null) {
+            obj.decompile(s);
+            s.print(".");
+        }
+        meth.decompile(s);
+        s.print("(");
+        param.decompile(s);
+        s.print(")");
     }
 
     @Override

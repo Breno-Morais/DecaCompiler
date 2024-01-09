@@ -25,7 +25,9 @@ public class Selection extends AbstractLValue {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print(obj.prettyPrint() + "." + field.prettyPrint()); // TODO: a faire
+        obj.decompile(s);
+        s.print(".");
+        field.decompile(s);
     }
 
     @Override
