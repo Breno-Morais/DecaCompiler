@@ -94,14 +94,17 @@ decl_var[AbstractIdentifier t] returns[AbstractDeclVar tree]
         }
     : i=ident {
             assert($i.tree != null);
+            $tree = new DeclVar($t, $i.tree, init);
+            setLocation($tree, $i.start);
         }
       (EQUALS e=expr {
             assert($e.tree != null);
             init = new Initialization($e.tree);
+            $tree = new DeclVar($t, $i.tree, init);
+            setLocation($tree, $EQUALS);
         }
       )? {
-            $tree = new DeclVar($t, $i.tree, init);
-            setLocation($tree, $i.start);
+
         }
     ;
 
@@ -339,25 +342,24 @@ mult_expr returns[AbstractExpr tree]
     : e=unary_expr {
             assert($e.tree != null);
             $tree = $e.tree;
-            setLocation($tree, $e.start);
         }
     | e1=mult_expr TIMES e2=unary_expr {
             assert($e1.tree != null);
             assert($e2.tree != null);
             $tree = new Multiply($e1.tree, $e2.tree);
-            setLocation($tree, $e1.start);
+            setLocation($tree, $TIMES);
         }
     | e1=mult_expr SLASH e2=unary_expr {
             assert($e1.tree != null);
             assert($e2.tree != null);
             $tree = new Divide($e1.tree, $e2.tree);
-            setLocation($tree, $e1.start);
+            setLocation($tree, $SLASH);
         }
     | e1=mult_expr PERCENT e2=unary_expr {
             assert($e1.tree != null);
             assert($e2.tree != null);
             $tree = new Modulo($e1.tree, $e2.tree);
-            setLocation($tree, $e1.start);
+            setLocation($tree, $PERCENT);
         }
     ;
 
@@ -450,6 +452,7 @@ literal returns[AbstractExpr tree]
         }
     | FLOAT {
             $tree = new FloatLiteral(Float.parseFloat($FLOAT.text));
+            setLocation($tree, $FLOAT);
         }
     | STRING {
             $tree = new StringLiteral($STRING.text);
