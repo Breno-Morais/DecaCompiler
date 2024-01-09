@@ -33,6 +33,7 @@ public class Main extends AbstractMain {
         // Vous avez le droit de changer le profil fourni pour ces méthodes
         // (mais ce n'est à priori pas nécessaire).
         if (declVariables != null){
+            LOG.debug("     Main : declVariables not null");
             declVariables.verifyListDeclVariable(compiler, localEnv, null);
         } else {
             throw new ContextualError("Liste des declarations de variables est null", getLocation());
@@ -41,7 +42,7 @@ public class Main extends AbstractMain {
         if (insts != null){
             insts.verifyListInst(compiler, localEnv, null, compiler.environmentType.VOID);
         } else {
-            throw new ContextualError("Liste des declarations des instruction est null", getLocation());
+            throw new ContextualError("Liste des declarations des instructionx null", getLocation());
         }
 
         LOG.debug("verify Main: end");

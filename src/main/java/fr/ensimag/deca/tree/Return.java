@@ -20,7 +20,11 @@ public class Return extends AbstractInst {
     @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
                               ClassDefinition currentClass, Type returnType) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        expression.verifyRValue(compiler, localEnv, currentClass, returnType);
+        //verifier que return != void
+        if(returnType.isVoid()){
+            throw new ContextualError("return is VOID", getLocation());
+        }
     }
 
     @Override
