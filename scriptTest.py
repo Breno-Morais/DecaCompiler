@@ -21,8 +21,8 @@ if __name__ == "__main__":
         sys.exit(1)
 
     input_file_name = sys.argv[1]
-    input_file_path = os.path.join("src/test/deca/ownTests", input_file_name)
+    #input_file_path = os.path.join("src/test/deca/ownTests", input_file_name)
 
     for test_name in tests_to_run:
         print("\n" + test_name + "\n")
-        run_test(test_name, input_file_path)
+        run_test(test_name, input_file_name)
