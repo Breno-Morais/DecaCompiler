@@ -6,6 +6,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import org.apache.log4j.Logger;
 
 /**
  * Conversion of an int into a float. Used for implicit conversions.
@@ -14,6 +15,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
  * @date 01/01/2024
  */
 public class ConvFloat extends AbstractUnaryExpr {
+    private static final Logger LOG = Logger.getLogger(AbstractExpr.class);
     public ConvFloat(AbstractExpr operand) {
         super(operand);
     }
@@ -21,8 +23,10 @@ public class ConvFloat extends AbstractUnaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
+        LOG.debug("verifyExpr ConvFloat : start");
         if(this.verifyExpr(compiler, localEnv, currentClass).isInt() || this.verifyExpr(compiler, localEnv, currentClass).isFloat())
             throw new ContextualError("a Arith type was expected in ConvFloat", getLocation());
+        LOG.debug("verifyExpr ConvFloat : end");
         return compiler.environmentType.FLOAT;
     }
 

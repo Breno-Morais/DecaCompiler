@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
  * @date 01/01/2024
  */
 public class DeclVar extends AbstractDeclVar {
-    //private static final Logger LOG = Logger.getLogger(Program.class);
+    private static final Logger LOG = Logger.getLogger(Program.class);
     final private AbstractIdentifier type;
     final private AbstractIdentifier varName;
     final private AbstractInitialization initialization;
@@ -28,23 +28,24 @@ public class DeclVar extends AbstractDeclVar {
 
     @Override
     protected void verifyDeclVar(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
-        //LOG.debug("Verify DeclVar : start");
+        LOG.debug("Verify DeclVar : start");
         EnvironmentType env_Type = compiler.environmentType;
         TypeDefinition type_Def = env_Type.defOfType(this.type.getName());
-
+        LOG.debug(type_Def);
+        type.setDefinition(type_Def);
         if(type_Def == null || type_Def.getType().isVoid()){   //ici, on vérifie si le type que on utilise existe et qu'il n'est pas void
-            throw new ContextualError("Erreur de type dans DeclVar", getLocation());
+            throw new ContextualError("Error of type in DeclVar", getLocation());
         }
+
 
         try{
             localEnv.declare(this.varName.getName(), new VariableDefinition(type_Def.getType(), this.getLocation()));
         }catch(EnvironmentExp.DoubleDefException e){
-            throw new ContextualError("Erreur, le type est déjà déclaré dans Declvar", this.getLocation());
+            throw new ContextualError("Error, type already declared in Declvar", this.getLocation());
         }
 
         initialization.verifyInitialization(compiler, type_Def.getType(), localEnv, currentClass);
-        //LOG.debug("Verify DeclVar : end");
-
+        LOG.debug("Verify DeclVar : end");
     }
 
     
@@ -56,7 +57,7 @@ public class DeclVar extends AbstractDeclVar {
         initialization.decompile(s);
         s.println(";");
     }
-    
+
     @Override
     protected void iterChildren(TreeFunction f) {
         type.iter(f);

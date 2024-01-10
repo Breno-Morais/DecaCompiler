@@ -15,7 +15,7 @@ import org.apache.log4j.Logger;
  * @date 01/01/2024
  */
 public class ListInst extends TreeList<AbstractInst> {
-    //private static final Logger LOG = Logger.getLogger(ListDeclClass.class);
+    private static final Logger LOG = Logger.getLogger(ListDeclClass.class);
     /**
      * Implements non-terminal "list_inst" of [SyntaxeContextuelle] in pass 3
      * @param compiler contains "env_types" attribute
@@ -28,10 +28,10 @@ public class ListInst extends TreeList<AbstractInst> {
     public void verifyListInst(DecacCompiler compiler, EnvironmentExp localEnv,
                                ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        //LOG.debug("Verify List Instruction : start");
+        LOG.debug("verifyListInst ListInst : start");
         for(AbstractInst i: getList())
             i.verifyInst(compiler, localEnv, currentClass, returnType);
-        //LOG.debug("Verify List Instruction : end");
+        LOG.debug("verifyListInst ListInst : end");
     }
 
     public void codeGenListInst(DecacCompiler compiler) {

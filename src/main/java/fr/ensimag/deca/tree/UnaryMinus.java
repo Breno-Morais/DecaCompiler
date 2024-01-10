@@ -6,12 +6,14 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import org.apache.log4j.Logger;
 
 /**
  * @author gl25
  * @date 01/01/2024
  */
 public class UnaryMinus extends AbstractUnaryExpr {
+    private static final Logger LOG = Logger.getLogger(Identifier.class);
 
     public UnaryMinus(AbstractExpr operand) {
         super(operand);
@@ -20,10 +22,12 @@ public class UnaryMinus extends AbstractUnaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
+        LOG.debug("verifyExpr UnaryMinus : start");
         //We want to check that the type is Arith (INT or FLOAT)
         Type leftType = this.verifyExpr(compiler, localEnv, currentClass);
         if(!leftType.isInt() && !leftType.isFloat())
             throw new ContextualError("an Arith type was expected in UnaryMinus", getLocation());
+        LOG.debug("verifyExpr UnaryMinus : end");
         return leftType;
     }
 

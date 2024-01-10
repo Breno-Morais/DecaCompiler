@@ -3,6 +3,8 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import org.apache.log4j.Logger;
+
 import java.io.PrintStream;
 
 /**
@@ -12,9 +14,13 @@ import java.io.PrintStream;
  * @date 01/01/2024
  */
 public class EmptyMain extends AbstractMain {
+    private static final Logger LOG = Logger.getLogger(AbstractExpr.class);
     @Override
     protected void verifyMain(DecacCompiler compiler) throws ContextualError {
+        LOG.debug("verifyMain EmptyMain : start");
+        LOG.debug("verifyMain EmptyMain : end");
         throw new UnsupportedOperationException("not yet implemented");
+
     }
 
     @Override

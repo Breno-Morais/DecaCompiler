@@ -9,6 +9,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -16,6 +17,8 @@ import org.apache.commons.lang.Validate;
  * @date 01/01/2024
  */
 public class While extends AbstractInst {
+    private static final Logger LOG = Logger.getLogger(Identifier.class);
+
     private AbstractExpr condition;
     private ListInst body;
 
@@ -43,10 +46,12 @@ public class While extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
+        LOG.debug("verifyInst While : start");
         condition.verifyExpr(compiler, localEnv, currentClass);
         for(AbstractInst instruction : body.getList()){
             instruction.verifyInst(compiler, localEnv, currentClass, returnType);
         }
+        LOG.debug("verifyInst While : end");
     }
 
     @Override

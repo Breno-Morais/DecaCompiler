@@ -10,6 +10,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
+import org.apache.log4j.Logger;
 
 /**
  * Expression, i.e. anything that has a value.
@@ -18,6 +19,7 @@ import org.apache.commons.lang.Validate;
  * @date 01/01/2024
  */
 public abstract class AbstractExpr extends AbstractInst {
+    private static final Logger LOG = Logger.getLogger(AbstractExpr.class);
     /**
      * @return true if the expression does not correspond to any concrete token
      * in the source code (and should be decompiled to the empty string).
@@ -82,13 +84,19 @@ public abstract class AbstractExpr extends AbstractInst {
             EnvironmentExp localEnv, ClassDefinition currentClass, 
             Type expectedType)
             throws ContextualError {
+        LOG.debug("verifyRValue AbstractExpr : start");
         Type type = this.verifyExpr(compiler, localEnv, currentClass);
+        LOG.debug(type);
         // UTILISER ISSUBCLASS QUAND ON FERA DE L'OBJET
         if (type.sameType(expectedType)){
+            LOG.debug("verifyRValue AbstractExpr : end");
             return this;
-        } else if (type.isInt() && expectedType.isFloat()) {
+        }
+        if (type.isInt() && expectedType.isFloat()) {
+            LOG.debug("verifyRValue AbstractExpr : end");
             return new ConvFloat(this);
         }
+        LOG.debug("verifyRValue AbstractExpr : end");
         throw new ContextualError("Incompatibilité de type !", getLocation());
     }
     
@@ -97,7 +105,9 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
+        LOG.debug("verifyInst AbstractExpr : start");
         verifyExpr(compiler, localEnv, currentClass);
+        LOG.debug("verifyInst AbstractExpr : end");
     }
 
     /**

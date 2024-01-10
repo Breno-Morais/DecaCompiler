@@ -5,6 +5,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -12,6 +13,7 @@ import fr.ensimag.deca.context.EnvironmentExp;
  * @date 01/01/2024
  */
 public class Modulo extends AbstractOpArith {
+    private static final Logger LOG = Logger.getLogger(Identifier.class);
 
     public Modulo(AbstractExpr leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
@@ -20,11 +22,14 @@ public class Modulo extends AbstractOpArith {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
+        LOG.debug("verifyExpr Modulo : start");
         Type leftType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         Type rightType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         //both types must be INT
-        if(leftType.isInt() && rightType.isInt())
+        if(leftType.isInt() && rightType.isInt()) {
+            LOG.debug("verifyExpr Modulo : end");
             return leftType;
+        }
         throw new ContextualError("an INT was expected in Modulo", getLocation());
     }
 

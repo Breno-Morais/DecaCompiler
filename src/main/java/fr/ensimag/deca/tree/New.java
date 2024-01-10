@@ -6,8 +6,10 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import org.apache.log4j.Logger;
 
 public class New extends AbstractUnaryExpr {
+    private static final Logger LOG = Logger.getLogger(Identifier.class);
 
     public New(AbstractExpr operand) {
         super(operand);
@@ -23,6 +25,8 @@ public class New extends AbstractUnaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
                            ClassDefinition currentClass) throws ContextualError {
+        LOG.debug("verifyExpr New : start");
+        LOG.debug("verifyExpr New : end");
         throw new UnsupportedOperationException("not yet implemented");
     }
 

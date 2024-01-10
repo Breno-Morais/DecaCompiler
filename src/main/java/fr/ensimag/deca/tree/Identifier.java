@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
  * @date 01/01/2024
  */
 public class Identifier extends AbstractIdentifier {
-    //private static final Logger LOG = Logger.getLogger(Identifier.class);
+    private static final Logger LOG = Logger.getLogger(Identifier.class);
 
     @Override
     protected void checkDecoration() {
@@ -159,7 +159,7 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
                            ClassDefinition currentClass) throws ContextualError {
-        //LOG.debug("Verify Expression : start");
+        LOG.debug("verifyExpr Identifier : start");
         ExpDefinition expDef = localEnv.get(getName());
         if (expDef == null){
             throw new ContextualError(getName() +" is an invalid expression" + "'", getLocation());
@@ -168,7 +168,7 @@ public class Identifier extends AbstractIdentifier {
             Type exprType = expDef.getType();
             setType(exprType);
 
-            //LOG.debug("Verify Expression : end");
+            LOG.debug("verifyExpr Identifier : end");
             return exprType;
         }
     }
@@ -179,7 +179,7 @@ public class Identifier extends AbstractIdentifier {
      */
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
-        //LOG.debug("Verify Type : start");
+        LOG.debug("verifyType Identifier : start");
         TypeDefinition typeDef = compiler.environmentType.defOfType(getName());
         if (typeDef == null){
             throw new ContextualError (getName()+" is an invalid type "+ "'", getLocation());
@@ -187,7 +187,7 @@ public class Identifier extends AbstractIdentifier {
             this.setDefinition(typeDef);
             Type type = typeDef.getType();
             setType(type);
-            //LOG.debug("verify type: end");
+            LOG.debug("verifyType Identifier : end");
             return type;
         }
     }

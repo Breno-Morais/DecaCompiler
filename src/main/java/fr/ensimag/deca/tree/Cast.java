@@ -6,8 +6,10 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import org.apache.log4j.Logger;
 
 public class Cast extends AbstractUnaryExpr {
+    private static final Logger LOG = Logger.getLogger(AbstractExpr.class);
     private AbstractIdentifier type;
 
     public Cast(AbstractExpr operand, AbstractIdentifier type) {
@@ -26,6 +28,9 @@ public class Cast extends AbstractUnaryExpr {
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
+        LOG.debug("verifyExpr Cast : start");
+        //TODO
+        LOG.debug("verifyExpr Cast : end");
         return null;
     }
 

@@ -15,7 +15,7 @@ import org.apache.log4j.Logger;
  * @date 01/01/2024
  */
 public class Program extends AbstractProgram {
-    //private static final Logger LOG = Logger.getLogger(Program.class);
+    private static final Logger LOG = Logger.getLogger(Program.class);
     
     public Program(ListDeclClass classes, AbstractMain main) {
         Validate.notNull(classes);
@@ -34,12 +34,12 @@ public class Program extends AbstractProgram {
 
     @Override
     public void verifyProgram(DecacCompiler compiler) throws ContextualError {
-        //LOG.debug("verify program: start");
+        LOG.debug("verifyProgram Program: start");
         getClasses().verifyListClass(compiler);
         getClasses().verifyListClassMembers(compiler);
         getClasses().verifyListClassBody(compiler);
         getMain().verifyMain(compiler);
-        //LOG.debug("verify program: end");
+        LOG.debug("verifyProgram Program: end");
     }
 
     @Override
