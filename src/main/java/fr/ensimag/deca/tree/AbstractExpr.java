@@ -9,6 +9,9 @@ import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -143,6 +146,13 @@ public abstract class AbstractExpr extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    /**
+     * Generate code to resolve the expression and stores the result in the register Rm
+     * */
+    protected void codeGen(DecacCompiler compiler, int registerNumber) {
         throw new UnsupportedOperationException("not yet implemented");
     }
     

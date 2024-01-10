@@ -7,6 +7,9 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.ImmediateFloat;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -15,10 +18,14 @@ import org.apache.commons.lang.Validate;
  * @author gl25
  * @date 01/01/2024
  */
-public class FloatLiteral extends AbstractExpr {
+public class FloatLiteral extends AbstractLiteral {
 
     public float getValue() {
         return value;
+    }
+
+    public DVal getDValue() {
+        return new ImmediateFloat(getValue());
     }
 
     private float value;

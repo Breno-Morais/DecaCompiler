@@ -3,8 +3,15 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.ExpDefinition;
+import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -50,7 +57,47 @@ public class Main extends AbstractMain {
 
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
-        // A FAIRE: traiter les déclarations de variables.
+        compiler.addComment("Beginning of initializations of main program:");
+
+        int currentVar = 0; // TODO: Starts after the method table
+        for(AbstractDeclVar declVarAbs : declVariables.getList()) {
+            DeclVar declVar;
+            AbstractInitialization initVar;
+            Identifier identVar;
+            try {
+                declVar = (DeclVar) declVarAbs;
+                initVar = declVar.getInitialization();
+            } catch (ClassCastException e) {
+                throw new DecacInternalError("AbstractDeclVar is not a DeclVar");
+            }
+
+            try {
+                identVar = (Identifier) declVar.getVarName();
+            } catch (ClassCastException e) {
+                throw new DecacInternalError("AbstractIdentifier is not a Identifier");
+            }
+
+            // Initialize the address of the variable
+            RegisterOffset addr = new RegisterOffset(currentVar, Register.GB);
+
+            // Don't know if it should be a test or a try and catch
+            if(identVar.getDefinition().isExpression()){
+                ExpDefinition identDefinition = identVar.getExpDefinition();
+
+                identDefinition.setOperand(addr);
+
+                if(initVar instanceof Initialization) {
+                    ((Initialization) initVar).getExpression().codeGenInst(compiler);
+                    compiler.addInstruction(new STORE(Register.R0, addr)); // TODO: Need to assign what which register do
+                }/* else if(declVar.getInitialization() instanceof NoInitialization) { // To use in the initialization of fields
+                    compiler.addInstruction(new LOAD(declVar.getVarName().getType().getDefaultValue(), Register.R0));
+                    compiler.addInstruction(new STORE(Register.R0, addr));
+                }*/
+            }
+
+            currentVar++;
+        }
+
         compiler.addComment("Beginning of main instructions:");
         insts.codeGenListInst(compiler);
     }

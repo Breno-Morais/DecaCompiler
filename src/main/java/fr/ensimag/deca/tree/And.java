@@ -1,6 +1,9 @@
 package fr.ensimag.deca.tree;
 
 
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
+
 /**
  *
  * @author gl25
@@ -16,6 +19,4 @@ public class And extends AbstractOpBool {
     protected String getOperatorName() {
         return "&&";
     }
-
-
 }

@@ -3,6 +3,7 @@ package fr.ensimag.deca.context;
 import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.ImmediateFloat;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
 
 /**
  *
@@ -25,5 +26,8 @@ public class FloatType extends Type {
         return otherType.isFloat();
     }
 
-
+    @Override
+    public DVal getDefaultValue() {
+        return new ImmediateFloat(0);
+    }
 }

@@ -6,6 +6,9 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
+
 import java.io.PrintStream;
 
 /**
@@ -14,9 +17,13 @@ import java.io.PrintStream;
  * @author gl25
  * @date 01/01/2024
  */
-public class IntLiteral extends AbstractExpr {
+public class IntLiteral extends AbstractLiteral {
     public int getValue() {
         return value;
+    }
+
+    public DVal getDValue() {
+        return new ImmediateInteger(getValue());
     }
 
     private int value;

@@ -26,5 +26,8 @@ public class BooleanType extends Type {
         return otherType.isBoolean();
     }
 
-
+    @Override
+    public DVal getDefaultValue() {
+        return new ImmediateInteger(0);
+    }
 }

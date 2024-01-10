@@ -44,6 +44,9 @@ public class DeclVar extends AbstractDeclVar {
             throw new ContextualError("Erreur, le type est déjà déclaré", this.getLocation());
         }
 
+        // Stores the type in the identifier
+        varName.setType(type_Def.getType());
+
         initialization.verifyInitialization(compiler, type_Def.getType(), localEnv, currentClass);
         LOG.debug("Verify DeclVar : end");
 
@@ -71,5 +74,17 @@ public class DeclVar extends AbstractDeclVar {
         type.prettyPrint(s, prefix, false);
         varName.prettyPrint(s, prefix, false);
         initialization.prettyPrint(s, prefix, true);
+    }
+
+    public AbstractIdentifier getType() {
+        return type;
+    }
+
+    public AbstractIdentifier getVarName() {
+        return varName;
+    }
+
+    public AbstractInitialization getInitialization() {
+        return initialization;
     }
 }
