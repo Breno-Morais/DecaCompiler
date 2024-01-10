@@ -26,8 +26,12 @@ public class DecacMain {
             System.exit(1);
         }
         if (options.getPrintBanner()) {
-            System.out.println("Projet GL : gl25");
-            System.exit(1);
+            if (options.getParse() || options.getVerification() || options.getParallel() || options.getDebug() > 0){ // ATTENTION A PAS OUBLIER -n et -r quand ça sera fait
+                System.out.println("The '-b' option can only be used without any other option.");
+            } else {
+                System.out.println("Projet GL : gl25");
+            }
+            System.exit(0);
         }
         if (options.getSourceFiles().isEmpty()) {
             options.displayUsage();
