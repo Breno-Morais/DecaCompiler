@@ -31,6 +31,8 @@ public class CompilerOptions {
     public boolean getPrintBanner() {
         return printBanner;
     }
+    public boolean getParse() { return parse;}
+    public boolean getVerification() { return verification;}
     
     public List<File> getSourceFiles() {
         return Collections.unmodifiableList(sourceFiles);
@@ -39,6 +41,8 @@ public class CompilerOptions {
     private int debug = 0;
     private boolean parallel = false;
     private boolean printBanner = false;
+    private boolean parse = false;
+    private boolean verification = false;
     private List<File> sourceFiles = new ArrayList<File>();
 
     
@@ -83,10 +87,10 @@ public class CompilerOptions {
                     printBanner = true;
                     break;
                 case "-p":
-                    // TODO
+                    parse = true;
                     break;
                 case "-v":
-                    // TODO
+                    verification = true;
                     break;
                 case "-n":
                     // TODO

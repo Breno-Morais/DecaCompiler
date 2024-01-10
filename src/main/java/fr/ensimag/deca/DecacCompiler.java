@@ -4,6 +4,7 @@ import fr.ensimag.deca.context.EnvironmentType;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
 import fr.ensimag.deca.tools.DecacInternalError;
+import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.AbstractProgram;
@@ -193,9 +194,16 @@ public class DecacCompiler {
         }
         assert(prog.checkAllLocations());
 
+        if (compilerOptions.getParse()){
+            System.out.println(prog.decompile());
+            return false;
+        }
 
         prog.verifyProgram(this);
         assert(prog.checkAllDecorations());
+        if (compilerOptions.getVerification()){
+            return false;
+        }
 
         addComment("start main program");
         prog.codeGenProgram(this);
