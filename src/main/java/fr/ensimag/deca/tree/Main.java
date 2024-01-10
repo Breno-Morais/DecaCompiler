@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
  * @date 01/01/2024
  */
 public class Main extends AbstractMain {
-    private static final Logger LOG = Logger.getLogger(Main.class);
+    //private static final Logger LOG = Logger.getLogger(Main.class);
     
     private ListDeclVar declVariables;
     private ListInst insts;
@@ -27,13 +27,13 @@ public class Main extends AbstractMain {
 
     @Override
     protected void verifyMain(DecacCompiler compiler) throws ContextualError {
-        LOG.debug("verify Main: start");
+        //LOG.debug("verify Main: start");
         EnvironmentExp localEnv = new EnvironmentExp(null);
         // A FAIRE: Appeler méthodes "verify*" de ListDeclVarSet et ListInst.
         // Vous avez le droit de changer le profil fourni pour ces méthodes
         // (mais ce n'est à priori pas nécessaire).
         if (declVariables != null){
-            LOG.debug("     Main : declVariables not null");
+            //LOG.debug("     Main : declVariables not null");
             declVariables.verifyListDeclVariable(compiler, localEnv, null);
         } else {
             throw new ContextualError("Liste des declarations de variables est null", getLocation());
@@ -45,7 +45,7 @@ public class Main extends AbstractMain {
             throw new ContextualError("Liste des declarations des instructionx null", getLocation());
         }
 
-        LOG.debug("verify Main: end");
+        //LOG.debug("verify Main: end");
     }
 
     @Override

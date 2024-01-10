@@ -14,7 +14,7 @@ import org.apache.log4j.Logger;
  * @date 01/01/2024
  */
 public class ListDeclVar extends TreeList<AbstractDeclVar> {
-    private static final Logger LOG = Logger.getLogger(Program.class);
+    //private static final Logger LOG = Logger.getLogger(Program.class);
 
     @Override
     public void decompile(IndentPrintStream s) {
@@ -36,12 +36,12 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
      */
     void verifyListDeclVariable(DecacCompiler compiler, EnvironmentExp localEnv,
                                 ClassDefinition currentClass) throws ContextualError {
-        LOG.debug("Verify List Declaration : start");
+        //LOG.debug("Verify List Declaration : start");
         for(AbstractDeclVar d: getList()) {
-            LOG.debug("     ListDeclVar : il y a un truc");
+            //LOG.debug("     ListDeclVar : il y a un truc");
             d.verifyDeclVar(compiler, localEnv, currentClass);
         }
-        LOG.debug("Verify List Declaration : end");
+        //LOG.debug("Verify List Declaration : end");
 
     }
 

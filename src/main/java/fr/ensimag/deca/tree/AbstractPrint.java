@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
  * @date 01/01/2024
  */
 public abstract class AbstractPrint extends AbstractInst {
-    private static final Logger LOG = Logger.getLogger(AbstractPrint.class);
+    //private static final Logger LOG = Logger.getLogger(AbstractPrint.class);
     private boolean printHex;
     private ListExpr arguments = new ListExpr();
     
@@ -40,14 +40,14 @@ public abstract class AbstractPrint extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        LOG.debug("Verify Instruction AbstractPrint: start");
+        //LOG.debug("Verify Instruction AbstractPrint: start");
         for (AbstractExpr expr : arguments.getList()){
             Type type = expr.verifyExpr(compiler, localEnv, currentClass);
             if (!type.isInt() && !type.isFloat() && !type.isString()){
                 throw new ContextualError("Type incompatible avec le print !", getLocation());
             }
         }
-        LOG.debug("Verify Instruction AbstractPrint: end");
+        //LOG.debug("Verify Instruction AbstractPrint: end");
     }
 
     @Override

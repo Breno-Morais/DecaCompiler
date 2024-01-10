@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
  * @date 01/01/2024
  */
 public class ListDeclClass extends TreeList<AbstractDeclClass> {
-    private static final Logger LOG = Logger.getLogger(ListDeclClass.class);
+    //private static final Logger LOG = Logger.getLogger(ListDeclClass.class);
 
     @Override
     public void decompile(IndentPrintStream s) {
@@ -25,7 +25,7 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
      * Pass 1 of [SyntaxeContextuelle]
      */
     void verifyListClass(DecacCompiler compiler) throws ContextualError {
-        LOG.debug("verify listClass: start");
+        //LOG.debug("verify listClass: start");
         for (AbstractDeclClass c: getList())
             c.verifyClass(compiler);
     }
