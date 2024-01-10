@@ -195,7 +195,7 @@ public class DecacCompiler {
         assert(prog.checkAllLocations());
 
         if (compilerOptions.getParse()){
-            System.out.println(prog.decompile());
+            prog.decompile(new IndentPrintStream(out));
             return false;
         }
 
