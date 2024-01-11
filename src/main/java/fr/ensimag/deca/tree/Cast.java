@@ -21,7 +21,7 @@ public class Cast extends AbstractUnaryExpr {
     public void decompile(IndentPrintStream s) {
         s.print("(");
         type.decompile(s);
-        s.print(") (");
+        s.print(")(");
         getOperand().decompile(s);
         s.print(")");
     }

@@ -59,11 +59,16 @@ public class IfThenElse extends AbstractInst {
         s.indent();
         thenBranch.decompile(s);
         s.unindent();
-        s.print("} else {");
-        s.indent();
-        elseBranch.decompile(s);
-        s.unindent();
-        s.print("}");
+        if (elseBranch.isEmpty()){
+            s.print("}");
+        } else {
+            s.println("} else {");
+            s.indent();
+            elseBranch.decompile(s);
+            s.unindent();
+            s.print("}");
+        }
+
     }
 
     @Override
