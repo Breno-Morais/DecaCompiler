@@ -2,7 +2,7 @@
 {
     int x ;
     x=readInt() ;
-    println(x) ;
+    println(0.5*(x*x)) ;
     //Ca ne marche pas d'avoir println(0.5*(x*x));
 }
 

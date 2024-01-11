@@ -37,7 +37,6 @@ public class DeclVar extends AbstractDeclVar {
             throw new ContextualError("Error of type in DeclVar", getLocation());
         }
 
-
         try{
             localEnv.declare(this.varName.getName(), new VariableDefinition(type_Def.getType(), this.getLocation()));
         }catch(EnvironmentExp.DoubleDefException e){

@@ -29,9 +29,21 @@ public class Cast extends AbstractUnaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
         LOG.debug("verifyExpr Cast : start");
-        //TODO
-        LOG.debug("verifyExpr Cast : end");
-        return null;
+        Type T1 = this.getType();
+        LOG.debug(T1);
+        Type T2 = getOperand().verifyExpr(compiler, localEnv, currentClass);
+        //TODO comment récupérer les types T1 et T2
+        if(T1.sameType(T2)){
+            throw new ContextualError("(cast) useless in Cast : same type", getLocation());
+        }
+        if(T1.isVoid() || T2.isVoid()){
+            throw new ContextualError("a Void cannot be cast", getLocation());
+        }
+        if(T1.isFloat() && T2.isInt() || T2.isFloat() && T1.isInt()){
+            LOG.debug("verifyExpr Cast : end");
+            return T1;
+        }
+        throw new ContextualError("type incompatible in Cast", getLocation());
     }
 
     @Override

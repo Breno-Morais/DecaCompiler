@@ -162,7 +162,7 @@ public class Identifier extends AbstractIdentifier {
         LOG.debug("verifyExpr Identifier : start");
         ExpDefinition expDef = localEnv.get(getName());
         if (expDef == null){
-            throw new ContextualError(getName() +" is an invalid expression" + "'", getLocation());
+            throw new ContextualError(getName() +" is an invalid expression in Identifier", getLocation());
         } else {
             this.setDefinition(expDef);
             Type exprType = expDef.getType();
@@ -182,7 +182,7 @@ public class Identifier extends AbstractIdentifier {
         LOG.debug("verifyType Identifier : start");
         TypeDefinition typeDef = compiler.environmentType.defOfType(getName());
         if (typeDef == null){
-            throw new ContextualError (getName()+" is an invalid type "+ "'", getLocation());
+            throw new ContextualError (getName() + " is an invalid type ", getLocation());
         } else {
             this.setDefinition(typeDef);
             Type type = typeDef.getType();

@@ -22,10 +22,12 @@ public class Return extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
                               ClassDefinition currentClass, Type returnType) throws ContextualError {
         LOG.debug("verifyInst Return : start");
+        //TODO a refaire pour le object (pas dans sans-object)
         //verifier que return != void
         if(returnType.isVoid()){
-            throw new ContextualError("return type is VOID", getLocation());
+            throw new ContextualError("return type is VOID in Return", getLocation());
         }
+
         expression.verifyRValue(compiler, localEnv, currentClass, returnType);
         LOG.debug("verifyInst Return : end");
     }

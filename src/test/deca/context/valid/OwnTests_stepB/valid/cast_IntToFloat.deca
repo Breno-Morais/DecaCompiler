@@ -1,0 +1,5 @@
+//Utilisation d'un cast flaot sur un int
+//
+{
+    float f = (float)(1);
+}
