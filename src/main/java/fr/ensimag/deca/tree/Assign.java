@@ -42,4 +42,11 @@ public class Assign extends AbstractBinaryExpr {
     protected String getOperatorName() {
         return "=";
     }
+
+    @Override
+    public void decompile(IndentPrintStream s) {
+        getLeftOperand().decompile(s);
+        s.print(" " + getOperatorName() + " ");
+        getRightOperand().decompile(s);
+    }
 }
