@@ -31,14 +31,17 @@ public class DeclVar extends AbstractDeclVar {
         LOG.debug("Verify DeclVar : start");
         EnvironmentType env_Type = compiler.environmentType;
         TypeDefinition type_Def = env_Type.defOfType(this.type.getName());
-        LOG.debug(type_Def);
-        type.setDefinition(type_Def);
-        if(type_Def == null || type_Def.getType().isVoid()){   //ici, on vérifie si le type que on utilise existe et qu'il n'est pas void
+//        LOG.debug(type_Def);
+//        type.setDefinition(type_Def);
+        Type decl_type = type.verifyType(compiler);
+        if(decl_type == null || decl_type.isVoid()){   //ici, on vérifie si le type que on utilise existe et qu'il n'est pas void
             throw new ContextualError("Error of type in DeclVar", getLocation());
         }
 
         try{
-            localEnv.declare(this.varName.getName(), new VariableDefinition(type_Def.getType(), this.getLocation()));
+            VariableDefinition varDef = new VariableDefinition(type_Def.getType(), this.getLocation());
+            varName.setDefinition(varDef);
+            localEnv.declare(this.varName.getName(), varDef);
         }catch(EnvironmentExp.DoubleDefException e){
             throw new ContextualError("Error, type already declared in Declvar", this.getLocation());
         }

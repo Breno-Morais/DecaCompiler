@@ -24,11 +24,12 @@ public class UnaryMinus extends AbstractUnaryExpr {
             ClassDefinition currentClass) throws ContextualError {
         LOG.debug("verifyExpr UnaryMinus : start");
         //We want to check that the type is Arith (INT or FLOAT)
-        Type leftType = this.verifyExpr(compiler, localEnv, currentClass);
-        if(!leftType.isInt() && !leftType.isFloat())
+        Type type = this.getOperand().verifyExpr(compiler, localEnv, currentClass);
+        if(!type.isInt() && !type.isFloat())
             throw new ContextualError("an Arith type was expected in UnaryMinus", getLocation());
+        this.setType(type);
         LOG.debug("verifyExpr UnaryMinus : end");
-        return leftType;
+        return type;
     }
 
     @Override

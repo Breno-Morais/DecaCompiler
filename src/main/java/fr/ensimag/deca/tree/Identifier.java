@@ -160,17 +160,15 @@ public class Identifier extends AbstractIdentifier {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
                            ClassDefinition currentClass) throws ContextualError {
         LOG.debug("verifyExpr Identifier : start");
-        ExpDefinition expDef = localEnv.get(getName());
+        ExpDefinition expDef = localEnv.get(name);
         if (expDef == null){
             throw new ContextualError(getName() +" is an invalid expression in Identifier", getLocation());
-        } else {
-            this.setDefinition(expDef);
-            Type exprType = expDef.getType();
-            setType(exprType);
-
-            LOG.debug("verifyExpr Identifier : end");
-            return exprType;
         }
+        this.setDefinition(expDef);
+        Type exprType = expDef.getType();
+//            setType(exprType);
+        LOG.debug("verifyExpr Identifier : end");
+        return exprType;
     }
 
     /**
@@ -180,16 +178,15 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verifyType Identifier : start");
-        TypeDefinition typeDef = compiler.environmentType.defOfType(getName());
+        TypeDefinition typeDef = compiler.environmentType.defOfType(this.getName());
         if (typeDef == null){
             throw new ContextualError (getName() + " is an invalid type ", getLocation());
-        } else {
-            this.setDefinition(typeDef);
-            Type type = typeDef.getType();
-            setType(type);
-            LOG.debug("verifyType Identifier : end");
-            return type;
         }
+        this.setDefinition(typeDef);
+        Type type = typeDef.getType();
+        //setType(type);
+        LOG.debug("verifyType Identifier : end");
+        return type;
     }
     
     

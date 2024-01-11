@@ -21,4 +21,10 @@
     } else{
         println("else");
     }
+    if(5>=5){
+        println("sub or eq");
+    }
+    if(5<=6){
+        println("inf or eq");
+    }
 }
