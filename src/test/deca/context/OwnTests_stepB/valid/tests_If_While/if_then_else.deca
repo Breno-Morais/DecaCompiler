@@ -24,6 +24,9 @@
     if(5>=5){
         println("sub or eq");
     }
+    if(4!=5){
+        println("not equal");
+    }
     if(5<=6){
         println("inf or eq");
     }
