@@ -26,11 +26,13 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
         //On veut vérifier que les deux éléments sont des types Arith
         Type leftType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         Type rightType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
-        if(this.areBothArith(leftType, rightType)){
-            return compiler.environmentType.BOOLEAN;
+        if(!this.areBothArith(leftType, rightType)){
+            throw new ContextualError("one Operator is not an Arith type", getLocation());
+
         }
+        //this.setType(compiler.environmentType.BOOLEAN);
         LOG.debug("verifyExpr AbstractOpCmp : end");
-        throw new ContextualError("one Operator is not an Arith type", getLocation());
+        return compiler.environmentType.BOOLEAN;
     }
 
 
