@@ -27,6 +27,7 @@ public class Modulo extends AbstractOpArith {
         Type rightType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         //both types must be INT
         if(leftType.isInt() && rightType.isInt()) {
+            this.setType(leftType);
             LOG.debug("verifyExpr Modulo : end");
             return leftType;
         }

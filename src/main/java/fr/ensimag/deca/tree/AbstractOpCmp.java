@@ -27,10 +27,9 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
         Type leftType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         Type rightType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         if(!this.areBothArith(leftType, rightType)){
-            throw new ContextualError("one Operator is not an Arith type", getLocation());
-
+            throw new ContextualError("one operator is not an Arith type in AbstractOpCmp", getLocation());
         }
-        //this.setType(compiler.environmentType.BOOLEAN);
+        this.setType(compiler.environmentType.BOOLEAN);
         LOG.debug("verifyExpr AbstractOpCmp : end");
         return compiler.environmentType.BOOLEAN;
     }

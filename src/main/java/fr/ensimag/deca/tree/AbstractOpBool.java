@@ -27,9 +27,10 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
         Type rightType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         //Check that both have the same type
         if(leftType.isBoolean() && leftType.sameType(rightType)){
+            this.setType(leftType);
+            LOG.debug("verifyExpr AbstractOpBool : end");
             return leftType;
         }
-        LOG.debug("verifyExpr AbstractOpBool : start");
         throw new ContextualError("a BOOL was expected in AbstractOpBool", getLocation());
     }
 
