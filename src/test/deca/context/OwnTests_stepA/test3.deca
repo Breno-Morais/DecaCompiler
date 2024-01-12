@@ -9,5 +9,5 @@
 
 {
     float i = 0.5;
-    //println(i, "salut");
+    println(i, "salut");
 }

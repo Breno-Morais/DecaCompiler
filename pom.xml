@@ -279,6 +279,17 @@
                     		<goal>java</goal>
                     	</goals>
                     </execution>
+                    <execution>
+                    	<id>unit-test-Lexer</id>
+                    	<configuration>
+                    		<mainClass>fr.ensimag.deca.syntax.TestLex</mainClass>
+                    		<classpathScope>test</classpathScope>
+                    	</configuration>
+                    	<phase>test</phase>
+                    	<goals>
+                    		<goal>java</goal>
+                    	</goals>
+                    </execution>
                 </executions>
             </plugin>
 
