@@ -27,7 +27,7 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
         Type rightType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         //Check that both have the same type
         if(leftType.isBoolean() && leftType.sameType(rightType)){
-            this.setType(leftType);
+            setType(compiler.environmentType.BOOLEAN);
             LOG.debug("verifyExpr AbstractOpBool : end");
             return leftType;
         }

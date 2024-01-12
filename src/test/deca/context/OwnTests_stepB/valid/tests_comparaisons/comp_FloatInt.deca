@@ -1,0 +1,7 @@
+//Comparaison entre un Float et un Int
+//
+
+{
+    //inférieur ou égal
+    boolean b = 1 <= 2.0;
+}

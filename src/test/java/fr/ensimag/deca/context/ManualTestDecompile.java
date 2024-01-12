@@ -1,5 +1,4 @@
 package fr.ensimag.deca.context;
-
 import fr.ensimag.deca.CompilerOptions;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.syntax.AbstractDecaLexer;
@@ -11,14 +10,14 @@ import java.io.IOException;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-
 /**
  * Driver to test the contextual analysis (together with lexer/parser)
- * 
- * @author Ensimag
+ *
+ * @author gl25
  * @date 01/01/2024
  */
-public class ManualTestContext {
+public class ManualTestDecompile {
+
     public static void main(String[] args) throws IOException {
         Logger.getRootLogger().setLevel(Level.DEBUG);
         DecaLexer lex = AbstractDecaLexer.createLexerFromArgs(args);
@@ -31,17 +30,6 @@ public class ManualTestContext {
             System.exit(1);
             return; // Unreachable, but silents a warning.
         }
-        try {
-            prog.verifyProgram(compiler);
-        } catch (LocationException e) {
-            e.display(System.err);
-            System.exit(1);
-        }
-        prog.prettyPrint(System.out);
-
-
-        System.out.println("test_codeGen\n");
-        prog.codeGenProgram(compiler);
-        System.out.println(compiler.displayIMAProgram());
+        System.out.println(prog.decompile());
     }
 }
