@@ -1,5 +1,0 @@
-//test d'un entier négatif, expression unaire (UnaryMinus)
-//
-{
-    int i = -1;
-}

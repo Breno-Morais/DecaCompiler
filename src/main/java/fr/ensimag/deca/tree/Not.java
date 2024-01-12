@@ -23,10 +23,12 @@ public class Not extends AbstractUnaryExpr {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
         LOG.debug("verifyExpr Not : start");
-        if(!this.verifyExpr(compiler, localEnv, currentClass).isBoolean())
+        Type type = this.getOperand().verifyExpr(compiler, localEnv, currentClass);
+        if(!type.isBoolean())
             throw new ContextualError("a BOOL was expected in Not", getLocation());
+        //this.setType(type);
         LOG.debug("verifyExpr Not : end");
-        return compiler.environmentType.BOOLEAN;
+        return type;
     }
 
     @Override

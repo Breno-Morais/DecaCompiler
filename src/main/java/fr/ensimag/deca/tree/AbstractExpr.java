@@ -124,8 +124,9 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     void verifyCondition(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        if (!this.verifyExpr(compiler, localEnv, currentClass).isBoolean()) {
-            throw new ContextualError("Ce n'est pas une condition !", getLocation());
+        Type type = this.verifyExpr(compiler, localEnv, currentClass);
+        if (!type.isBoolean()) {
+            throw new ContextualError(type + " is not a valid condition for IfThenElse", getLocation());
         }
     }
 

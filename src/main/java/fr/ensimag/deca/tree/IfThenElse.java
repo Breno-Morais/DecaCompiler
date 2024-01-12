@@ -38,9 +38,11 @@ public class IfThenElse extends AbstractInst {
         LOG.debug("verifyInst IfThenElse : start");
         condition.verifyCondition(compiler, localEnv, currentClass);
         for (AbstractInst instruction : thenBranch.getList()){
+            LOG.debug("for de then");
             instruction.verifyInst(compiler, localEnv, currentClass, returnType);
         }
         for (AbstractInst instruction : elseBranch.getList()){
+            LOG.debug("for de else");
             instruction.verifyInst(compiler, localEnv, currentClass, returnType);
         }
         LOG.debug("verifyInst IfThenElse : end");

@@ -1,0 +1,9 @@
+//
+//
+
+{
+    int i=10;
+    if(true && i<15){
+        println("AND marche");
+    }
+}

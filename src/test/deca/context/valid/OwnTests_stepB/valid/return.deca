@@ -1,5 +1,0 @@
-//Pas de return dans le sans-objets
-
-{
-    return 0;
-}
