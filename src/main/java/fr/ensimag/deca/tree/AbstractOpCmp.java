@@ -30,7 +30,7 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
             throw new ContextualError("one Operator is not an Arith type", getLocation());
 
         }
-        //this.setType(compiler.environmentType.BOOLEAN);
+        this.setType(compiler.environmentType.BOOLEAN);
         LOG.debug("verifyExpr AbstractOpCmp : end");
         return compiler.environmentType.BOOLEAN;
     }

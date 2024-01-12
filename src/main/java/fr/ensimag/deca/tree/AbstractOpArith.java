@@ -41,6 +41,8 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
         Type leftType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         Type rightType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         LOG.debug("verifyExpr AbstractOpArith : end");
-        return new_type(compiler, leftType, rightType);
+        Type newType = new_type(compiler, leftType, rightType);
+        setType(newType);
+        return newType;
     }
 }

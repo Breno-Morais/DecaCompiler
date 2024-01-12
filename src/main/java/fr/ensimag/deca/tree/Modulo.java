@@ -28,6 +28,7 @@ public class Modulo extends AbstractOpArith {
         //both types must be INT
         if(leftType.isInt() && rightType.isInt()) {
             LOG.debug("verifyExpr Modulo : end");
+            setType(leftType);
             return leftType;
         }
         throw new ContextualError("an INT was expected in Modulo", getLocation());

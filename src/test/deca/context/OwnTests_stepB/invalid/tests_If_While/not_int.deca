@@ -2,7 +2,7 @@
 //erreur attendue :
 
 {
-    if(!(false)){
+    if(!(1)){
         println("salut");
     }
 }
