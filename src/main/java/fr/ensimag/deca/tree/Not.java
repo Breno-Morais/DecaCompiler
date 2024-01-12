@@ -6,6 +6,8 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
 
 /**
  *
@@ -35,5 +37,10 @@ public class Not extends AbstractUnaryExpr {
     public void decompile(IndentPrintStream s) {
         s.print(getOperatorName());
         getOperand().decompile(s);
+    }
+
+    @Override
+    public void addImaInstruction(DecacCompiler compiler, DVal value, GPRegister register) {
+        // TODO: Boolean logic
     }
 }

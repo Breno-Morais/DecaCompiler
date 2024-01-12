@@ -5,14 +5,14 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.ima.pseudocode.Label;
 
 /**
  *
  * @author gl25
  * @date 01/01/2024
  */
-public abstract class AbstractOpBool extends AbstractBinaryExpr {
-
+public abstract class AbstractOpBool extends AbstractBranchable{
     public AbstractOpBool(AbstractExpr leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
     }
@@ -28,5 +28,4 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
         }
         throw new ContextualError("a BOOL was expected in AbstractOpBool", getLocation());
     }
-
 }

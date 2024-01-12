@@ -7,6 +7,8 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.Label;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -16,10 +18,11 @@ import org.apache.commons.lang.Validate;
  * @date 01/01/2024
  */
 public class IfThenElse extends AbstractInst {
-    
     private final AbstractExpr condition; 
     private final ListInst thenBranch;
     private ListInst elseBranch;
+
+    private static int countIfLabels = 0;
 
     public IfThenElse(AbstractExpr condition, ListInst thenBranch, ListInst elseBranch) {
         Validate.notNull(condition);
@@ -45,7 +48,25 @@ public class IfThenElse extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        compiler.addComment("Beginning of IF ELSE");
+        // Create code for the condition
+        Label ifLabel = new Label("E_Sinon." + countIfLabels);
+        Label elseLabel = new Label("E_Sinon." + countIfLabels + 1);
+        Label finLabel = new Label("E_Fin." + countIfLabels);
+        countIfLabels += 2;
+
+
+
+
+        // Create if branch
+        compiler.addLabel(ifLabel);
+        thenBranch.codeGenListInst(compiler);
+
+        // Create else branch
+        compiler.addLabel(elseLabel);
+        elseBranch.codeGenListInst(compiler);
+
+        compiler.addLabel(finLabel);
     }
 
     @Override

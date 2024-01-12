@@ -11,7 +11,7 @@ import fr.ensimag.deca.context.EnvironmentExp;
  * @author gl25
  * @date 01/01/2024
  */
-public abstract class AbstractOpCmp extends AbstractBinaryExpr {
+public abstract class AbstractOpCmp extends AbstractBranchable {
 
     public AbstractOpCmp(AbstractExpr leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
@@ -28,6 +28,4 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
         }
         throw new ContextualError("one Operator is not an Arith type", getLocation());
     }
-
-
 }

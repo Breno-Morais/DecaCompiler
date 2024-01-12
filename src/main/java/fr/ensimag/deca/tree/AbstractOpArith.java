@@ -43,30 +43,37 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
         return new_type(compiler, leftType, rightType);
     }
 
-    // Maybe can use this in a higher layer, but it needs more analyses
     @Override
     protected void codeGen(DecacCompiler compiler, int registerNumber) {
+        int nextRegisterNumber = registerNumber + 1;
+
         GPRegister firstReg = Register.getR(registerNumber);
-        GPRegister secondReg = Register.getR(registerNumber + 1); // TODO: Register Spilling
+        GPRegister secondReg = Register.getR(nextRegisterNumber); // TODO: Register Spilling
 
         if(getLeftOperand() instanceof AbstractLiteral) {
             compiler.addInstruction(new LOAD(((AbstractLiteral) getLeftOperand()).getDValue(), firstReg));
+        } else if(getLeftOperand() instanceof Identifier) {
+            compiler.addInstruction(new LOAD(((Identifier) getLeftOperand()).getAddress(), firstReg));
         } else {
             getLeftOperand().codeGen(compiler, registerNumber);
         }
 
+        DVal value = secondReg;
+
         if(getRightOperand() instanceof AbstractLiteral) {
-            compiler.addInstruction(new LOAD(((AbstractLiteral) getRightOperand()).getDValue(), secondReg));
+            value = ((AbstractLiteral) getRightOperand()).getDValue();
+        } else if(getRightOperand() instanceof Identifier) {
+            value = ((Identifier) getLeftOperand()).getAddress();
         } else {
-            getRightOperand().codeGen(compiler, registerNumber+1);
+            getRightOperand().codeGen(compiler, nextRegisterNumber);
         }
 
-        compiler.addInstruction(getImaInstruction(secondReg, firstReg));
+        compiler.addInstruction(getImaInstruction(value, firstReg));
     }
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        codeGen(compiler, 0);
+        codeGen(compiler, 2);
     }
 
     public abstract Instruction getImaInstruction(DVal value, GPRegister register);

@@ -6,7 +6,12 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Definition;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 
 /**
  * Assignment, i.e. lvalue = expr.
@@ -38,5 +43,21 @@ public class Assign extends AbstractBinaryExpr {
     @Override
     protected String getOperatorName() {
         return "=";
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        DAddr leftAddress;
+        if(getLeftOperand() instanceof Identifier) {
+            Identifier leftOperandId = (Identifier) getLeftOperand();
+
+            leftAddress = leftOperandId.getExpDefinition().getOperand();
+        } /*else if(getLeftOperand() instanceof Selection) {
+            // TODO: Object parameter assignment
+        }*/ else
+            throw new DecacInternalError("Invalid left operand of assign operation");
+
+        getRightOperand().codeGen(compiler, 2);
+        compiler.addInstruction(new STORE(Register.R2, leftAddress));
     }
 }
