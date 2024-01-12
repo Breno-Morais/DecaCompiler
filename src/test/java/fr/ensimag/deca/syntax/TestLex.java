@@ -103,4 +103,8 @@ public class TestLex {
             fail("Erreur lors de l'exécution de la commande sur le fichier " + file.getName());
         }
     }
+
+    public static void main(String[] args) {
+        // Vous pouvez exécuter vos tests ici si nécessaire
+    }
 }

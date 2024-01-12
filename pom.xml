@@ -239,6 +239,21 @@
                         </goals>
                     </execution>
                     <execution>
+                        <id>basic-decompile</id>
+                        <configuration>
+                            <executable>./src/test/script/basic-decompile.sh</executable>
+                            <!-- If we need to pass arguments :
+                                 <arguments>
+                                 <argument>...</argument>
+                                 </arguments>
+                            -->
+                        </configuration>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    <execution>
                         <id>basic-gencode</id>
                         <configuration>
                             <executable>./src/test/script/basic-gencode.sh</executable>

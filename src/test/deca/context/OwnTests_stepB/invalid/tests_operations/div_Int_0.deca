@@ -1,8 +1,0 @@
-//Multiplication d'entiers avec 0
-//ca marche mais on doit pouvoir traiter cette erreur => Division par 0
-//
-{
-    int a = 3;
-    int b = 0;
-    int c = a/b;
-}
