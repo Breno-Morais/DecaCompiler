@@ -12,6 +12,9 @@
     //egalité
     b = 1==2;
     b = 1==1;
+    //pas égale
+    b = 1 != 1;
+    b = 1 != 2;
     //superieur ou égal
     b = 3>=2;
     b = 2>=2;
