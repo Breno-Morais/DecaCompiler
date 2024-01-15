@@ -6,6 +6,8 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import org.apache.log4j.Logger;
 
 /**
@@ -26,7 +28,7 @@ public class Not extends AbstractUnaryExpr {
         Type type = this.getOperand().verifyExpr(compiler, localEnv, currentClass);
         if(!type.isBoolean())
             throw new ContextualError("a BOOL was expected in Not", getLocation());
-        //this.setType(type);
+        this.setType(type);
         LOG.debug("verifyExpr Not : end");
         return type;
     }
@@ -40,5 +42,17 @@ public class Not extends AbstractUnaryExpr {
     public void decompile(IndentPrintStream s) {
         s.print(getOperatorName());
         getOperand().decompile(s);
+    }
+
+    @Override
+    protected void codeGen(DecacCompiler compiler, int registerNumber) {
+        if (getOperand() instanceof BooleanLiteral) {
+
+        }
+    }
+
+    @Override
+    public void addImaInstruction(DecacCompiler compiler, DVal value, GPRegister register) {
+        // Do nothing, should not be called
     }
 }

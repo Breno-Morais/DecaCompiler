@@ -4,9 +4,11 @@ import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.Definition;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.log4j.Logger;
 
 /**
@@ -45,6 +47,26 @@ public class Assign extends AbstractBinaryExpr {
     }
 
     @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        DAddr leftAddress;
+        if(getLeftOperand() instanceof Identifier) {
+            Identifier leftOperandId = (Identifier) getLeftOperand();
+
+            leftAddress = leftOperandId.getExpDefinition().getOperand();
+        } /*else if(getLeftOperand() instanceof Selection) {
+            // TODO: Object parameter assignment
+        }*/ else
+            throw new DecacInternalError("Invalid left operand of assign operation");
+
+        getRightOperand().codeGen(compiler, 2);
+        compiler.addInstruction(new STORE(Register.R2, leftAddress));
+    }
+
+    @Override
+    public Instruction getImaInstruction(DVal value, GPRegister register) {
+        throw new UnsupportedOperationException("Not applicable");
+    }
+
     public void decompile(IndentPrintStream s) {
         getLeftOperand().decompile(s);
         s.print(" " + getOperatorName() + " ");

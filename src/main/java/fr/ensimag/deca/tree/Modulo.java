@@ -5,6 +5,10 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Instruction;
+import fr.ensimag.ima.pseudocode.instructions.REM;
 import org.apache.log4j.Logger;
 
 /**
@@ -35,9 +39,13 @@ public class Modulo extends AbstractOpArith {
         throw new ContextualError("an INT was expected in Modulo", getLocation());
     }
 
-
     @Override
     protected String getOperatorName() {
         return "%";
+    }
+
+    @Override
+    public Instruction getImaInstruction(DVal value, GPRegister register) {
+        return new REM(value, register);
     }
 }

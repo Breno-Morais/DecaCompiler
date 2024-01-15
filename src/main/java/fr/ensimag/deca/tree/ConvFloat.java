@@ -6,6 +6,9 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.instructions.FLOAT;
 import org.apache.log4j.Logger;
 
 /**
@@ -24,8 +27,11 @@ public class ConvFloat extends AbstractUnaryExpr {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
         LOG.debug("verifyExpr ConvFloat : start");
-        if(this.verifyExpr(compiler, localEnv, currentClass).isInt() || this.verifyExpr(compiler, localEnv, currentClass).isFloat())
-            throw new ContextualError("a Arith type was expected in ConvFloat", getLocation());
+        Type type = getOperand().verifyExpr(compiler, localEnv, currentClass);
+        //TODO : avec le if ça ne marche pas
+//        if(type.isInt() || type.isFloat())
+//            throw new ContextualError("a Arith type was expected in ConvFloat", getLocation());
+        this.setType(compiler.environmentType.FLOAT);
         LOG.debug("verifyExpr ConvFloat : end");
         return compiler.environmentType.FLOAT;
     }
@@ -38,5 +44,10 @@ public class ConvFloat extends AbstractUnaryExpr {
     @Override
     public void decompile(IndentPrintStream s) {
         getOperand().decompile(s);
+    }
+
+    @Override
+    public void addImaInstruction(DecacCompiler compiler, DVal value, GPRegister register) {
+        compiler.addInstruction(new FLOAT(value, register));
     }
 }

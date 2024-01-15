@@ -7,6 +7,14 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.BEQ;
+import fr.ensimag.ima.pseudocode.instructions.BNE;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -21,6 +29,8 @@ public class IfThenElse extends AbstractInst {
     private final AbstractExpr condition; 
     private final ListInst thenBranch;
     private ListInst elseBranch;
+
+    private static int countIfLabels = 0;
 
     public IfThenElse(AbstractExpr condition, ListInst thenBranch, ListInst elseBranch) {
         Validate.notNull(condition);
@@ -50,7 +60,64 @@ public class IfThenElse extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        compiler.addComment("Beginning of IF ELSE");
+        // Create code for the condition
+        Label ifLabel = new Label("E_Sinon." + countIfLabels);
+        Label elseLabel = new Label("E_Sinon." + countIfLabels + 1);
+        Label finLabel = new Label("E_Fin." + countIfLabels);
+        countIfLabels += 2;
+
+        if(condition instanceof BooleanLiteral) {
+            BooleanLiteral conditionValue = (BooleanLiteral) condition;
+            if (conditionValue.getValue())
+                compiler.addInstruction(new BRA(ifLabel));
+
+        } else if (condition instanceof Not) {
+            if (((Not) condition).getOperand() instanceof BooleanLiteral) {
+                BooleanLiteral conditionValue = (BooleanLiteral) ((Not) condition).getOperand();
+                if (!conditionValue.getValue())
+                    compiler.addInstruction(new BRA(ifLabel));
+
+            } else if (((Not) condition).getOperand() instanceof AbstractBranchable) {
+                AbstractBranchable conditionBranchable = (AbstractBranchable) condition;
+                conditionBranchable.setE(ifLabel);
+                conditionBranchable.setExpectedBool(false);
+                conditionBranchable.codeGenBranch(compiler);
+
+            } else if (((Not) condition).getOperand() instanceof AbstractIdentifier) {
+                AbstractIdentifier conditionIdentifier = (AbstractIdentifier) condition;
+
+                conditionIdentifier.codeGen(compiler, 0);
+                compiler.addInstruction(new CMP(new ImmediateInteger(0), Register.R0));
+                compiler.addInstruction(new BEQ(ifLabel));
+            }
+        } else {
+            if (condition instanceof AbstractIdentifier) {
+                AbstractIdentifier conditionIdentifier = (AbstractIdentifier) condition;
+
+                conditionIdentifier.codeGen(compiler, 0);
+                compiler.addInstruction(new CMP(new ImmediateInteger(0), Register.R0));
+                compiler.addInstruction(new BNE(ifLabel));
+            } else if (condition instanceof AbstractBranchable) {
+                AbstractBranchable conditionBranchable = (AbstractBranchable) condition;
+                conditionBranchable.setE(ifLabel);
+                conditionBranchable.setExpectedBool(true);
+                conditionBranchable.codeGenBranch(compiler);
+            }
+
+            compiler.addInstruction(new BRA(elseLabel));
+        }
+
+        // Create if branch
+        compiler.addLabel(ifLabel);
+        thenBranch.codeGenListInst(compiler);
+        compiler.addInstruction(new BRA(finLabel));
+
+        // Create else branch
+        compiler.addLabel(elseLabel);
+        elseBranch.codeGenListInst(compiler);
+
+        compiler.addLabel(finLabel);
     }
 
     @Override

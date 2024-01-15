@@ -25,5 +25,8 @@ public class IntType extends Type {
         return otherType.isInt();
     }
 
-
+    @Override
+    public DVal getDefaultValue() {
+        return new ImmediateInteger(0);
+    }
 }

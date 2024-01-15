@@ -165,6 +165,13 @@ public abstract class AbstractExpr extends AbstractInst {
 //        res.codeGenPrint(compiler);
         //throw new UnsupportedOperationException("not yet implemented");
     }
+
+    /**
+     * Generate code to resolve the expression and stores the result in the register Rm
+     * */
+    protected void codeGen(DecacCompiler compiler, int registerNumber) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
     
 
     @Override

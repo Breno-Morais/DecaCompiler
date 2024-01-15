@@ -6,6 +6,9 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.instructions.OPP;
 import org.apache.log4j.Logger;
 
 /**
@@ -42,4 +45,10 @@ public class UnaryMinus extends AbstractUnaryExpr {
         s.print(getOperatorName());
         getOperand().decompile(s);
     }
+
+    @Override
+    public void addImaInstruction(DecacCompiler compiler, DVal value, GPRegister register) {
+        compiler.addInstruction(new OPP(value, register));
+    }
+
 }

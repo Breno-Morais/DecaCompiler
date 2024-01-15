@@ -20,7 +20,8 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
         super(leftOperand, rightOperand);
     }
 
-    public Type new_type(DecacCompiler compiler, Type leftType, Type rightType) throws ContextualError{
+    public Type new_type(DecacCompiler compiler, Type leftType, Type rightType, EnvironmentExp localEnv,
+                         ClassDefinition currentClass) throws ContextualError{
         //We want to check that the type is either Int or Float, and if it is neither, we throw an exception
         if(!this.isArithType(leftType) || !this.isArithType(rightType)){
             throw new ContextualError("The type is neither Int nor Float in AbstractOpArith", getLocation());
@@ -30,9 +31,13 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
         }
         if(leftType.isFloat() || rightType.isFloat()){
             if (leftType.isFloat()){
-                setRightOperand(new ConvFloat(getRightOperand()));
+                ConvFloat conv_float = new ConvFloat(getRightOperand());
+                conv_float.verifyExpr(compiler, localEnv, currentClass);
+                setRightOperand(conv_float);
             } else {
-                setLeftOperand(new ConvFloat(getLeftOperand()));
+                ConvFloat conv_float = new ConvFloat(getLeftOperand());
+                conv_float.verifyExpr(compiler, localEnv, currentClass);
+                setLeftOperand(conv_float);
             }
             return compiler.environmentType.FLOAT;
         }
@@ -46,7 +51,7 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
         Type leftType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         Type rightType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         LOG.debug("verifyExpr AbstractOpArith : end");
-        Type newType = new_type(compiler, leftType, rightType);
+        Type newType = new_type(compiler, leftType, rightType, localEnv, currentClass);
         setType(newType);
         return newType;
     }

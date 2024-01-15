@@ -18,6 +18,13 @@ public class Register extends DVal {
     }
 
     /**
+     * Registers:
+     * R0 Result of arithmetic operation
+     * R1 first operand of arithmetic operation
+     * R3 second operand of arithmetic operation
+     */
+
+    /**
      * Global Base register
      */
     public static final Register GB = new Register("GB");
@@ -48,6 +55,10 @@ public class Register extends DVal {
      * Convenience shortcut for R[1]
      */
     public static final GPRegister R1 = R[1];
+    /**
+     * Convenience shortcut for R[2]
+     */
+    public static final GPRegister R2 = R[2];
     static private GPRegister[] initRegisters() {
         GPRegister [] res = new GPRegister[16];
         for (int i = 0; i <= 15; i++) {

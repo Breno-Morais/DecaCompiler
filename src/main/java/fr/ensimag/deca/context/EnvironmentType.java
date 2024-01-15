@@ -31,6 +31,7 @@ public class EnvironmentType {
         VOID = new VoidType(voidSymb);
         envTypes.put(voidSymb, new TypeDefinition(VOID, Location.BUILTIN));
 
+
         Symbol booleanSymb = compiler.createSymbol("boolean");
         BOOLEAN = new BooleanType(booleanSymb);
         envTypes.put(booleanSymb, new TypeDefinition(BOOLEAN, Location.BUILTIN));

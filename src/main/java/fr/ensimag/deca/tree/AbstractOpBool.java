@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
  * @author gl25
  * @date 01/01/2024
  */
-public abstract class AbstractOpBool extends AbstractBinaryExpr {
+public abstract class AbstractOpBool extends AbstractBranchable {
     private static final Logger LOG = Logger.getLogger(AbstractExpr.class);
 
     public AbstractOpBool(AbstractExpr leftOperand, AbstractExpr rightOperand) {
@@ -33,5 +33,4 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
         }
         throw new ContextualError("a BOOL was expected in AbstractOpBool", getLocation());
     }
-
 }

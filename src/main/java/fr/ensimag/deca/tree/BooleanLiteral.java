@@ -6,6 +6,8 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import org.apache.log4j.Logger;
 
 import java.io.PrintStream;
@@ -15,7 +17,7 @@ import java.io.PrintStream;
  * @author gl25
  * @date 01/01/2024
  */
-public class BooleanLiteral extends AbstractExpr {
+public class BooleanLiteral extends AbstractLiteral {
     private static final Logger LOG = Logger.getLogger(AbstractExpr.class);
     private boolean value;
 
@@ -57,4 +59,8 @@ public class BooleanLiteral extends AbstractExpr {
         return "BooleanLiteral (" + value + ")";
     }
 
+    @Override
+    public DVal getDValue() {
+        return new ImmediateInteger((getValue()) ? 1 : 0);
+    }
 }

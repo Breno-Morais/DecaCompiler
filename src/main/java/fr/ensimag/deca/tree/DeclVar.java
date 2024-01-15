@@ -38,6 +38,9 @@ public class DeclVar extends AbstractDeclVar {
             throw new ContextualError("Error of type in DeclVar", getLocation());
         }
 
+        // Stores the type in the identifier
+        varName.setType(type_Def.getType());
+
         initialization.verifyInitialization(compiler, type_Def.getType(), localEnv, currentClass);
         try{
             VariableDefinition varDef = new VariableDefinition(type_Def.getType(), this.getLocation());
@@ -71,5 +74,17 @@ public class DeclVar extends AbstractDeclVar {
         type.prettyPrint(s, prefix, false);
         varName.prettyPrint(s, prefix, false);
         initialization.prettyPrint(s, prefix, true);
+    }
+
+    public AbstractIdentifier getType() {
+        return type;
+    }
+
+    public AbstractIdentifier getVarName() {
+        return varName;
+    }
+
+    public AbstractInitialization getInitialization() {
+        return initialization;
     }
 }
