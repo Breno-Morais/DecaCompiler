@@ -55,11 +55,12 @@ public class Main extends AbstractMain {
         LOG.debug("verifyMain Main : end");
     }
 
+    // affichage en flottant de la moitié du carré d'un entier
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
-        compiler.addComment("Beginning of initializations of main program:");
+        compiler.addComment("Variables declarations:");
 
-        int currentVar = 0; // TODO: Starts after the method table
+        int currentVar = 2; // TODO: Starts after the method table
         for(AbstractDeclVar declVarAbs : declVariables.getList()) {
             DeclVar declVar;
             AbstractInitialization initVar;

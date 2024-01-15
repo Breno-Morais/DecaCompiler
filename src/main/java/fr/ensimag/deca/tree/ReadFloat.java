@@ -6,6 +6,9 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.Instruction;
+import fr.ensimag.ima.pseudocode.instructions.RFLOAT;
+import fr.ensimag.ima.pseudocode.instructions.RINT;
 import org.apache.log4j.Logger;
 
 import java.io.PrintStream;
@@ -45,4 +48,8 @@ public class ReadFloat extends AbstractReadExpr {
         // leaf node => nothing to do
     }
 
+    @Override
+    protected Instruction getReadInstruction() {
+        return new RFLOAT();
+    }
 }
