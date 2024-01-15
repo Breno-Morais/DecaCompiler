@@ -1,3 +1,4 @@
+//Test de déclarations de INT
 {
     int a = 10;
     int b = 0;

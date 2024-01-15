@@ -38,5 +38,10 @@ public class ManualTestContext {
             System.exit(1);
         }
         prog.prettyPrint(System.out);
+
+
+        System.out.println("test_codeGen\n");
+        prog.codeGenProgram(compiler);
+        System.out.println(compiler.displayIMAProgram());
     }
 }

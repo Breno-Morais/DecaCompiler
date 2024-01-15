@@ -20,9 +20,10 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod>{
      * Pass 1 of [SyntaxeContextuelle]
      */
     void verifyListClass(DecacCompiler compiler) throws ContextualError {
-        LOG.debug("verify listDeclMethod: start");
+        LOG.debug("verifyListClass listDeclMethod: start");
+        LOG.debug("verifyListClass listDeclMethod: end");
         throw new UnsupportedOperationException("not yet implemented");
-        // LOG.debug("verify listClass: end");
+
     }
 
     /**

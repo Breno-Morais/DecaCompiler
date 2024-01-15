@@ -23,7 +23,7 @@
     {
     	println("else");
     }
-            assert($dv1.tree != null);
+            
     if(i==1)
     {
     	println("If with ");

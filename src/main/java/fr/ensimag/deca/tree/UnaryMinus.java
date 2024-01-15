@@ -8,16 +8,15 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Instruction;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.FLOAT;
 import fr.ensimag.ima.pseudocode.instructions.OPP;
+import org.apache.log4j.Logger;
 
 /**
  * @author gl25
  * @date 01/01/2024
  */
 public class UnaryMinus extends AbstractUnaryExpr {
+    private static final Logger LOG = Logger.getLogger(Identifier.class);
 
     public UnaryMinus(AbstractExpr operand) {
         super(operand);
@@ -26,11 +25,14 @@ public class UnaryMinus extends AbstractUnaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
+        LOG.debug("verifyExpr UnaryMinus : start");
         //We want to check that the type is Arith (INT or FLOAT)
-        Type leftType = this.verifyExpr(compiler, localEnv, currentClass);
-        if(!leftType.isInt() && !leftType.isFloat())
+        Type type = this.getOperand().verifyExpr(compiler, localEnv, currentClass);
+        if(!type.isInt() && !type.isFloat())
             throw new ContextualError("an Arith type was expected in UnaryMinus", getLocation());
-        return leftType;
+        this.setType(type);
+        LOG.debug("verifyExpr UnaryMinus : end");
+        return type;
     }
 
     @Override

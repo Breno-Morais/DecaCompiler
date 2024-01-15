@@ -16,6 +16,7 @@ import fr.ensimag.ima.pseudocode.instructions.BNE;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
 import org.apache.commons.lang.Validate;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -24,6 +25,7 @@ import org.apache.commons.lang.Validate;
  */
 public class While extends AbstractInst {
     private static int whileCount = 0;
+    private static final Logger LOG = Logger.getLogger(Identifier.class);
 
     private AbstractExpr condition;
     private ListInst body;
@@ -97,10 +99,13 @@ public class While extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
+        LOG.debug("verifyInst While : start");
         condition.verifyExpr(compiler, localEnv, currentClass);
+        condition.verifyCondition(compiler, localEnv, currentClass);
         for(AbstractInst instruction : body.getList()){
             instruction.verifyInst(compiler, localEnv, currentClass, returnType);
         }
+        LOG.debug("verifyInst While : end");
     }
 
     @Override

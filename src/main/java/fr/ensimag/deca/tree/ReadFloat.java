@@ -6,6 +6,8 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import org.apache.log4j.Logger;
+
 import java.io.PrintStream;
 
 /**
@@ -14,14 +16,17 @@ import java.io.PrintStream;
  * @date 01/01/2024
  */
 public class ReadFloat extends AbstractReadExpr {
-
+    private static final Logger LOG = Logger.getLogger(AbstractExpr.class);
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
         //We want to check that the return type is a FLOAT
 //        if(!this.verifyExpr(compiler, localEnv, currentClass).isFloat())
 //            throw new UnsupportedOperationException("a FLOAT was expected");
-        return compiler.environmentType.FLOAT;
+        LOG.debug("verifyExpr ReadFloat : start");
+        this.setType(compiler.environmentType.FLOAT);
+        LOG.debug("verifyExpr ReadFloat : end");
+        return this.getType();
     }
 
 

@@ -20,9 +20,9 @@ public class ListDeclField extends TreeList<AbstractDeclField>{
      * Pass 1 of [SyntaxeContextuelle]
      */
     void verifyListClass(DecacCompiler compiler) throws ContextualError {
-        LOG.debug("verify listClass: start");
+        LOG.debug("verifyListClass ListDeclField: start");
+        LOG.debug("verifyListClass ListDeclField: end");
         throw new UnsupportedOperationException("not yet implemented");
-        // LOG.debug("verify listClass: end");
     }
 
     /**

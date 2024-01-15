@@ -8,6 +8,7 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import org.apache.log4j.Logger;
 
 import java.io.PrintStream;
 
@@ -18,6 +19,7 @@ import java.io.PrintStream;
  * @date 01/01/2024
  */
 public class IntLiteral extends AbstractLiteral {
+    private static final Logger LOG = Logger.getLogger(Identifier.class);
     public int getValue() {
         return value;
     }

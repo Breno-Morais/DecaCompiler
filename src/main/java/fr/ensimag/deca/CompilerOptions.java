@@ -129,7 +129,7 @@ public class CompilerOptions {
                 "                          several times to get more\n" +
                 "                          traces.");
         System.out.println("-P      (parallel)      : if there are several source files,\n" +
-                "                          starts compiling the files in\n" +
+                "                          starts compiling the files \n" +
                 "                          in parallel (to speed up compilation)");
         System.out.println("Note: The '-p' and '-v' options are incompatible.");
     }

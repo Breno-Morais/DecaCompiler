@@ -8,6 +8,7 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -15,7 +16,7 @@ import fr.ensimag.ima.pseudocode.GPRegister;
  * @date 01/01/2024
  */
 public class Not extends AbstractUnaryExpr {
-
+    private static final Logger LOG = Logger.getLogger(Identifier.class);
     public Not(AbstractExpr operand) {
         super(operand);
     }
@@ -23,9 +24,13 @@ public class Not extends AbstractUnaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        if(!this.verifyExpr(compiler, localEnv, currentClass).isBoolean())
+        LOG.debug("verifyExpr Not : start");
+        Type type = this.getOperand().verifyExpr(compiler, localEnv, currentClass);
+        if(!type.isBoolean())
             throw new ContextualError("a BOOL was expected in Not", getLocation());
-        return compiler.environmentType.BOOLEAN;
+        this.setType(type);
+        LOG.debug("verifyExpr Not : end");
+        return type;
     }
 
     @Override

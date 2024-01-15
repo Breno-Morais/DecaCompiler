@@ -1,0 +1,25 @@
+//Test de tous les opérateurs de comparaison (doit renvoyer un booléen)
+//
+
+{
+    //inférieur ou égal
+    boolean b = 1<=2;
+    b = 2<=2;
+    b = 3<=2;
+    //inférieur strict
+    b = 1<2;
+    b = 3<2;
+    //egalité
+    b = 1==2;
+    b = 1==1;
+    //pas égale
+    b = 1 != 1;
+    b = 1 != 2;
+    //superieur ou égal
+    b = 3>=2;
+    b = 2>=2;
+    b = 1>=2;
+    //supérieur stricte
+    b = 3>2;
+    b = 1>2;
+}

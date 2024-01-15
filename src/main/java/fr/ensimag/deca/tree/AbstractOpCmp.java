@@ -10,6 +10,7 @@ import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Instruction;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -17,6 +18,7 @@ import fr.ensimag.ima.pseudocode.instructions.CMP;
  * @date 01/01/2024
  */
 public abstract class AbstractOpCmp extends AbstractBranchable {
+    private static final Logger LOG = Logger.getLogger(AbstractExpr.class);
 
     public AbstractOpCmp(AbstractExpr leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
@@ -25,13 +27,16 @@ public abstract class AbstractOpCmp extends AbstractBranchable {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
+        LOG.debug("verifyExpr AbstractOpCmp : start");
         //On veut vérifier que les deux éléments sont des types Arith
         Type leftType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         Type rightType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
-        if(this.areBothArith(leftType, rightType)){
-            return compiler.environmentType.BOOLEAN;
+        if(!this.areBothArith(leftType, rightType)){
+            throw new ContextualError("one operator is not an Arith type in AbstractOpCmp", getLocation());
         }
-        throw new ContextualError("one Operator is not an Arith type", getLocation());
+        this.setType(compiler.environmentType.BOOLEAN);
+        LOG.debug("verifyExpr AbstractOpCmp : end");
+        return compiler.environmentType.BOOLEAN;
     }
 
     @Override

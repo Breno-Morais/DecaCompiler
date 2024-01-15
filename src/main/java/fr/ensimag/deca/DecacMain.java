@@ -2,6 +2,9 @@ package fr.ensimag.deca;
 
 import java.io.File;
 import org.apache.log4j.Logger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.*;
 
 /**
  * Main class for the command-line Deca compiler.
@@ -11,7 +14,34 @@ import org.apache.log4j.Logger;
  */
 public class DecacMain {
     private static Logger LOG = Logger.getLogger(DecacMain.class);
-    
+
+    private static void compileFilesInParallel(CompilerOptions options) {
+        List<Callable<Boolean>> compilationTasks = new ArrayList<>();
+
+        for (File source : options.getSourceFiles()) {
+            compilationTasks.add(() -> {
+                DecacCompiler compiler = new DecacCompiler(options, source);
+                return compiler.compile();
+            });
+        }
+
+        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
+        try {
+            List<Future<Boolean>> results = executor.invokeAll(compilationTasks);
+
+            // Traiter les résultats, gérer les erreurs si nécessaire
+            for (Future<Boolean> result : results) {
+                if (result.get()) {
+                    // Gérer les erreurs ou effectuer d'autres opérations après la compilation.
+                }
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace(); // Gérer les exceptions selon les besoins
+        } finally {
+            executor.shutdown();
+        }
+    }
     public static void main(String[] args) {
         // example log4j message.
         LOG.info("Decac compiler started");
@@ -37,11 +67,7 @@ public class DecacMain {
             options.displayUsage();
         }
         if (options.getParallel()) {
-            // A FAIRE : instancier DecacCompiler pour chaque fichier à
-            // compiler, et lancer l'exécution des méthodes compile() de chaque
-            // instance en parallèle. Il est conseillé d'utiliser
-            // java.util.concurrent de la bibliothèque standard Java.
-            throw new UnsupportedOperationException("Parallel build not yet implemented");
+            compileFilesInParallel(options);
         } else {
             for (File source : options.getSourceFiles()) {
                 DecacCompiler compiler = new DecacCompiler(options, source);

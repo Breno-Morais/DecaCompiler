@@ -182,7 +182,6 @@ if_then_else returns[IfThenElse tree]
 
             // Create a If instruction with a empty else branch
             $tree = new IfThenElse($condition.tree, $li_if.tree, curElseBranch);
-
         }
       (ELSE elsif=IF OPARENT elsif_cond=expr CPARENT OBRACE elsif_li=list_inst CBRACE {
             assert($elsif_cond.tree != null);

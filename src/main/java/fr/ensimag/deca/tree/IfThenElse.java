@@ -16,6 +16,7 @@ import fr.ensimag.ima.pseudocode.instructions.BNE;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
 import org.apache.commons.lang.Validate;
+import org.apache.log4j.Logger;
 
 /**
  * Full if/else if/else statement.
@@ -24,6 +25,7 @@ import org.apache.commons.lang.Validate;
  * @date 01/01/2024
  */
 public class IfThenElse extends AbstractInst {
+    private static final Logger LOG = Logger.getLogger(Identifier.class);
     private final AbstractExpr condition; 
     private final ListInst thenBranch;
     private ListInst elseBranch;
@@ -43,13 +45,17 @@ public class IfThenElse extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
+        LOG.debug("verifyInst IfThenElse : start");
         condition.verifyCondition(compiler, localEnv, currentClass);
         for (AbstractInst instruction : thenBranch.getList()){
+            LOG.debug("for de then");
             instruction.verifyInst(compiler, localEnv, currentClass, returnType);
         }
         for (AbstractInst instruction : elseBranch.getList()){
+            LOG.debug("for de else");
             instruction.verifyInst(compiler, localEnv, currentClass, returnType);
         }
+        LOG.debug("verifyInst IfThenElse : end");
     }
 
     @Override
@@ -122,11 +128,16 @@ public class IfThenElse extends AbstractInst {
         s.indent();
         thenBranch.decompile(s);
         s.unindent();
-        s.print("} else {");
-        s.indent();
-        elseBranch.decompile(s);
-        s.unindent();
-        s.print("}");
+        if (elseBranch.isEmpty()){
+            s.print("}");
+        } else {
+            s.println("} else {");
+            s.indent();
+            elseBranch.decompile(s);
+            s.unindent();
+            s.print("}");
+        }
+
     }
 
     @Override

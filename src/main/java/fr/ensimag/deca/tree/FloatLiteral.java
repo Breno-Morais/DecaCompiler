@@ -11,6 +11,7 @@ import java.io.PrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.ImmediateFloat;
 import org.apache.commons.lang.Validate;
+import org.apache.log4j.Logger;
 
 /**
  * Single precision, floating-point literal
@@ -19,7 +20,7 @@ import org.apache.commons.lang.Validate;
  * @date 01/01/2024
  */
 public class FloatLiteral extends AbstractLiteral {
-
+    private static final Logger LOG = Logger.getLogger(Program.class);
     public float getValue() {
         return value;
     }
@@ -41,14 +42,16 @@ public class FloatLiteral extends AbstractLiteral {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
+        //LOG.debug("verifyExpr FloatLiteral : start");
         setType(compiler.environmentType.FLOAT);
+        //LOG.debug("verifyExpr FloatLiteral : end");
         return compiler.environmentType.FLOAT;
     }
 
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print(java.lang.Float.toHexString(value));
+        s.print(Float.toString(value));
     }
 
     @Override
