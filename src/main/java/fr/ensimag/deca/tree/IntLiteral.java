@@ -21,7 +21,7 @@ public class IntLiteral extends AbstractExpr {
     public int getValue() {
         return value;
     }
-
+    public void codeGenPrintExpr(DecacCompiler compiler){};
     private int value;
 
     public IntLiteral(int value) {

@@ -27,6 +27,8 @@ public class StringLiteral extends AbstractStringLiteral {
 
     private String value;
 
+    public void codeGenPrintExpr(DecacCompiler compiler){};
+
     public StringLiteral(String value) {
         Validate.notNull(value);
         this.value = value;

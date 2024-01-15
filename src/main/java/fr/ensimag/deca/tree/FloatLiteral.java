@@ -23,6 +23,7 @@ public class FloatLiteral extends AbstractExpr {
     }
 
     private float value;
+    public void codeGenPrintExpr(DecacCompiler compiler){};
 
     public FloatLiteral(float value) {
         Validate.isTrue(!Float.isInfinite(value),
