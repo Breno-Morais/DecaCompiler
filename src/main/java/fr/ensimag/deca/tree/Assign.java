@@ -65,6 +65,7 @@ public class Assign extends AbstractBinaryExpr {
     @Override
     public Instruction getImaInstruction(DVal value, GPRegister register) {
         throw new UnsupportedOperationException("Not applicable");
+    }
 
     public void decompile(IndentPrintStream s) {
         getLeftOperand().decompile(s);

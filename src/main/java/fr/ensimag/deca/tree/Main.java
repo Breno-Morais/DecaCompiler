@@ -87,7 +87,8 @@ public class Main extends AbstractMain {
                 identDefinition.setOperand(addr);
 
                 if(initVar instanceof Initialization) {
-                    ((Initialization) initVar).getExpression().codeGenInst(compiler);
+                    ((Initialization) initVar).getExpression().codeGen(compiler, 2);
+
                     compiler.addInstruction(new STORE(Register.R2, addr)); // TODO: Need to assign what which register do
                 }/* else if(declVar.getInitialization() instanceof NoInitialization) { // To use in the initialization of fields
                     compiler.addInstruction(new LOAD(declVar.getVarName().getType().getDefaultValue(), Register.R0));
