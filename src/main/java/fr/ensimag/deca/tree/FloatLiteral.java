@@ -10,6 +10,8 @@ import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.ImmediateFloat;
+import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
+import fr.ensimag.ima.pseudocode.instructions.WINT;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -30,7 +32,6 @@ public class FloatLiteral extends AbstractLiteral {
     }
 
     private float value;
-    public void codeGenPrintExpr(DecacCompiler compiler){};
 
     public FloatLiteral(float value) {
         Validate.isTrue(!Float.isInfinite(value),

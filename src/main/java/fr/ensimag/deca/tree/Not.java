@@ -20,7 +20,6 @@ public class Not extends AbstractUnaryExpr {
     public Not(AbstractExpr operand) {
         super(operand);
     }
-    public void codeGenPrintExpr(DecacCompiler compiler){};
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {

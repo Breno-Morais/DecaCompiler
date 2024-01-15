@@ -24,16 +24,7 @@ public class Plus extends AbstractOpArith {
     protected String getOperatorName() {
         return "+";
     }
-    
-    @Override
-    public void codeGenPrintExpr(DecacCompiler compiler) {
-        //DVal r2 =
-        compiler.addInstruction(new LOAD(3, Register.getR(2)));
-        compiler.addInstruction(new LOAD(2, Register.getR(3)));
-        compiler.addInstruction(new ADD(Register.getR(3), Register.getR(2)));
-        compiler.addInstruction(new LOAD(Register.getR(2), Register.getR(1)));
-        compiler.addInstruction(new WINT());
-    }
+
 
     public Instruction getImaInstruction(DVal value, GPRegister register) {
         return new ADD(value, register);

@@ -59,7 +59,7 @@ public class Main extends AbstractMain {
     protected void codeGenMain(DecacCompiler compiler) {
         compiler.addComment("Beginning of initializations of main program:");
 
-        int currentVar = 0; // TODO: Starts after the method table
+        int currentVar = 2; // TODO: Starts after the method table
         for(AbstractDeclVar declVarAbs : declVariables.getList()) {
             DeclVar declVar;
             AbstractInitialization initVar;

@@ -15,6 +15,5 @@ public abstract class AbstractReadExpr extends AbstractExpr {
         super();
     }
 
-    public void codeGenPrintExpr(DecacCompiler compiler){};
 
 }

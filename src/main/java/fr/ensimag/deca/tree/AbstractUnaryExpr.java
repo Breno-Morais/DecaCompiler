@@ -27,7 +27,6 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
         Validate.notNull(operand);
         this.operand = operand;
     }
-    public void codeGenPrintExpr(DecacCompiler compiler){};
 
     protected abstract String getOperatorName();
   

@@ -15,7 +15,6 @@ public class Selection extends AbstractLValue {
     private AbstractExpr obj;
     private AbstractIdentifier field;
 
-    public void codeGenPrintExpr(DecacCompiler compiler){};
 
 
     public Selection(AbstractExpr obj, AbstractIdentifier field) {

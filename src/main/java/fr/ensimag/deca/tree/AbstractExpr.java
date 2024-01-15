@@ -10,6 +10,8 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 
 import java.io.PrintStream;
 
+import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
+import fr.ensimag.ima.pseudocode.instructions.WINT;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -146,7 +148,6 @@ public abstract class AbstractExpr extends AbstractInst {
     }
 
 
-    public abstract void codeGenPrintExpr(DecacCompiler compiler);
 
     /**
      * Generate code to print the expression
@@ -154,9 +155,20 @@ public abstract class AbstractExpr extends AbstractInst {
      * @param compiler
      */
     protected void codeGenPrint(DecacCompiler compiler) {
-        this.codeGenPrintExpr(compiler);
-        //throw new UnsupportedOperationException("not yet implemented");
+        compiler.addComment("Print AbstractExpr ");
+        this.codeGen(compiler, 1);
+        if (this.getType() != null) {
+            if (this.getType().toString() == "int") {
+                compiler.addInstruction(new WINT());
+            } else {
+                compiler.addInstruction(new WFLOAT());
+            }
+            //this.printExpr(compiler);
+            //throw new UnsupportedOperationException("not yet implemented");
+        }
     }
+
+
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {

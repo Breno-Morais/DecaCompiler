@@ -32,7 +32,6 @@ public abstract class AbstractIdentifier extends AbstractLValue {
     public abstract ClassDefinition getClassDefinition();
 
 
-    public void codeGenPrintExpr(DecacCompiler compiler){};
 
     public abstract Definition getDefinition();
 

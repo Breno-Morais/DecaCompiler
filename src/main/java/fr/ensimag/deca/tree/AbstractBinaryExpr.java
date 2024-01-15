@@ -49,7 +49,6 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         this.rightOperand = rightOperand;
     }
 
-    public void codeGenPrintExpr(DecacCompiler compiler){};
 
 
 
@@ -97,7 +96,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         if(getRightOperand() instanceof AbstractLiteral) {
             value = ((AbstractLiteral) getRightOperand()).getDValue();
         } else if(getRightOperand() instanceof Identifier) {
-            value = ((Identifier) getLeftOperand()).getAddress();
+            value = ((Identifier) getRightOperand()).getAddress();
         } else {
             getRightOperand().codeGen(compiler, nextRegisterNumber);
         }

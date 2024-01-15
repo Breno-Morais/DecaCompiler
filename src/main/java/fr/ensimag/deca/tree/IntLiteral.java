@@ -8,6 +8,9 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.ImmediateString;
+import fr.ensimag.ima.pseudocode.instructions.WINT;
+import fr.ensimag.ima.pseudocode.instructions.WSTR;
 import org.apache.log4j.Logger;
 
 import java.io.PrintStream;
@@ -23,7 +26,6 @@ public class IntLiteral extends AbstractLiteral {
     public int getValue() {
         return value;
     }
-    public void codeGenPrintExpr(DecacCompiler compiler){};
 
     public DVal getDValue() {
         return new ImmediateInteger(getValue());
