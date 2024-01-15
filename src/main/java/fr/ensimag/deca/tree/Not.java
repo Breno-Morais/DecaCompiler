@@ -26,7 +26,7 @@ public class Not extends AbstractUnaryExpr {
         Type type = this.getOperand().verifyExpr(compiler, localEnv, currentClass);
         if(!type.isBoolean())
             throw new ContextualError("a BOOL was expected in Not", getLocation());
-        //this.setType(type);
+        this.setType(type);
         LOG.debug("verifyExpr Not : end");
         return type;
     }
