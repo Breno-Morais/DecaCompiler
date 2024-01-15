@@ -40,7 +40,14 @@ public class Not extends AbstractUnaryExpr {
     }
 
     @Override
+    protected void codeGen(DecacCompiler compiler, int registerNumber) {
+        if (getOperand() instanceof BooleanLiteral) {
+
+        }
+    }
+
+    @Override
     public void addImaInstruction(DecacCompiler compiler, DVal value, GPRegister register) {
-        // TODO: Boolean logic
+        // Do nothing, should not be called
     }
 }

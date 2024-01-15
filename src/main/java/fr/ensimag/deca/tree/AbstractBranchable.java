@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.Label;
 
 public abstract class AbstractBranchable extends AbstractBinaryExpr {
@@ -25,4 +26,6 @@ public abstract class AbstractBranchable extends AbstractBinaryExpr {
     public void setExpectedBool(boolean expectedBool) {
         this.expectedBool = expectedBool;
     }
+
+    public abstract void codeGenBranch(DecacCompiler compiler);
 }

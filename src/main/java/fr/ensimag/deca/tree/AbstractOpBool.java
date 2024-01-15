@@ -12,7 +12,7 @@ import fr.ensimag.ima.pseudocode.Label;
  * @author gl25
  * @date 01/01/2024
  */
-public abstract class AbstractOpBool extends AbstractBranchable{
+public abstract class AbstractOpBool extends AbstractBranchable {
     public AbstractOpBool(AbstractExpr leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
     }
