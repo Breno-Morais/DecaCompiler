@@ -183,15 +183,20 @@ if_then_else returns[IfThenElse tree]
             // Create a If instruction with a empty else branch
             $tree = new IfThenElse($condition.tree, $li_if.tree, curElseBranch);
         }
-      (ELSE elsif=IF OPARENT elsif_cond=expr CPARENT OBRACE elsif_li=list_inst CBRACE {
+      (ELSE IF OPARENT elsif_cond=expr CPARENT OBRACE elsif_li=list_inst CBRACE {
             assert($elsif_cond.tree != null);
             assert($elsif_li.tree != null);
+
+            setLocation(curElseBranch, $ELSE);
 
             // Create a new empty else branch
             ListInst newElseBranch = new ListInst();
 
             // Create a new if instruction and add to the previous else
-            curElseBranch.add(new IfThenElse($elsif_cond.tree, $elsif_li.tree, newElseBranch));
+            IfThenElse newIf = new IfThenElse($elsif_cond.tree, $elsif_li.tree, newElseBranch);
+            setLocation(newIf, $IF);
+
+            curElseBranch.add(newIf);
 
             // Keep track of the new lastest else branch
             curElseBranch = newElseBranch;
@@ -199,6 +204,7 @@ if_then_else returns[IfThenElse tree]
       )*
       (ELSE OBRACE li_else=list_inst CBRACE {
             assert($li_else.tree != null);
+            setLocation(curElseBranch, $ELSE);
 
             // Copy the contents through a iterator to not lose the original reference
             Iterator<AbstractInst> iterator = $li_else.tree.iterator();
