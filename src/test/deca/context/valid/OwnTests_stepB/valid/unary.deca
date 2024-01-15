@@ -1,0 +1,5 @@
+// Unary operand
+{
+    int i = -5;
+    println(-5);
+}
