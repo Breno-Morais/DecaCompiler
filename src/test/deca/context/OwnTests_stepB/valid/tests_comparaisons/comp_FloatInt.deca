@@ -3,5 +3,10 @@
 
 {
     //inférieur ou égal
-    boolean b = 1 <= 2.0;
+    boolean b = 1 <= 2;
+    if (b) {
+        println("b = true");
+    } else {
+        println("b = false");
+    }
 }
