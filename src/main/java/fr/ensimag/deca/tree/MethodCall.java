@@ -19,7 +19,6 @@ public class MethodCall extends AbstractExpr {
         this.meth = meth;
         this.param = param;
     }
-
     @Override
     public void decompile(IndentPrintStream s) {
         if (obj != null) {

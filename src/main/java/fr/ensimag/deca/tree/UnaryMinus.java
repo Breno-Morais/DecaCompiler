@@ -21,7 +21,6 @@ public class UnaryMinus extends AbstractUnaryExpr {
     public UnaryMinus(AbstractExpr operand) {
         super(operand);
     }
-
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {

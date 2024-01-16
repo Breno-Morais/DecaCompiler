@@ -31,6 +31,8 @@ public abstract class AbstractIdentifier extends AbstractLValue {
      */
     public abstract ClassDefinition getClassDefinition();
 
+
+
     public abstract Definition getDefinition();
 
     /**

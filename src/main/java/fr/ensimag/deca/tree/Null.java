@@ -16,6 +16,7 @@ public class Null extends AbstractExpr{
         throw new UnsupportedOperationException("not yet implemented");
     }
 
+
     @Override
     public void decompile(IndentPrintStream s) {
         s.print("null");

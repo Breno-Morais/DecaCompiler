@@ -7,11 +7,11 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.Label;
+
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
+import fr.ensimag.ima.pseudocode.instructions.WINT;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -148,18 +148,34 @@ public abstract class AbstractExpr extends AbstractInst {
     }
 
 
+
     /**
      * Generate code to print the expression
      *
      * @param compiler
      */
     protected void codeGenPrint(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        compiler.addComment("Print AbstractExpr ");
+        this.codeGen(compiler, 1);
+        if (this.getType() != null) {
+            if (this.getType().toString() == "int") {
+                compiler.addInstruction(new WINT());
+            } else {
+                compiler.addInstruction(new WFLOAT());
+            }
+            //this.printExpr(compiler);
+            //throw new UnsupportedOperationException("not yet implemented");
+        }
     }
+
+
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+//        String s = "inst";
+//        StringLiteral res = new StringLiteral(s);
+//        res.codeGenPrint(compiler);
+        //throw new UnsupportedOperationException("not yet implemented");
     }
 
     /**

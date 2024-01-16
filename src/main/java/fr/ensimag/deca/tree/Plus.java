@@ -2,9 +2,14 @@ package fr.ensimag.deca.tree;
 
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Instruction;
+import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.ADD;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.WINT;
+
 
 /**
  * @author gl25
@@ -20,7 +25,7 @@ public class Plus extends AbstractOpArith {
         return "+";
     }
 
-    @Override
+
     public Instruction getImaInstruction(DVal value, GPRegister register) {
         return new ADD(value, register);
     }

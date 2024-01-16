@@ -58,6 +58,7 @@ public class Assign extends AbstractBinaryExpr {
         }*/ else
             throw new DecacInternalError("Invalid left operand of assign operation");
 
+
         getRightOperand().codeGen(compiler, 2);
         compiler.addInstruction(new STORE(Register.R2, leftAddress));
     }

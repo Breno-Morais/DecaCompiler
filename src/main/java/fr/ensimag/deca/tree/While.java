@@ -47,6 +47,7 @@ public class While extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
+        compiler.addComment("Beginning of WHILE Loop");
         Label startCodeLabel = new Label("E_Debut." + whileCount);
         Label condLabel = new Label("E_Cond." + whileCount);
         whileCount++;

@@ -51,6 +51,8 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
 
 
 
+
+
     @Override
     public void decompile(IndentPrintStream s) {
         s.print("(");
@@ -94,7 +96,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         if(getRightOperand() instanceof AbstractLiteral) {
             value = ((AbstractLiteral) getRightOperand()).getDValue();
         } else if(getRightOperand() instanceof Identifier) {
-            value = ((Identifier) getLeftOperand()).getAddress();
+            value = ((Identifier) getRightOperand()).getAddress();
         } else {
             getRightOperand().codeGen(compiler, nextRegisterNumber);
         }

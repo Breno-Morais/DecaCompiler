@@ -62,10 +62,10 @@ public class IfThenElse extends AbstractInst {
     protected void codeGenInst(DecacCompiler compiler) {
         compiler.addComment("Beginning of IF ELSE");
         // Create code for the condition
-        Label ifLabel = new Label("E_Sinon." + countIfLabels);
-        Label elseLabel = new Label("E_Sinon." + countIfLabels + 1);
+        Label ifLabel = new Label("E_Sioui." + countIfLabels);
+        Label elseLabel = new Label("E_Sinon." + countIfLabels);
         Label finLabel = new Label("E_Fin." + countIfLabels);
-        countIfLabels += 2;
+        countIfLabels++;
 
         if(condition instanceof BooleanLiteral) {
             BooleanLiteral conditionValue = (BooleanLiteral) condition;
