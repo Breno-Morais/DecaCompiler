@@ -163,8 +163,6 @@ public abstract class AbstractExpr extends AbstractInst {
             } else {
                 compiler.addInstruction(new WFLOAT());
             }
-            //this.printExpr(compiler);
-            //throw new UnsupportedOperationException("not yet implemented");
         }
     }
 
