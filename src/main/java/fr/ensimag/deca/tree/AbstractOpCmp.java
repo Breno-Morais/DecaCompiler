@@ -35,8 +35,25 @@ public abstract class AbstractOpCmp extends AbstractBranchable {
             throw new ContextualError("one operator is not an Arith type in AbstractOpCmp", getLocation());
         }
         this.setType(compiler.environmentType.BOOLEAN);
+        if(leftType.sameType((rightType))){
+            LOG.debug("verifyExpr AbstractOpCmp : end");
+            return compiler.environmentType.BOOLEAN;
+        }
+        if(leftType.isFloat() || rightType.isFloat()){
+            if (leftType.isFloat()){
+                ConvFloat conv_float = new ConvFloat(getRightOperand());
+                conv_float.verifyExpr(compiler, localEnv, currentClass);
+                setRightOperand(conv_float);
+            } else {
+                ConvFloat conv_float = new ConvFloat(getLeftOperand());
+                conv_float.verifyExpr(compiler, localEnv, currentClass);
+                setLeftOperand(conv_float);
+            }
+            LOG.debug("verifyExpr AbstractOpCmp : end");
+            return compiler.environmentType.BOOLEAN;
+        }
         LOG.debug("verifyExpr AbstractOpCmp : end");
-        return compiler.environmentType.BOOLEAN;
+        throw new ContextualError("Type error in AbstractOpCmp", getLocation());
     }
 
     @Override

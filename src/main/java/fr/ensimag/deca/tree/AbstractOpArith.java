@@ -50,9 +50,9 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
         LOG.debug("verifyExpr AbstractOpArith : start");
         Type leftType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         Type rightType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
-        LOG.debug("verifyExpr AbstractOpArith : end");
         Type newType = new_type(compiler, leftType, rightType, localEnv, currentClass);
         setType(newType);
+        LOG.debug("verifyExpr AbstractOpArith : end");
         return newType;
     }
 }
