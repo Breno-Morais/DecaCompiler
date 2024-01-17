@@ -91,6 +91,7 @@ public class Main extends AbstractMain {
                     ((Initialization) initVar).getExpression().codeGen(compiler, 2);
 
                     compiler.addInstruction(new STORE(Register.R2, addr)); //TODO: Need to assign what which register do
+
                 }/* else if(declVar.getInitialization() instanceof NoInitialization) { // To use in the initialization of fields
                     compiler.addInstruction(new LOAD(declVar.getVarName().getType().getDefaultValue(), Register.R0));
                     compiler.addInstruction(new STORE(Register.R0, addr));

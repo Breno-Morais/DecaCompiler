@@ -102,6 +102,13 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         }
 
         compiler.addInstruction(getImaInstruction(value, firstReg));
+        if (getType().isBoolean()){
+            compiler.addComment("boolean dans AbstractBin");
+            this.codeGenBool(compiler, registerNumber);
+        }
+    }
+    protected void codeGenBool(DecacCompiler compiler, int registerNumber) {
+
     }
 
     @Override
