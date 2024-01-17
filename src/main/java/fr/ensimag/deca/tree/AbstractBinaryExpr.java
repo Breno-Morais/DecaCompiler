@@ -49,10 +49,6 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         this.rightOperand = rightOperand;
     }
 
-
-
-
-
     @Override
     public void decompile(IndentPrintStream s) {
         s.print("(");
@@ -78,10 +74,11 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
 
     @Override
     protected void codeGen(DecacCompiler compiler, int registerNumber) {
+        compiler.addComment(getOperatorName() + " Operation");
         int nextRegisterNumber = registerNumber + 1;
 
         GPRegister firstReg = Register.getR(registerNumber);
-        GPRegister secondReg = Register.getR(nextRegisterNumber); // TODO: Register Spilling
+        GPRegister secondReg = Register.getR(nextRegisterNumber);
 
         if(getLeftOperand() instanceof AbstractLiteral) {
             compiler.addInstruction(new LOAD(((AbstractLiteral) getLeftOperand()).getDValue(), firstReg));
@@ -101,14 +98,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
             getRightOperand().codeGen(compiler, nextRegisterNumber);
         }
 
-        compiler.addInstruction(getImaInstruction(value, firstReg));
-        if (getType().isBoolean()){
-            compiler.addComment("boolean dans AbstractBin");
-            this.codeGenBool(compiler, registerNumber);
-        }
-    }
-    protected void codeGenBool(DecacCompiler compiler, int registerNumber) {
-
+        addImaInstruction(compiler, value, firstReg);
     }
 
     @Override
@@ -116,5 +106,10 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         codeGen(compiler, 2);
     }
 
-    public abstract Instruction getImaInstruction(DVal value, GPRegister register);
+    public abstract void addImaInstruction(DecacCompiler compiler, DVal value, GPRegister register);
+
+    private GPRegister getRWithSpill(DecacCompiler compiler, int i) {
+        GPRegister register = Register.getR(i);
+        return register;
+    }
 }

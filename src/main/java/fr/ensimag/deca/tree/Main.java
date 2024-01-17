@@ -10,6 +10,7 @@ import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.ADDSP;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.commons.lang.Validate;
@@ -59,7 +60,6 @@ public class Main extends AbstractMain {
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
         compiler.addComment("Variables declarations:");
-
         int currentVar = 2; // TODO: Starts after the method table
         for(AbstractDeclVar declVarAbs : declVariables.getList()) {
             DeclVar declVar;
@@ -90,8 +90,7 @@ public class Main extends AbstractMain {
                 if(initVar instanceof Initialization) {
                     ((Initialization) initVar).getExpression().codeGen(compiler, 2);
 
-                    compiler.addInstruction(new STORE(Register.R2, addr)); //TODO: Need to assign what which register do
-
+                    compiler.addInstruction(new STORE(Register.R2, addr));
                 }/* else if(declVar.getInitialization() instanceof NoInitialization) { // To use in the initialization of fields
                     compiler.addInstruction(new LOAD(declVar.getVarName().getType().getDefaultValue(), Register.R0));
                     compiler.addInstruction(new STORE(Register.R0, addr));
@@ -125,5 +124,10 @@ public class Main extends AbstractMain {
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         declVariables.prettyPrint(s, prefix, false);
         insts.prettyPrint(s, prefix, true);
+    }
+
+    @Override
+    public int getNumGlobalVariables() {
+        return declVariables.size();
     }
 }

@@ -41,4 +41,8 @@ public class DeclMethod extends AbstractDeclMethod {
     protected void iterChildren(TreeFunction f) {
         parameters.iter(f);
     }
+
+    public AbstractIdentifier getName() {
+        return name;
+    }
 }

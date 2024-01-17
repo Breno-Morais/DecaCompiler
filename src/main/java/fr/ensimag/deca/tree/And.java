@@ -29,7 +29,7 @@ public class And extends AbstractOpBool {
 
         // TODO: Refactor all of this mess
         if(getExpectedBool()) {
-            Label skipUnevaluated = new Label("E_Fin." + andCount);
+            Label skipUnevaluated = new Label("And_Fin." + andCount);
             andCount++;
 
             // Check first operand
@@ -193,8 +193,28 @@ public class And extends AbstractOpBool {
     }
 
     @Override
-    public Instruction getImaInstruction(DVal value, GPRegister register) {
-        throw new UnsupportedOperationException("Not applicable");
+    public void addImaInstruction(DecacCompiler compiler, DVal value, GPRegister register) {
+        // Create the label to the code that sets the boolean result
+        Label isTrue = new Label("AND_bool." + andCount);
+        Label isFalse = new Label("AND_not_bool." + andCount);
+        Label end = new Label("AND_bool_fin." + andCount);
+        this.setExpectedBool(false);
+        this.setE(isFalse);
+        andCount++;
+
+        // Generate the code to resolve the operands (They'll branch to isFalse if they are false)
+        codeGenBranch(compiler);
+
+        compiler.addInstruction(new BRA(isTrue));
+
+        compiler.addLabel(isTrue);
+        compiler.addInstruction(new LOAD(new ImmediateInteger(1), register));
+        compiler.addInstruction(new BRA(end));
+
+        compiler.addLabel(isFalse);
+        compiler.addInstruction(new LOAD(new ImmediateInteger(0), register));
+
+        compiler.addLabel(end);
     }
 }
 

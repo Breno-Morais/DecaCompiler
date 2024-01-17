@@ -1,10 +1,15 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.MethodName;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import java.io.PrintStream;
+import java.util.HashMap;
+import java.util.List;
+
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -44,8 +49,51 @@ public class Program extends AbstractProgram {
 
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
-        // A FAIRE: compléter ce squelette très rudimentaire de code
+        /*
+        // TODO: TSTO with the maximum size of the pile
+        // TODO: Error handler
+        compiler.addInstruction(new ADDSP(main.getNumGlobalVariables())); // TODO: Add size of method table
+
         // Create the Method Table
+        compiler.addComment("--------------------------------------------------");
+        compiler.addComment("      Construction des tables des methodes        ");
+        compiler.addComment("--------------------------------------------------");
+        compiler.addComment("Construction de la table des methodes de Object");
+        compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
+        compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(1, Register.GB)));
+        compiler.addInstruction(new LOAD(new LabelOperand(new Label("code.Object.equals")), Register.R0));
+        compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(2, Register.GB)));
+
+        int currentGB = 3;
+        HashMap<String, Integer> methodTableOffsetMap = new HashMap<String, Integer>();
+        methodTableOffsetMap.put("Object", 1);
+
+        for(AbstractDeclClass declClass : getClasses().getList()) {
+            compiler.addComment("Construction de la table des methodes de " + declClass.getName());
+            // Inherent the classes of the superclass
+            getClasses().updateMethodNames(declClass); // TODO: Check the order
+            // Update the address of the method table of the class so the children can access it
+            methodTableOffsetMap.put(declClass.getName().toString(), currentGB);
+
+            // Add the method table of the parent
+            String superName = declClass.getSuperclass().toString();
+            RegisterOffset superOffset = new RegisterOffset(methodTableOffsetMap.get(superName), Register.GB);
+            compiler.addInstruction(new LEA(superOffset, Register.R0));
+            RegisterOffset currentOffset = new RegisterOffset(currentGB, Register.GB);
+            compiler.addInstruction(new STORE(Register.R0, currentOffset));
+
+            // Add each method
+            for(MethodName methodName : declClass.getMethodNames()) {
+                currentGB++;
+
+                LabelOperand codeLabel = new LabelOperand(methodName.toCodeLabel());
+                compiler.addInstruction(new LOAD(codeLabel, Register.R0));
+                compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(currentGB, Register.GB)));
+            }
+
+            currentGB++;
+        }
+         */
 
         // Generate the code of the fields and methods of the classes
 
@@ -53,6 +101,8 @@ public class Program extends AbstractProgram {
         compiler.addComment("Main program");
         main.codeGenMain(compiler);
         compiler.addInstruction(new HALT());
+
+        // Add The methods
 
     }
 

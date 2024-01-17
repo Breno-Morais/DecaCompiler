@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 
+import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Instruction;
@@ -22,8 +23,8 @@ public class Divide extends AbstractOpArith {
     }
 
     @Override
-    public Instruction getImaInstruction(DVal value, GPRegister register) {
+    public void addImaInstruction(DecacCompiler compiler, DVal value, GPRegister register) {
         // TODO: Check if it's necessary no make the conversion here
-        return new QUO(value, register);
+        compiler.addInstruction(new QUO(value, register));
     }
 }

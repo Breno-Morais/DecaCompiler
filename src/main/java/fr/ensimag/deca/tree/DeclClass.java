@@ -1,10 +1,15 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.MethodName;
 import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.Label;
+
 import java.io.PrintStream;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Declaration of a class (<code>class name extends superClass {members}<code>).
@@ -17,6 +22,7 @@ public class DeclClass extends AbstractDeclClass {
     private AbstractIdentifier superclass;
     private ListDeclField listField;
     private ListDeclMethod listMethod;
+    private List<MethodName> methodNames;
 
     public DeclClass(AbstractIdentifier name, AbstractIdentifier superclass, ListDeclField listField,
                      ListDeclMethod listMethod) {
@@ -24,6 +30,13 @@ public class DeclClass extends AbstractDeclClass {
         this.superclass = superclass;
         this.listField = listField;
         this.listMethod = listMethod;
+
+        this.methodNames = new LinkedList<MethodName>();
+        for(AbstractDeclMethod absDeclMethod : listMethod.getList()) {
+            DeclMethod declMethod = (DeclMethod) absDeclMethod;
+
+            methodNames.add(new MethodName(name.toString(), declMethod.getName().toString()));
+        }
     }
 
     @Override
@@ -68,4 +81,28 @@ public class DeclClass extends AbstractDeclClass {
         listMethod.iter(f);
     }
 
+    @Override
+    public List<Label> getMethodLabels() {
+        List<Label> list = new LinkedList<Label>();
+        for(MethodName methodName : methodNames) {
+            list.add(methodName.toLabel());
+        }
+
+        return list;
+    }
+
+    @Override
+    public List<MethodName> getMethodNames() {
+        return methodNames;
+    }
+
+    @Override
+    public AbstractIdentifier getName() {
+        return name;
+    }
+
+    @Override
+    public AbstractIdentifier getSuperclass() {
+        return superclass;
+    }
 }

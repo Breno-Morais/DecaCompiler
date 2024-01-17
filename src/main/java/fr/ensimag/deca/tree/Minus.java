@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 
+import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Instruction;
@@ -22,7 +23,7 @@ public class Minus extends AbstractOpArith {
     }
 
     @Override
-    public Instruction getImaInstruction(DVal value, GPRegister register) {
-        return new SUB(value, register);
+    public void addImaInstruction(DecacCompiler compiler, DVal value, GPRegister register) {
+        compiler.addInstruction(new SUB(value, register));
     }
 }
