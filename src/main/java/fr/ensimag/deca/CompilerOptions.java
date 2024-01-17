@@ -38,17 +38,23 @@ public class CompilerOptions {
         return Collections.unmodifiableList(sourceFiles);
     }
 
+    public int getRegisterX() {
+        return registerX;
+    }
+
     private int debug = 0;
     private boolean parallel = false;
     private boolean printBanner = false;
     private boolean parse = false;
     private boolean verification = false;
     private List<File> sourceFiles = new ArrayList<File>();
+    private int registerX;
 
     
     public void parseArgs(String[] args) throws CLIException {
         // A FAIRE : parcourir args pour positionner les options correctement.
         parcoursArgs(args);
+
         Logger logger = Logger.getRootLogger();
         // map command-line debug option to log4j's level.
         switch (getDebug()) {
@@ -74,7 +80,7 @@ public class CompilerOptions {
 
     }
 
-    private void parcoursArgs(String[] args){
+    private void parcoursArgs(String[] args) throws CLIException {
         //Application des options
         int j = 0;
         for (int i = 0; i < args.length; i++){
@@ -95,8 +101,12 @@ public class CompilerOptions {
                 case "-n":
                     // TODO
                     break;
-                case "-r X":
-                    // TODO ET ATTENTION AU X
+                case "-r":
+                    int x = Integer.parseInt(args[i+1]);
+                    if(x < 4 || x > 16)
+                        throw new CLIException("The number of register can't be less than 4 or greater than 16");
+
+                    registerX = x;
                     break;
                 case "-d":
                     debug++;

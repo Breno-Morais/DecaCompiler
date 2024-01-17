@@ -1,6 +1,8 @@
 package fr.ensimag.deca;
 
 import java.io.File;
+
+import fr.ensimag.ima.pseudocode.Register;
 import org.apache.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +51,7 @@ public class DecacMain {
         final CompilerOptions options = new CompilerOptions();
         try {
             options.parseArgs(args);
+            Register.setMaxRegister(options.getRegisterX());
         } catch (CLIException e) {
             System.err.println("Error during option parsing:\n"
                     + e.getMessage());
