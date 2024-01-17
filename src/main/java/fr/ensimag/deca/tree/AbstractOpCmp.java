@@ -62,6 +62,8 @@ public abstract class AbstractOpCmp extends AbstractBranchable {
         compareCondition(compiler, getE());
     }
 
+    //on rajoute codeGen qui mets le variable Boolean dans un registre
+
     @Override
     public Instruction getImaInstruction(DVal value, GPRegister register) {
         return new CMP(value, register);
