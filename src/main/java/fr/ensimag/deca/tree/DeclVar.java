@@ -31,8 +31,6 @@ public class DeclVar extends AbstractDeclVar {
         LOG.debug("Verify DeclVar : start");
         EnvironmentType env_Type = compiler.environmentType;
         TypeDefinition type_Def = env_Type.defOfType(this.type.getName());
-//        LOG.debug(type_Def);
-//        type.setDefinition(type_Def);
         Type decl_type = type.verifyType(compiler);
         if(decl_type == null || decl_type.isVoid()){   //ici, on vérifie si le type que on utilise existe et qu'il n'est pas void
             throw new ContextualError("Error of type in DeclVar", getLocation());
