@@ -62,13 +62,16 @@ public class DeclClass extends AbstractDeclClass {
         //on ajoute que le nom des classes dans l'environnement
         LOG.debug("name = " + name.prettyPrint());
         LOG.debug("superclass.name = " + superclass.getName());
-
+        if (superclass.getName().toString() == "Object"){
+            superclass.setDefinition(compiler.environmentType.OBJECT.getDefinition());
+        } else {
+            superclass.setDefinition(compiler.environmentType.get(superclass.getName()));
+        }
         EnvironmentType env_types = compiler.environmentType;
         TypeDefinition type_def = compiler.environmentType.get(superclass.getName());
         if(!superclass.getName().toString().equals("Object") && type_def==null){  //!superclass.getClassDefinition().isClass()
             throw new ContextualError("superclass is not a Class in DeclClass", getLocation());
         }
-
         ClassType classType = new ClassType(name.getName(), getLocation(), superclass.getClassDefinition());
         ClassDefinition classDefinition = new ClassDefinition(classType, getLocation(), superclass.getClassDefinition());
 //        EnvironmentExp env_local =  classDefinition.getMembers();
