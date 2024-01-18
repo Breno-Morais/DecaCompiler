@@ -72,7 +72,6 @@ public abstract class AbstractOpCmp extends AbstractBranchable {
         compareCondition(compiler, getE());
     }
 
-    //on rajoute codeGen qui mets le variable Boolean dans un registre
     private static int countDeclLabels = 0;
 
 

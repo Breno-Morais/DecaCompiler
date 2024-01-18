@@ -41,8 +41,8 @@ public class Program extends AbstractProgram {
     public void verifyProgram(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verifyProgram Program: start");
         getClasses().verifyListClass(compiler);
-//        getClasses().verifyListClassMembers(compiler);
-//        getClasses().verifyListClassBody(compiler);
+        getClasses().verifyListClassMembers(compiler);
+        getClasses().verifyListClassBody(compiler);
         getMain().verifyMain(compiler);
         LOG.debug("verifyProgram Program: end");
     }

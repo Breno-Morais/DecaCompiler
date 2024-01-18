@@ -1,5 +1,0 @@
-//Test d'affichage des caractères spéciaux
-
-{
-    println("dés ère à forêt ! ? : ; . - _ [ ] ( ) = + / * ");
-}

@@ -1,8 +1,7 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.codegen.MethodName;
-import fr.ensimag.deca.context.ClassType;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import org.apache.log4j.Logger;
@@ -59,8 +58,8 @@ public class DeclClass extends AbstractDeclClass {
         //verifier le nom des classes et la hiérarchie de classes
         LOG.debug("verifyClass DeclClass: start");
         //on ajoute que le nom des classes dans l'environnement
-        LOG.debug("     name = " + name.prettyPrint());
-        LOG.debug("     superclass.name = " + superclass.getName());
+        LOG.debug("name = " + name.prettyPrint());
+        LOG.debug("superclass.name = " + superclass.getName());
 //        LOG.debug("env_exp = " + env_exp.get(superclass.getName()));
 //        LOG.debug("superclass.getClassDefinition() = " + superclass.getClassDefinition());
 //        LOG.debug("TypeDefinition = " + compiler.environmentType.get(superclass.getName()));
@@ -83,7 +82,7 @@ public class DeclClass extends AbstractDeclClass {
         }
         LOG.debug("verifyClass DeclClass: end");
     }
-    
+
     @Override
     protected void verifyClassMembers(DecacCompiler compiler)
             throws ContextualError {
@@ -93,7 +92,7 @@ public class DeclClass extends AbstractDeclClass {
         LOG.debug("verifyClassMembers DeclClass: end");
         throw new UnsupportedOperationException("not yet implemented");
     }
-    
+
     @Override
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verifyClassBody DeclClass: start");
@@ -101,6 +100,7 @@ public class DeclClass extends AbstractDeclClass {
         LOG.debug("verifyClassBody DeclClass: end");
         throw new UnsupportedOperationException("not yet implemented");
     }
+
 
 
     @Override

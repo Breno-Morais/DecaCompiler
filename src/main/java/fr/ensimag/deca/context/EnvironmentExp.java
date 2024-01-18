@@ -72,7 +72,6 @@ public class EnvironmentExp {
      * @throws DoubleDefException
      *             if the symbol is already defined at the "current" dictionary
      *
-     * .
      */
     public void declare(Symbol name, ExpDefinition def) throws DoubleDefException {
         if (this.symbolDef.containsKey(name)){
@@ -81,4 +80,5 @@ public class EnvironmentExp {
             this.symbolDef.put(name, def);
         }
     }
+
 }

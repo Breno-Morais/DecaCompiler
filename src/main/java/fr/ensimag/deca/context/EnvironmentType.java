@@ -31,7 +31,6 @@ public class EnvironmentType {
         VOID = new VoidType(voidSymb);
         envTypes.put(voidSymb, new TypeDefinition(VOID, Location.BUILTIN));
 
-
         Symbol booleanSymb = compiler.createSymbol("boolean");
         BOOLEAN = new BooleanType(booleanSymb);
         envTypes.put(booleanSymb, new TypeDefinition(BOOLEAN, Location.BUILTIN));
@@ -40,9 +39,9 @@ public class EnvironmentType {
         STRING = new StringType(stringSymb);
         // not added to envTypes, it's not visible for the user.
 
-        Symbol classSymb = compiler.createSymbol("object");
-        OBJECT = new ClassType(classSymb);
-        envTypes.put(classSymb, new TypeDefinition(OBJECT, Location.BUILTIN));
+        Symbol objectSymb = compiler.createSymbol("object");
+        OBJECT = new ClassType(booleanSymb);
+        envTypes.put(objectSymb, new TypeDefinition(OBJECT, Location.BUILTIN));
     }
 
     private final Map<Symbol, TypeDefinition> envTypes;

@@ -1,6 +1,5 @@
 //Cast d'un Int pour un Float
 
 {
-    float f = (int)(1.6);   //au final ce n'est pas sensé marcher
-    int b = fef;  //a enlever après c'est juste pour mettre une erreur
+    float f = (int)(1.6);
 }
