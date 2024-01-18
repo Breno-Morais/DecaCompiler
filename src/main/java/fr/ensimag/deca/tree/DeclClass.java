@@ -1,9 +1,8 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.codegen.MethodName;
-import fr.ensimag.deca.context.ClassType;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import org.apache.log4j.Logger;
 import fr.ensimag.ima.pseudocode.Label;
@@ -52,22 +51,56 @@ public class DeclClass extends AbstractDeclClass {
         listMethod.decompile(s);
     }
 
+    private static EnvironmentExp env_exp = new EnvironmentExp(null);
+
     @Override
     protected void verifyClass(DecacCompiler compiler) throws ContextualError {
-        LOG.debug("superclass name : " + superclass.getName().toString());
-        throw new UnsupportedOperationException("not yet implemented");
+        //verifier le nom des classes et la hiérarchie de classes
+        LOG.debug("verifyClass DeclClass: start");
+        //on ajoute que le nom des classes dans l'environnement
+        LOG.debug("name = " + name.prettyPrint());
+        LOG.debug("superclass.name = " + superclass.getName());
+//        LOG.debug("env_exp = " + env_exp.get(superclass.getName()));
+//        LOG.debug("superclass.getClassDefinition() = " + superclass.getClassDefinition());
+//        LOG.debug("TypeDefinition = " + compiler.environmentType.get(superclass.getName()));
+
+        TypeDefinition type_def = compiler.environmentType.get(superclass.getName());
+        if(!superclass.getName().toString().equals("Object") && type_def==null){  //!superclass.getClassDefinition().isClass()
+            throw new ContextualError("superclass is not a Class in DeclClass", getLocation());
+        }
+
+        ClassType classType = new ClassType(name.getName(), getLocation(), superclass.getClassDefinition());
+        ClassDefinition classDefinition = new ClassDefinition(classType, getLocation(), superclass.getClassDefinition());
+//        EnvironmentExp env_local =  classDefinition.getMembers();
+
+        try{
+            name.setDefinition(classDefinition);
+            compiler.environmentType.declareClass(name.getName(), classType.getDefinition());
+            //env_exp.declare(name.getName(), name.getExpDefinition());
+        }catch (EnvironmentType.DoubleDefException e){
+            throw new ContextualError("Error, class already declared in DeclClass", this.getLocation());
+        }
+        LOG.debug("verifyClass DeclClass: end");
     }
 
     @Override
     protected void verifyClassMembers(DecacCompiler compiler)
             throws ContextualError {
+        LOG.debug("verifyClassMembers DeclClass: start");
+
+
+        LOG.debug("verifyClassMembers DeclClass: end");
         throw new UnsupportedOperationException("not yet implemented");
     }
-    
+
     @Override
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
+        LOG.debug("verifyClassBody DeclClass: start");
+
+        LOG.debug("verifyClassBody DeclClass: end");
         throw new UnsupportedOperationException("not yet implemented");
     }
+
 
 
     @Override

@@ -31,7 +31,6 @@ public class EnvironmentType {
         VOID = new VoidType(voidSymb);
         envTypes.put(voidSymb, new TypeDefinition(VOID, Location.BUILTIN));
 
-
         Symbol booleanSymb = compiler.createSymbol("boolean");
         BOOLEAN = new BooleanType(booleanSymb);
         envTypes.put(booleanSymb, new TypeDefinition(BOOLEAN, Location.BUILTIN));
@@ -39,7 +38,10 @@ public class EnvironmentType {
         Symbol stringSymb = compiler.createSymbol("string");
         STRING = new StringType(stringSymb);
         // not added to envTypes, it's not visible for the user.
-        
+
+        Symbol objectSymb = compiler.createSymbol("object");
+        OBJECT = new ClassType(booleanSymb);
+        envTypes.put(objectSymb, new TypeDefinition(OBJECT, Location.BUILTIN));
     }
 
     private final Map<Symbol, TypeDefinition> envTypes;
@@ -48,9 +50,37 @@ public class EnvironmentType {
         return envTypes.get(s);
     }
 
+    public static class DoubleDefException extends Exception {
+        private static final long serialVersionUID = -2733379901827316441L;
+    }
+
+    public void declareClass(Symbol symbol, ClassDefinition classDefinition) throws DoubleDefException {
+        if (this.envTypes.containsKey(symbol)){
+            throw new DoubleDefException();
+        } else {
+            envTypes.put(symbol, classDefinition);
+        }
+
+    }
+
+    public TypeDefinition get(Symbol key) {
+        TypeDefinition type_def = this.envTypes.get(key);
+        if (type_def != null){
+            return type_def;
+        }
+//        else {
+//            if (this. != null){
+//                type_def = this.parentEnvironment.getSymbolDef().get(key);
+//            }
+//        }
+        return null;
+    }
+
+
     public final VoidType    VOID;
     public final IntType     INT;
     public final FloatType   FLOAT;
     public final StringType  STRING;
     public final BooleanType BOOLEAN;
+    public final ClassType OBJECT;
 }
