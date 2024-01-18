@@ -4,6 +4,8 @@ import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import org.apache.log4j.Logger;
+
 import java.io.PrintStream;
 
 /**
@@ -13,6 +15,7 @@ import java.io.PrintStream;
  * @date 01/01/2024
  */
 public class DeclClass extends AbstractDeclClass {
+    private static final Logger LOG = Logger.getLogger(ListDeclClass.class);
     private AbstractIdentifier name;
     private AbstractIdentifier superclass;
     private ListDeclField listField;
@@ -39,6 +42,7 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void verifyClass(DecacCompiler compiler) throws ContextualError {
+        LOG.debug("superclass name : " + superclass.getName().toString());
         throw new UnsupportedOperationException("not yet implemented");
     }
 

@@ -11,6 +11,7 @@
     //inférieur strict
     b = 1.0 < 2;
     b = 3.0 < 2;
+    b = 2 < 2.0;
     //egalité
     b = 1.0 == 2;
     b = 1.0 == 1;
@@ -24,4 +25,10 @@
     //supérieur strict
     b = 3.0 > 2;
     b = 1.0 > 2;
+    b = 2 > 2.0;
+    if (b) {
+        println("true");
+    } else {
+        println("false");
+    }
 }

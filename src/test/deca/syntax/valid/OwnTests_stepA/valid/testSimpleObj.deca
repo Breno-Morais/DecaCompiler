@@ -10,6 +10,9 @@
 class A {
 	int x;
 }
+class B extends A {
+	int y;
+}
 
 {
     A a = new A();
