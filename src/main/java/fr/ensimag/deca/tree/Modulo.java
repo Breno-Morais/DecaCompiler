@@ -45,7 +45,7 @@ public class Modulo extends AbstractOpArith {
     }
 
     @Override
-    public Instruction getImaInstruction(DVal value, GPRegister register) {
-        return new REM(value, register);
+    public void addImaInstruction(DecacCompiler compiler, DVal value, GPRegister register) {
+        compiler.addInstruction(new REM(value, register));
     }
 }

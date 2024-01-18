@@ -18,6 +18,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Arrays;
+
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.log4j.Logger;
@@ -157,6 +159,7 @@ public class DecacCompiler {
             return true;
         } catch (StackOverflowError e) {
             LOG.debug("stack overflow", e);
+            err.println(Arrays.toString(e.getStackTrace()));
             err.println("Stack overflow while compiling file " + sourceFile + ".");
             return true;
         } catch (Exception e) {

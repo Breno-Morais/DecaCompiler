@@ -56,6 +56,16 @@ public abstract class AbstractOpCmp extends AbstractBranchable {
     }
 
     @Override
+    protected void codeGen(DecacCompiler compiler, int registerNumber) {
+        super.codeGen(compiler, registerNumber);
+
+        if (getE() == null){
+            compiler.addComment("boolean dans AbstractBin");
+            this.codeGenBool(compiler, registerNumber);
+        }
+    }
+
+    @Override
     public void codeGenBranch(DecacCompiler compiler) {
         compiler.addComment("on passe dans codeGenBranch");
         codeGen(compiler, 0);
@@ -76,12 +86,11 @@ public abstract class AbstractOpCmp extends AbstractBranchable {
         compiler.addLabel(trueLabel);
         compiler.addInstruction(new LOAD(1, Register.getR(registerNumber)));
         compiler.addLabel(fin);
-
     }
 
     @Override
-    public Instruction getImaInstruction(DVal value, GPRegister register) {
-        return new CMP(value, register);
+    public void addImaInstruction(DecacCompiler compiler, DVal value, GPRegister register) {
+        compiler.addInstruction(new CMP(value, register));
     }
 
     // Compare the condition and branch to the label E if true
