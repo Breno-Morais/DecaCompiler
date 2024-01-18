@@ -6,6 +6,8 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
 import org.apache.log4j.Logger;
 
 import java.io.PrintStream;
@@ -13,6 +15,8 @@ import java.io.PrintStream;
 public class Return extends AbstractInst {
     private static final Logger LOG = Logger.getLogger(Identifier.class);
     private AbstractExpr expression;
+
+    private Label endMethod = new Label("PLACEHOLDER"); // TODO: Assign the class and method in STEP B
 
     public Return(AbstractExpr expression) {
         this.expression = expression;
@@ -34,7 +38,9 @@ public class Return extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        expression.codeGen(compiler, 0);
+
+        compiler.addInstruction(new BRA(endMethod));
     }
 
     @Override

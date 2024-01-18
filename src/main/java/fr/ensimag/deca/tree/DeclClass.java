@@ -154,8 +154,7 @@ public class DeclClass extends AbstractDeclClass {
         compiler.addComment("--------------------------------------------------");
 
         addInit(compiler);
-
-
+        addMethods(compiler);
     }
 
     private void addInit(DecacCompiler compiler) {
@@ -166,5 +165,11 @@ public class DeclClass extends AbstractDeclClass {
         listField.codeGenListField(compiler);
 
         compiler.addInstruction(new RTS());
+    }
+
+    private void addMethods(DecacCompiler compiler) {
+        for(AbstractDeclMethod declMethod : listMethod.getList()) {
+            declMethod.codeGenMethod(compiler, getName().toString());
+        }
     }
 }

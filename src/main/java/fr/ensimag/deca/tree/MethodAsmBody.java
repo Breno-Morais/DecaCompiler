@@ -1,8 +1,11 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.GPRegister;
 
 import java.io.PrintStream;
+import java.util.List;
 
 public class MethodAsmBody extends AbstractMethodBody {
     private StringLiteral code;
@@ -27,5 +30,16 @@ public class MethodAsmBody extends AbstractMethodBody {
     @Override
     protected void iterChildren(TreeFunction f) {
 
+    }
+
+    @Override
+    public List<GPRegister> getRegisters() {
+        //TODO
+        return null;
+    }
+
+    @Override
+    public void codeGenMethod(DecacCompiler compiler) {
+        //TODO
     }
 }
