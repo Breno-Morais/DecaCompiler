@@ -33,7 +33,7 @@ for fichier_source in "$repertoire_test"/*.deca; do
     rm -f "$fichier_asm"
 
     # Extraire la valeur attendue à partir des commentaires en appelant le script python
-    attendu=$(python3 /home/loan/ensimag/GL/gl25/testCodeGen.py "$fichier_source") || exit 1
+    attendu=$(python3 testCodeGen.py "$fichier_source") || exit 1
 
 
     if [ -z "$attendu" ]; then
