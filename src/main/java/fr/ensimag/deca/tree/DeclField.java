@@ -33,13 +33,12 @@ public class DeclField extends AbstractDeclField {
         if(type.verifyType(compiler).isVoid()){
             throw new ContextualError("type is Void in DeclField", getLocation());
         }
-        if(classe.getMembers() == null){ //Vérifier que env_exp_super(name) est défini  //TODO pas sur que ça soit comme ça ??
+        if(classe.getSuperClass().getMembers() == null){ //Vérifier que env_exp_super(name) est défini  //TODO pas sur que ça soit comme ça ??
             throw new ContextualError("env_exp_super(name) not defined in DeclField", getLocation());
         }
         Visibility visib = getStatusVisibility();
         //on veut vérifier que
         FieldDefinition fieldDefinition = new FieldDefinition(type.verifyType(compiler), getLocation(), visib, classe, index);
-
         try{
             classe.getMembers().declare(field.getName(), fieldDefinition);
         }catch (EnvironmentExp.DoubleDefException e){
