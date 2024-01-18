@@ -1,10 +1,15 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.ClassDefinition;
+import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import org.apache.log4j.Logger;
 
 import java.io.PrintStream;
 
 public class DeclMethod extends AbstractDeclMethod {
+    private static final Logger LOG = Logger.getLogger(ListDeclClass.class);
     private AbstractIdentifier type;
     private AbstractIdentifier name;
     private ListDeclParam parameters;
@@ -16,6 +21,26 @@ public class DeclMethod extends AbstractDeclMethod {
         this.name = name;
         this.parameters = parameters;
         this.methodBody = methodBody;
+    }
+
+    /**
+     * Pass 2 of [SyntaxeContextuelle]
+     */
+    public void verifyClassMembers(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition classe) throws ContextualError {   //TODO manque des paramètres : env_types, super, class
+        LOG.debug("verifyClassMembers DeclMethod: start");
+
+
+        LOG.debug("verifyClassMembers DeclMethod: end");
+    }
+
+    /**
+     * Pass 3 of [SyntaxeContextuelle]
+     */
+    public void verifyClassBody(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition classe) throws ContextualError {    //TODO manque des paramètres : env_types, super, class
+        LOG.debug("verifyClassBody DeclMethod: start");
+
+        LOG.debug("verifyClassBody DeclMethod: end");
+        throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override

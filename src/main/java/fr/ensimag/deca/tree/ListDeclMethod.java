@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import org.apache.log4j.Logger;
@@ -17,26 +18,22 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod>{
     }
 
     /**
-     * Pass 1 of [SyntaxeContextuelle]
-     */
-    void verifyListClass(DecacCompiler compiler) throws ContextualError {
-        LOG.debug("verifyListClass listDeclMethod: start");
-        LOG.debug("verifyListClass listDeclMethod: end");
-        throw new UnsupportedOperationException("not yet implemented");
-
-    }
-
-    /**
      * Pass 2 of [SyntaxeContextuelle]
      */
-    public void verifyListClassMembers(DecacCompiler compiler) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+    public void verifyListClassMembers(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition classe) throws ContextualError {
+        LOG.debug("verifyListClassMembers ListDeclMethod: start");
+        for (AbstractDeclMethod c: getList())
+            c.verifyClassMembers(compiler, superClass, classe);
+        LOG.debug("verifyListClassMembers ListDeclMethod: end");
     }
 
     /**
      * Pass 3 of [SyntaxeContextuelle]
      */
-    public void verifyListClassBody(DecacCompiler compiler) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+    public void verifyListClassBody(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition classe) throws ContextualError {
+        LOG.debug("verifyListClassBody ListDeclMethod: start");
+        for (AbstractDeclMethod c: getList())
+            c.verifyClassBody(compiler, superClass, classe);
+        LOG.debug("verifyListClassBody ListDeclMethod: end");
     }
 }

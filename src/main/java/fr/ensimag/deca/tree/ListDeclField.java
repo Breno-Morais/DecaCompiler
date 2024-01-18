@@ -1,7 +1,9 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import org.apache.log4j.Logger;
 
@@ -17,25 +19,25 @@ public class ListDeclField extends TreeList<AbstractDeclField>{
     }
 
     /**
-     * Pass 1 of [SyntaxeContextuelle]
-     */
-    void verifyListClass(DecacCompiler compiler) throws ContextualError {
-        LOG.debug("verifyListClass ListDeclField: start");
-        LOG.debug("verifyListClass ListDeclField: end");
-        throw new UnsupportedOperationException("not yet implemented");
-    }
-
-    /**
      * Pass 2 of [SyntaxeContextuelle]
      */
-    public void verifyListClassMembers(DecacCompiler compiler) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+    public void verifyListClassMembers(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition classe) throws ContextualError {
+        LOG.debug("verifyListClassMembers ListDeclField: start");
+        int index = 0;
+        for (AbstractDeclField c : getList()){   //TODO il y le calcul de (env_expr = env_expr + env_exp) à faire
+            c.verifyClassMembers(compiler, superClass, classe, index);
+            index++;
+        }
+        LOG.debug("verifyListClassMembers ListDeclField: end");
     }
 
     /**
      * Pass 3 of [SyntaxeContextuelle]
      */
-    public void verifyListClassBody(DecacCompiler compiler) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+    public void verifyListClassBody(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition classe) throws ContextualError {
+        LOG.debug("verifyListClassBody ListDeclField: start");
+        for (AbstractDeclField c: getList())
+            c.verifyClassBody(compiler, superClass, classe);
+        LOG.debug("verifyListClassBody ListDeclField: end");
     }
 }

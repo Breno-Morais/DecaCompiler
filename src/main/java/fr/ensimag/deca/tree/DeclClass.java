@@ -60,10 +60,8 @@ public class DeclClass extends AbstractDeclClass {
         //on ajoute que le nom des classes dans l'environnement
         LOG.debug("name = " + name.prettyPrint());
         LOG.debug("superclass.name = " + superclass.getName());
-//        LOG.debug("env_exp = " + env_exp.get(superclass.getName()));
-//        LOG.debug("superclass.getClassDefinition() = " + superclass.getClassDefinition());
-//        LOG.debug("TypeDefinition = " + compiler.environmentType.get(superclass.getName()));
 
+        EnvironmentType env_types = compiler.environmentType;
         TypeDefinition type_def = compiler.environmentType.get(superclass.getName());
         if(!superclass.getName().toString().equals("Object") && type_def==null){  //!superclass.getClassDefinition().isClass()
             throw new ContextualError("superclass is not a Class in DeclClass", getLocation());
@@ -75,8 +73,7 @@ public class DeclClass extends AbstractDeclClass {
 
         try{
             name.setDefinition(classDefinition);
-            compiler.environmentType.declareClass(name.getName(), classType.getDefinition());
-            //env_exp.declare(name.getName(), name.getExpDefinition());
+            env_types.declareClass(name.getName(), classType.getDefinition());
         }catch (EnvironmentType.DoubleDefException e){
             throw new ContextualError("Error, class already declared in DeclClass", this.getLocation());
         }
@@ -87,15 +84,20 @@ public class DeclClass extends AbstractDeclClass {
     protected void verifyClassMembers(DecacCompiler compiler)
             throws ContextualError {
         LOG.debug("verifyClassMembers DeclClass: start");
+        EnvironmentType env_types = compiler.environmentType;   //on récupère l'environnement des types
 
+        listField.verifyListClassMembers(compiler, superclass.getClassDefinition(), name.getClassDefinition());
+        listMethod.verifyListClassMembers(compiler, superclass.getClassDefinition(), name.getClassDefinition());
 
         LOG.debug("verifyClassMembers DeclClass: end");
-        throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verifyClassBody DeclClass: start");
+
+        listField.verifyListClassBody(compiler, superclass.getClassDefinition(), name.getClassDefinition());
+        listMethod.verifyListClassBody(compiler, superclass.getClassDefinition(), name.getClassDefinition());
 
         LOG.debug("verifyClassBody DeclClass: end");
         throw new UnsupportedOperationException("not yet implemented");

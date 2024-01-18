@@ -19,4 +19,9 @@ public class Public extends AbstractVisibility {
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         // leaf node => nothing to do
     }
+
+    @Override
+    public boolean isPublic() {
+        return true;
+    }
 }
