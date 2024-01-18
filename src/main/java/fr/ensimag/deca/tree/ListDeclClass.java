@@ -18,7 +18,7 @@ import java.util.Objects;
  */
 public class ListDeclClass extends TreeList<AbstractDeclClass> {
     private static final Logger LOG = Logger.getLogger(ListDeclClass.class);
-    private HashMap<AbstractIdentifier, AbstractDeclClass> classHashMap;
+    private HashMap<AbstractIdentifier, AbstractDeclClass> classHashMap = new HashMap<>();
 
     @Override
     public void add(AbstractDeclClass i) {
