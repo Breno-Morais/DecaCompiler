@@ -19,4 +19,13 @@ public abstract class AbstractDeclField extends Tree {
      */
     protected abstract void verifyClassBody(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition classe)         //TODO pas sur des paramètres dedans
             throws ContextualError;
+
+    public abstract AbstractVisibility getVisibility();
+
+    public abstract AbstractIdentifier getType();
+
+    public abstract AbstractIdentifier getField();
+
+    public abstract AbstractInitialization getInitialization();
+
 }

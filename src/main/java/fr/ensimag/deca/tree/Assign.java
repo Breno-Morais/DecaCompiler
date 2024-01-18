@@ -48,6 +48,8 @@ public class Assign extends AbstractBinaryExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
+        System.out.println(getRightOperand().getRegisters(2));
+
         DAddr leftAddress;
         if(getLeftOperand() instanceof Identifier) {
             Identifier leftOperandId = (Identifier) getLeftOperand();

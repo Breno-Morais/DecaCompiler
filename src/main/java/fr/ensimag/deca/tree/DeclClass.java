@@ -4,6 +4,8 @@ import fr.ensimag.deca.codegen.MethodName;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.instructions.RTS;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import fr.ensimag.ima.pseudocode.Label;
 
@@ -142,5 +144,27 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     public AbstractIdentifier getSuperclass() {
         return superclass;
+    }
+
+    @Override
+    public void addClassMethod(DecacCompiler compiler) {
+        compiler.addComment("--------------------------------------------------");
+        String strClassName = "Class " + getName();
+        compiler.addComment(StringUtils.center(strClassName, 50 - strClassName.length()));
+        compiler.addComment("--------------------------------------------------");
+
+        addInit(compiler);
+
+
+    }
+
+    private void addInit(DecacCompiler compiler) {
+        compiler.addComment("---------- Initialisation des champs de " + getName());
+        compiler.addLabel(new Label("init." + getName()));
+        // TODO: add the pile stuff
+
+        listField.codeGenListField(compiler);
+
+        compiler.addInstruction(new RTS());
     }
 }

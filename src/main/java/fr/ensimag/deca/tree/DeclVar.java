@@ -76,14 +76,17 @@ public class DeclVar extends AbstractDeclVar {
         initialization.prettyPrint(s, prefix, true);
     }
 
+    @Override
     public AbstractIdentifier getType() {
         return type;
     }
 
+    @Override
     public AbstractIdentifier getVarName() {
         return varName;
     }
 
+    @Override
     public AbstractInitialization getInitialization() {
         return initialization;
     }

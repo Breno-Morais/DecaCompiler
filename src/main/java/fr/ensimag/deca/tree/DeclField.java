@@ -36,7 +36,7 @@ public class DeclField extends AbstractDeclField {
         if(classe.getMembers() == null){ //Vérifier que env_exp_super(name) est défini  //TODO pas sur que ça soit comme ça ??
             throw new ContextualError("env_exp_super(name) not defined in DeclField", getLocation());
         }
-        Visibility visib = getVisibility();
+        Visibility visib = getStatusVisibility();
         //on veut vérifier que
         FieldDefinition fieldDefinition = new FieldDefinition(type.verifyType(compiler), getLocation(), visib, classe, index);
 
@@ -59,7 +59,7 @@ public class DeclField extends AbstractDeclField {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
-    public Visibility getVisibility(){
+    public Visibility getStatusVisibility(){
         if(this.visibility.isPublic()){
             return Visibility.PUBLIC;
         }
@@ -90,5 +90,25 @@ public class DeclField extends AbstractDeclField {
     @Override
     protected void iterChildren(TreeFunction f) {
 
+    }
+
+    @Override
+    public AbstractVisibility getVisibility() {
+        return visibility;
+    }
+
+    @Override
+    public AbstractIdentifier getType() {
+        return type;
+    }
+
+    @Override
+    public AbstractIdentifier getField() {
+        return field;
+    }
+
+    @Override
+    public AbstractInitialization getInitialization() {
+        return initialization;
     }
 }
