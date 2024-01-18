@@ -25,8 +25,8 @@ public class Plus extends AbstractOpArith {
         return "+";
     }
 
-
-    public Instruction getImaInstruction(DVal value, GPRegister register) {
-        return new ADD(value, register);
+    @Override
+    public void addImaInstruction(DecacCompiler compiler, DVal value, GPRegister register) {
+        compiler.addInstruction(new ADD(value, register));
     }
 }

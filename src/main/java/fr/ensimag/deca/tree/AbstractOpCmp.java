@@ -5,11 +5,10 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Instruction;
-import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import org.apache.log4j.Logger;
 
 /**
@@ -57,16 +56,42 @@ public abstract class AbstractOpCmp extends AbstractBranchable {
     }
 
     @Override
+    protected void codeGen(DecacCompiler compiler, int registerNumber) {
+        super.codeGen(compiler, registerNumber);
+
+        if (getE() == null){
+            compiler.addComment("boolean dans AbstractBin");
+            this.codeGenBool(compiler, registerNumber);
+        }
+    }
+
+    @Override
     public void codeGenBranch(DecacCompiler compiler) {
+        compiler.addComment("on passe dans codeGenBranch");
         codeGen(compiler, 0);
         compareCondition(compiler, getE());
     }
 
     //on rajoute codeGen qui mets le variable Boolean dans un registre
+    private static int countDeclLabels = 0;
+
+
+    protected void codeGenBool(DecacCompiler compiler, int registerNumber) {
+        compiler.addComment("on passe dans codeGenBool");
+        Label trueLabel = new Label("E_SiTrue" + countDeclLabels);
+        Label fin = new Label("E_finDecl" + countDeclLabels);
+        countDeclLabels++;
+        compareCondition(compiler, trueLabel);
+        compiler.addInstruction(new LOAD(0, Register.getR(registerNumber)));
+        compiler.addInstruction(new BRA(fin));
+        compiler.addLabel(trueLabel);
+        compiler.addInstruction(new LOAD(1, Register.getR(registerNumber)));
+        compiler.addLabel(fin);
+    }
 
     @Override
-    public Instruction getImaInstruction(DVal value, GPRegister register) {
-        return new CMP(value, register);
+    public void addImaInstruction(DecacCompiler compiler, DVal value, GPRegister register) {
+        compiler.addInstruction(new CMP(value, register));
     }
 
     // Compare the condition and branch to the label E if true

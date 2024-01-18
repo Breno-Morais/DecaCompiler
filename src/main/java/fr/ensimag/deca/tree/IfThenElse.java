@@ -79,13 +79,13 @@ public class IfThenElse extends AbstractInst {
                     compiler.addInstruction(new BRA(ifLabel));
 
             } else if (((Not) condition).getOperand() instanceof AbstractBranchable) {
-                AbstractBranchable conditionBranchable = (AbstractBranchable) condition;
+                AbstractBranchable conditionBranchable = (AbstractBranchable) ((Not) condition).getOperand();
                 conditionBranchable.setE(ifLabel);
                 conditionBranchable.setExpectedBool(false);
                 conditionBranchable.codeGenBranch(compiler);
 
             } else if (((Not) condition).getOperand() instanceof AbstractIdentifier) {
-                AbstractIdentifier conditionIdentifier = (AbstractIdentifier) condition;
+                AbstractIdentifier conditionIdentifier = (AbstractIdentifier) ((Not) condition).getOperand();
 
                 conditionIdentifier.codeGen(compiler, 0);
                 compiler.addInstruction(new CMP(new ImmediateInteger(0), Register.R0));

@@ -31,8 +31,6 @@ public abstract class AbstractIdentifier extends AbstractLValue {
      */
     public abstract ClassDefinition getClassDefinition();
 
-
-
     public abstract Definition getDefinition();
 
     /**
@@ -95,4 +93,11 @@ public abstract class AbstractIdentifier extends AbstractLValue {
      *         (corresponds to the "type" attribute)
      */
     public abstract Type verifyType(DecacCompiler compiler) throws ContextualError;
+
+    @Override
+    public String toString() {
+        return getName().getName();
+    }
+
+
 }

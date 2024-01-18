@@ -64,7 +64,7 @@ public class Assign extends AbstractBinaryExpr {
     }
 
     @Override
-    public Instruction getImaInstruction(DVal value, GPRegister register) {
+    public void addImaInstruction(DecacCompiler compiler, DVal value, GPRegister register) {
         throw new UnsupportedOperationException("Not applicable");
     }
 
