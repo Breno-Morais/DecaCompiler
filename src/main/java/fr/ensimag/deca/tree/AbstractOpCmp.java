@@ -60,14 +60,12 @@ public abstract class AbstractOpCmp extends AbstractBranchable {
         super.codeGen(compiler, registerNumber);
 
         if (getE() == null){
-            compiler.addComment("boolean dans AbstractBin");
             this.codeGenBool(compiler, registerNumber);
         }
     }
 
     @Override
     public void codeGenBranch(DecacCompiler compiler) {
-        compiler.addComment("on passe dans codeGenBranch");
         codeGen(compiler, 0);
         compareCondition(compiler, getE());
     }
@@ -76,7 +74,6 @@ public abstract class AbstractOpCmp extends AbstractBranchable {
 
 
     protected void codeGenBool(DecacCompiler compiler, int registerNumber) {
-        compiler.addComment("on passe dans codeGenBool");
         Label trueLabel = new Label("E_SiTrue" + countDeclLabels);
         Label fin = new Label("E_finDecl" + countDeclLabels);
         countDeclLabels++;

@@ -90,4 +90,9 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
             }
         }
     }
+
+    public void addClassesMethods(DecacCompiler compiler) {
+        for(AbstractDeclClass declClass : getList())
+            declClass.addClassMethod(compiler);
+    }
 }

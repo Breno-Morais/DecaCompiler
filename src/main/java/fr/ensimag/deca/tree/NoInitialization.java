@@ -53,4 +53,7 @@ public class NoInitialization extends AbstractInitialization {
         // leaf node => nothing to do
     }
 
+    public AbstractExpr getExpression() {
+        return null;
+    }
 }

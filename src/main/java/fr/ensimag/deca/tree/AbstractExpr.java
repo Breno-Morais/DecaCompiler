@@ -9,7 +9,10 @@ import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 import java.io.PrintStream;
+import java.util.LinkedList;
+import java.util.List;
 
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.ImmediateString;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
@@ -175,10 +178,6 @@ public abstract class AbstractExpr extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-//        String s = "inst";
-//        StringLiteral res = new StringLiteral(s);
-//        res.codeGenPrint(compiler);
-        //throw new UnsupportedOperationException("not yet implemented");
     }
 
     /**
@@ -204,5 +203,15 @@ public abstract class AbstractExpr extends AbstractInst {
             s.print(t);
             s.println();
         }
+    }
+
+    // Return list of register used in the resolution of the expression
+    public List<GPRegister> getRegisters(int registerNumber) {
+        List<GPRegister> regs = new LinkedList<GPRegister>();
+        GPRegister reg = Register.getR(registerNumber);
+        if(reg != null)
+            regs.add(reg);
+
+        return regs;
     }
 }

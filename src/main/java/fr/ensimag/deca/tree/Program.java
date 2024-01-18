@@ -49,7 +49,6 @@ public class Program extends AbstractProgram {
 
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
-        /*
         // TODO: TSTO with the maximum size of the pile
         // TODO: Error handler
         compiler.addInstruction(new ADDSP(main.getNumGlobalVariables())); // TODO: Add size of method table
@@ -93,17 +92,20 @@ public class Program extends AbstractProgram {
 
             currentGB++;
         }
-         */
 
         // Generate the code of the fields and methods of the classes
 
         // Create Main Program
-        compiler.addComment("Main program");
-        main.codeGenMain(compiler);
+        compiler.addComment("--------------------------------------------------");
+        compiler.addComment("           Code du programme principal            ");
+        compiler.addComment("--------------------------------------------------");
+
+        main.codeGenMain(compiler, currentGB);
         compiler.addInstruction(new HALT());
 
         // Add The methods
-
+        addObjectsCode(compiler);
+        getClasses().addClassesMethods(compiler);
     }
 
     @Override
@@ -121,5 +123,39 @@ public class Program extends AbstractProgram {
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         classes.prettyPrint(s, prefix, false);
         main.prettyPrint(s, prefix, true);
+    }
+
+    private void addObjectsCode(DecacCompiler compiler) {
+        compiler.addComment("--------------------------------------------------");
+        compiler.addComment("                  Class Object                   ");
+        compiler.addComment("--------------------------------------------------");
+
+        compiler.addComment("---------- Code de la methode equals dans la classe Object");
+        compiler.addLabel(new Label("code.Object.equals"));
+        compiler.addInstruction(new TSTO(new ImmediateInteger(1)));
+        // TODO: compiler.addInstruction(new BOV(new Label("pile_pleine"));
+        compiler.addComment("Sauvegarde des registres");
+        compiler.addInstruction(new PUSH(Register.R2));
+
+        Label objEnd = new Label("fin.Object.equals");
+        Label objEqual = new Label("equal.Object.equals");
+
+        RegisterOffset thisParam = new RegisterOffset(-2, Register.LB);
+        RegisterOffset firstParam = new RegisterOffset(-3, Register.LB);
+
+        compiler.addInstruction(new LOAD(thisParam, Register.R2));
+        compiler.addInstruction(new CMP(firstParam,Register.R2));
+        compiler.addInstruction(new BEQ(objEqual));
+
+        compiler.addInstruction(new LOAD(new ImmediateInteger(0), Register.R0));
+        compiler.addInstruction(new BRA(objEnd));
+
+        compiler.addLabel(objEqual);
+        compiler.addInstruction(new LOAD(new ImmediateInteger(1), Register.R0));
+
+        compiler.addLabel(objEnd);
+        compiler.addComment("Restauration des registres");
+        compiler.addInstruction(new POP(Register.R2));
+        compiler.addInstruction(new RTS());
     }
 }

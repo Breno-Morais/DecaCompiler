@@ -4,7 +4,12 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.ExpDefinition;
+import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.log4j.Logger;
 
 /**
@@ -44,5 +49,35 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
 
     }
 
+    public void codeGenListVariables(DecacCompiler compiler, int currentVar) {
+        for(AbstractDeclVar declVar : this.getList()) {
+            AbstractInitialization initVar;
+            Identifier identVar;
+            initVar = declVar.getInitialization();
 
+            try {
+                identVar = (Identifier) declVar.getVarName();
+            } catch (ClassCastException e) {
+                throw new DecacInternalError("AbstractIdentifier is not a Identifier");
+            }
+
+            // Initialize the address of the variable
+            RegisterOffset addr = new RegisterOffset(currentVar, Register.GB);
+
+            // Don't know if it should be a test or a try and catch
+            if(identVar.getDefinition().isExpression()){
+                ExpDefinition identDefinition = identVar.getExpDefinition();
+
+                identDefinition.setOperand(addr);
+
+                if(initVar instanceof Initialization) {
+                    ((Initialization) initVar).getExpression().codeGen(compiler, 2);
+
+                    compiler.addInstruction(new STORE(Register.R2, addr));
+                }
+            }
+
+            currentVar++;
+        }
+    }
 }

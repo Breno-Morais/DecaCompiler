@@ -3,6 +3,7 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 import java.io.PrintStream;
 
@@ -43,5 +44,25 @@ public class DeclField extends AbstractDeclField {
     @Override
     protected void iterChildren(TreeFunction f) {
 
+    }
+
+    @Override
+    public AbstractVisibility getVisibility() {
+        return visibility;
+    }
+
+    @Override
+    public AbstractIdentifier getType() {
+        return type;
+    }
+
+    @Override
+    public AbstractIdentifier getField() {
+        return field;
+    }
+
+    @Override
+    public AbstractInitialization getInitialization() {
+        return initialization;
     }
 }

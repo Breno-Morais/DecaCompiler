@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 public class Initialization extends AbstractInitialization {
     private static final Logger LOG = Logger.getLogger(Identifier.class);
 
+    @Override
     public AbstractExpr getExpression() {
         return expression;
     }
