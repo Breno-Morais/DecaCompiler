@@ -4,6 +4,8 @@ import fr.ensimag.deca.codegen.MethodName;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.instructions.RTS;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import fr.ensimag.ima.pseudocode.Label;
 
@@ -60,10 +62,8 @@ public class DeclClass extends AbstractDeclClass {
         //on ajoute que le nom des classes dans l'environnement
         LOG.debug("name = " + name.prettyPrint());
         LOG.debug("superclass.name = " + superclass.getName());
-//        LOG.debug("env_exp = " + env_exp.get(superclass.getName()));
-//        LOG.debug("superclass.getClassDefinition() = " + superclass.getClassDefinition());
-//        LOG.debug("TypeDefinition = " + compiler.environmentType.get(superclass.getName()));
 
+        EnvironmentType env_types = compiler.environmentType;
         TypeDefinition type_def = compiler.environmentType.get(superclass.getName());
         if(!superclass.getName().toString().equals("Object") && type_def==null){  //!superclass.getClassDefinition().isClass()
             throw new ContextualError("superclass is not a Class in DeclClass", getLocation());
@@ -75,8 +75,7 @@ public class DeclClass extends AbstractDeclClass {
 
         try{
             name.setDefinition(classDefinition);
-            compiler.environmentType.declareClass(name.getName(), classType.getDefinition());
-            //env_exp.declare(name.getName(), name.getExpDefinition());
+            env_types.declareClass(name.getName(), classType.getDefinition());
         }catch (EnvironmentType.DoubleDefException e){
             throw new ContextualError("Error, class already declared in DeclClass", this.getLocation());
         }
@@ -87,15 +86,20 @@ public class DeclClass extends AbstractDeclClass {
     protected void verifyClassMembers(DecacCompiler compiler)
             throws ContextualError {
         LOG.debug("verifyClassMembers DeclClass: start");
+        EnvironmentType env_types = compiler.environmentType;   //on récupère l'environnement des types
 
+        listField.verifyListClassMembers(compiler, superclass.getClassDefinition(), name.getClassDefinition());
+        listMethod.verifyListClassMembers(compiler, superclass.getClassDefinition(), name.getClassDefinition());
 
         LOG.debug("verifyClassMembers DeclClass: end");
-        throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verifyClassBody DeclClass: start");
+
+        listField.verifyListClassBody(compiler, superclass.getClassDefinition(), name.getClassDefinition());
+        listMethod.verifyListClassBody(compiler, superclass.getClassDefinition(), name.getClassDefinition());
 
         LOG.debug("verifyClassBody DeclClass: end");
         throw new UnsupportedOperationException("not yet implemented");
@@ -140,5 +144,27 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     public AbstractIdentifier getSuperclass() {
         return superclass;
+    }
+
+    @Override
+    public void addClassMethod(DecacCompiler compiler) {
+        compiler.addComment("--------------------------------------------------");
+        String strClassName = "Class " + getName();
+        compiler.addComment(StringUtils.center(strClassName, 50 - strClassName.length()));
+        compiler.addComment("--------------------------------------------------");
+
+        addInit(compiler);
+
+
+    }
+
+    private void addInit(DecacCompiler compiler) {
+        compiler.addComment("---------- Initialisation des champs de " + getName());
+        compiler.addLabel(new Label("init." + getName()));
+        // TODO: add the pile stuff
+
+        listField.codeGenListField(compiler);
+
+        compiler.addInstruction(new RTS());
     }
 }

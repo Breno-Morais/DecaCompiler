@@ -42,4 +42,6 @@ public abstract class AbstractDeclClass extends Tree {
     public abstract AbstractIdentifier getName();
 
     public abstract AbstractIdentifier getSuperclass();
+
+    public abstract void addClassMethod(DecacCompiler compiler);
 }

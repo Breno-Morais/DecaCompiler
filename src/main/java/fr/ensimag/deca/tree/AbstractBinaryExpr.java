@@ -4,6 +4,9 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
@@ -77,15 +80,6 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
 
     @Override
     protected void codeGen(DecacCompiler compiler, int registerNumber) {
-        /*
-        System.out.println("Printing stack trace:");
-        StackTraceElement[] elements = Thread.currentThread().getStackTrace();
-        for (int i = 1; i < elements.length; i++) {
-            StackTraceElement s = elements[i];
-            System.out.println("\tat " + s.getClassName() + "." + s.getMethodName() + "(" + s.getFileName() + ":" + s.getLineNumber() + ")");
-        } */
-        compiler.addComment(getOperatorName() + " Operation");
-
         GPRegister[][] allRegisters = Register.getUsableRegisters(2, registerNumber);
         pushRegisters(compiler, allRegisters[0]);
 
@@ -114,7 +108,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         addImaInstruction(compiler, value, firstReg);
 
         popRegisters(compiler, allRegisters[0]);
-        compiler.addComment("end of " + getOperatorName() + " operation");
+        //compiler.addComment("end of " + getOperatorName() + " operation");
     }
 
     @Override
@@ -138,5 +132,13 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
                 break;
             compiler.addInstruction(new POP(register));
         }
+    }
+
+    @Override
+    public List<GPRegister> getRegisters(int registerNumber) {
+        List<GPRegister> registers = new LinkedList<GPRegister>(getLeftOperand().getRegisters(registerNumber));
+        registers.addAll(getRightOperand().getRegisters(registerNumber + 1));
+
+        return registers.stream().distinct().collect(Collectors.toList());
     }
 }

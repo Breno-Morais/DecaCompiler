@@ -58,47 +58,9 @@ public class Main extends AbstractMain {
 
     // affichage en flottant de la moitié du carré d'un entier
     @Override
-    protected void codeGenMain(DecacCompiler compiler) {
+    protected void codeGenMain(DecacCompiler compiler, int currentSP) {
         compiler.addComment("Variables declarations:");
-        int currentVar = 2; // TODO: Starts after the method table
-        for(AbstractDeclVar declVarAbs : declVariables.getList()) {
-            DeclVar declVar;
-            AbstractInitialization initVar;
-            Identifier identVar;
-            try {
-                declVar = (DeclVar) declVarAbs;
-                initVar = declVar.getInitialization();
-            } catch (ClassCastException e) {
-                throw new DecacInternalError("AbstractDeclVar is not a DeclVar");
-            }
-
-            try {
-                identVar = (Identifier) declVar.getVarName();
-            } catch (ClassCastException e) {
-                throw new DecacInternalError("AbstractIdentifier is not a Identifier");
-            }
-
-            // Initialize the address of the variable
-            RegisterOffset addr = new RegisterOffset(currentVar, Register.GB);
-
-            // Don't know if it should be a test or a try and catch
-            if(identVar.getDefinition().isExpression()){
-                ExpDefinition identDefinition = identVar.getExpDefinition();
-
-                identDefinition.setOperand(addr);
-
-                if(initVar instanceof Initialization) {
-                    ((Initialization) initVar).getExpression().codeGen(compiler, 2);
-
-                    compiler.addInstruction(new STORE(Register.R2, addr));
-                }/* else if(declVar.getInitialization() instanceof NoInitialization) { // To use in the initialization of fields
-                    compiler.addInstruction(new LOAD(declVar.getVarName().getType().getDefaultValue(), Register.R0));
-                    compiler.addInstruction(new STORE(Register.R0, addr));
-                }*/
-            }
-
-            currentVar++;
-        }
+        declVariables.codeGenListVariables(compiler, currentSP);
 
         compiler.addComment("Beginning of main instructions:");
         insts.codeGenListInst(compiler);

@@ -60,7 +60,6 @@ public class EnvironmentType {
         } else {
             envTypes.put(symbol, classDefinition);
         }
-
     }
 
     public TypeDefinition get(Symbol key) {
