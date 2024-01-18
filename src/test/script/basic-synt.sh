@@ -31,14 +31,14 @@ test_synt_invalide () {
     fi
 }    
 
-for cas_de_test in src/test/deca/syntax/ownTests/invalid/*.deca
+for cas_de_test in src/test/deca/syntax/invalid/OwnTests_stepA/invalid/parser/*.deca
 do
     test_synt_invalide "$cas_de_test"
 done
 
 
 # Tests valides
-for cas_de_test in src/test/deca/syntax/ownTests/valid/*.deca
+for cas_de_test in src/test/deca/syntax/valid/OwnTests_stepA/valid/*.deca
 do
     if test_synt "$cas_de_test" 2>&1 | grep -q -e "$cas_de_test:[0-9][0-9]*:"
     then

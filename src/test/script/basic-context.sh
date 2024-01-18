@@ -22,14 +22,14 @@ test_context_invalide () {
     fi
 }
 
-for cas_de_test in src/test/deca/context/OwnTests_stepB/invalid/*/*.deca
+for cas_de_test in src/test/deca/context/invalid/OwnTests_stepB/invalid/*/*.deca
 do
     test_context_invalide "$cas_de_test"
 done
 
 
 # Tests valides
-for cas_de_test in src/test/deca/context/OwnTests_stepB//valid/*/*.deca
+for cas_de_test in src/test/deca/context/valid/OwnTests_stepB/valid/*/*.deca
 do
     if test_context "$cas_de_test" 2>&1 | grep -q -e "$cas_de_test:[0-9][0-9]*:"
     then
