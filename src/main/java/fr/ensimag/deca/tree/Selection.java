@@ -110,10 +110,11 @@ public class Selection extends AbstractIdentifier {
             compiler.addInstruction(new CMP(new NullOperand(), ));
             compiler.addInstruction(new BEQ(new Label("dereferencement_null")));
              */
-            LOAD
+            //LOAD
         }
-        else if(obj instanceof AbstractIdentifier)
-            compiler.addInstruction(new );
+        else if(obj instanceof AbstractIdentifier) {
+            //compiler.addInstruction(new );
+        }
         else throw new DecacInternalError("Selection of impossible type");
 
         compiler.addInstruction(new LOAD(getAddress(), Register.getR(registerNumber)));
