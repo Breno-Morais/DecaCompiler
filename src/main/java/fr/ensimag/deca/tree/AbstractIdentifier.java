@@ -12,9 +12,11 @@ import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.context.VariableDefinition;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.SymbolTable;
-import fr.ensimag.ima.pseudocode.DAddr;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.BEQ;
+import fr.ensimag.ima.pseudocode.instructions.BNE;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
 
 import java.util.Objects;
 
@@ -122,5 +124,19 @@ public abstract class AbstractIdentifier extends AbstractLValue {
     @Override
     public int hashCode() {
         return Objects.hash(getName());
+    }
+
+    @Override
+    public void codeGenIfBranch(DecacCompiler compiler, boolean expected, Label ifLabel, Label elseLabel) {
+        codeGenIfBranch(compiler, expected, ifLabel);
+        if(expected)
+                compiler.addInstruction(new BRA(elseLabel));
+    }
+
+    @Override
+    public void codeGenIfBranch(DecacCompiler compiler, boolean expected, Label ifLabel) {
+        this.codeGen(compiler, 0);
+        compiler.addInstruction(new CMP(new ImmediateInteger(0), Register.R0));
+        compiler.addInstruction((expected) ? new BNE(ifLabel) : new BEQ(ifLabel));
     }
 }

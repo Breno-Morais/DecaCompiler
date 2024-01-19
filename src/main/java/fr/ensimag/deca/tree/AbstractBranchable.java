@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
 
 public abstract class AbstractBranchable extends AbstractBinaryExpr {
     private Label E; // Label for branching if true
@@ -28,4 +29,18 @@ public abstract class AbstractBranchable extends AbstractBinaryExpr {
     }
 
     public abstract void codeGenBranch(DecacCompiler compiler);
+
+    @Override
+    public void codeGenIfBranch(DecacCompiler compiler, boolean expected, Label ifLabel, Label elseLabel) {
+        codeGenIfBranch(compiler, expected, ifLabel);
+        if(expected)
+                compiler.addInstruction(new BRA(elseLabel));
+    }
+
+    @Override
+    public void codeGenIfBranch(DecacCompiler compiler, boolean expected, Label ifLabel) {
+        setE(ifLabel);
+        setExpectedBool(expected);
+        codeGenBranch(compiler);
+    }
 }

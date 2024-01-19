@@ -284,4 +284,7 @@ public class DecacCompiler {
         return maxStack;
     }
 
+    public void append(DecacCompiler compiler) {
+        program.append(compiler.program);
+    }
 }

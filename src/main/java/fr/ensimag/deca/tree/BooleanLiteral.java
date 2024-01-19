@@ -8,6 +8,8 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
 import org.apache.log4j.Logger;
 
 import java.io.PrintStream;
@@ -61,5 +63,19 @@ public class BooleanLiteral extends AbstractLiteral {
     @Override
     public DVal getDValue() {
         return new ImmediateInteger((getValue()) ? 1 : 0);
+    }
+
+    @Override
+    public void codeGenIfBranch(DecacCompiler compiler, boolean expected, Label ifLabel, Label elseLabel) {
+        if (getValue() == expected)
+            compiler.addInstruction(new BRA(ifLabel));
+        else
+            compiler.addInstruction(new BRA(elseLabel));
+    }
+
+    @Override
+    public void codeGenIfBranch(DecacCompiler compiler, boolean expected, Label ifLabel) {
+        if (getValue() == expected)
+            compiler.addInstruction(new BRA(ifLabel));
     }
 }

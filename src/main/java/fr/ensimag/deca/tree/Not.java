@@ -8,6 +8,7 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
 import org.apache.log4j.Logger;
 
 /**
@@ -45,8 +46,10 @@ public class Not extends AbstractUnaryExpr {
 
     @Override
     protected void codeGen(DecacCompiler compiler, int registerNumber) {
-        if (getOperand() instanceof BooleanLiteral) {
+    }
 
-        }
+    @Override
+    public void codeGenIfBranch(DecacCompiler compiler, boolean expected, Label ifLabel, Label elseLabel) {
+        getOperand().codeGenIfBranch(compiler, !expected, ifLabel, elseLabel);
     }
 }

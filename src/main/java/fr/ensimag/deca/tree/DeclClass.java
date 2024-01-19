@@ -4,8 +4,9 @@ import fr.ensimag.deca.codegen.MethodName;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.deca.tools.SymbolTable;
+import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.RTS;
+import fr.ensimag.ima.pseudocode.instructions.TSTO;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import fr.ensimag.ima.pseudocode.Label;
@@ -168,13 +169,19 @@ public class DeclClass extends AbstractDeclClass {
     }
 
     private void addInit(DecacCompiler compiler) {
+        DecacCompiler blockCompiler = new DecacCompiler(compiler.getCompilerOptions(), compiler.getSource());
+
         compiler.addComment("---------- Initialisation des champs de " + getName());
         compiler.addLabel(new Label("init." + getName()));
-        // TODO: add the pile stuff
 
-        listField.codeGenListField(compiler);
+        listField.codeGenListField(blockCompiler);
 
-        compiler.addInstruction(new RTS());
+        blockCompiler.addInstruction(new RTS());
+
+        blockCompiler.addFirst(new BOV(new Label("pile_pleine")));
+        blockCompiler.addFirst(new TSTO(blockCompiler.getMaxStack()));
+
+        compiler.append(blockCompiler);
     }
 
     private void addMethods(DecacCompiler compiler) {
