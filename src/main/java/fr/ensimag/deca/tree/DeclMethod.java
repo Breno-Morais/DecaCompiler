@@ -41,6 +41,8 @@ public class DeclMethod extends AbstractDeclMethod {
         parameters.verifyListClassMembers(compiler, signature);
 
         MethodDefinition methodDefinition = new MethodDefinition(type.verifyType(compiler), getLocation(), signature, index);
+        name.setDefinition(methodDefinition);
+        methodDefinition.getSignature().setReturnType(methodDefinition.getType());
         try{
             classe.getMembers().declare(name.getName(), methodDefinition);
             classe.incNumberOfMethods();

@@ -29,8 +29,8 @@ public class DeclField extends AbstractDeclField {
     public void verifyClassMembers(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition classe, int index) throws ContextualError {
         LOG.debug("verifyClassMembers DeclField: start");
         EnvironmentType env_types = compiler.environmentType;
-
-        if(type.verifyType(compiler).isVoid()){
+        Type type1 = type.verifyType(compiler);
+        if(type1.isVoid()){
             throw new ContextualError("type is Void in DeclField", getLocation());
         }
         if(classe.getSuperClass().getMembers() == null){ //Vérifier que env_exp_super(name) est défini  //TODO pas sur que ça soit comme ça ??
@@ -39,6 +39,8 @@ public class DeclField extends AbstractDeclField {
         Visibility visib = getStatusVisibility();
         //on veut vérifier que
         FieldDefinition fieldDefinition = new FieldDefinition(type.verifyType(compiler), getLocation(), visib, classe, index);
+        field.setDefinition(fieldDefinition);
+        field.setType(type1);
         try{
             classe.getMembers().declare(field.getName(), fieldDefinition);
             classe.incNumberOfFields();

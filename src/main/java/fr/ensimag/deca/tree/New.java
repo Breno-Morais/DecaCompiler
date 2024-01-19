@@ -1,10 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
@@ -28,17 +25,21 @@ public class New extends AbstractUnaryExpr {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
                            ClassDefinition currentClass) throws ContextualError {
         LOG.debug("verifyExpr New : start");
-        if (!this.getType().isClass()){
-            throw new ContextualError("The Object is not a Class in new", getLocation());
-        }
-        if (compiler.environmentType.get(this.getType().getName()) == null){
-            throw new ContextualError("The Class doesn't exist in EnvType in New", getLocation());
-        }
-        LOG.debug("verifyExpr New : end");
-        //Settype New
-        Type typeNew = this.getType();
-        setType(typeNew);
-        return typeNew;
+//        //Type type = this.getOperand().verifyExpr(compiler, localEnv, currentClass);
+//        setType(compiler.environmentType.OBJECT);
+//        if (!this.getType().isClass()){
+//            throw new ContextualError("The Object is not a Class in new", getLocation());
+//        }
+//        if (compiler.environmentType.get(this.getType().getName()) == null){
+//            throw new ContextualError("The Class doesn't exist in EnvType in New", getLocation());
+//        }
+//        LOG.debug("verifyExpr New : end");
+//        //Settype New
+//        Type typeNew = this.getType();
+//
+//        return typeNew;
+        Type type = this.getOperand().verifyExpr(compiler, localEnv, currentClass);
+        return type;
     }
 
     @Override

@@ -23,10 +23,14 @@ public class This extends AbstractExpr {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
                            ClassDefinition currentClass) throws ContextualError {
         LOG.debug("verifyExpr This : start");
+        if (currentClass == null){
+            throw new ContextualError("Class is null in This", getLocation());
+        }
+        //set<Type
+        this.setType(currentClass.getType());
         LOG.debug("verifyExpr This : end");
 
-        //set<Type
-        throw new UnsupportedOperationException("not yet implemented");
+        return getType();
     }
 
     @Override

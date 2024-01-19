@@ -32,7 +32,7 @@ public class DeclParam extends AbstractDeclParam {
 
         signature.add(type.verifyType(compiler));
         //ident.setDefinition();
-        ident.setType(type.getType());
+        ident.setType(type.verifyType(compiler));
         LOG.debug("verifyClassMembers DeclParam: end");
     }
 
