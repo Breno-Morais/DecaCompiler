@@ -108,7 +108,6 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         addImaInstruction(compiler, value, firstReg);
 
         popRegisters(compiler, allRegisters[0]);
-        //compiler.addComment("end of " + getOperatorName() + " operation");
     }
 
     @Override

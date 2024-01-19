@@ -206,4 +206,12 @@ public abstract class AbstractExpr extends AbstractInst {
     public void addImaInstruction(DecacCompiler compiler, DVal value, GPRegister register) {
 
     }
+
+    public void codeGenIfBranch(DecacCompiler compiler, boolean expected, Label ifLabel, Label elseLabel) {
+
+    }
+
+    public void codeGenIfBranch(DecacCompiler compiler, boolean expected, Label ifLabel) {
+
+    }
 }

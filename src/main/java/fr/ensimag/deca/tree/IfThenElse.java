@@ -67,46 +67,8 @@ public class IfThenElse extends AbstractInst {
         Label finLabel = new Label("E_Fin." + countIfLabels);
         countIfLabels++;
 
-        if(condition instanceof BooleanLiteral) {
-            BooleanLiteral conditionValue = (BooleanLiteral) condition;
-            if (conditionValue.getValue())
-                compiler.addInstruction(new BRA(ifLabel));
-
-        } else if (condition instanceof Not) {
-            if (((Not) condition).getOperand() instanceof BooleanLiteral) {
-                BooleanLiteral conditionValue = (BooleanLiteral) ((Not) condition).getOperand();
-                if (!conditionValue.getValue())
-                    compiler.addInstruction(new BRA(ifLabel));
-
-            } else if (((Not) condition).getOperand() instanceof AbstractBranchable) {
-                AbstractBranchable conditionBranchable = (AbstractBranchable) ((Not) condition).getOperand();
-                conditionBranchable.setE(ifLabel);
-                conditionBranchable.setExpectedBool(false);
-                conditionBranchable.codeGenBranch(compiler);
-
-            } else if (((Not) condition).getOperand() instanceof AbstractIdentifier) {
-                AbstractIdentifier conditionIdentifier = (AbstractIdentifier) ((Not) condition).getOperand();
-
-                conditionIdentifier.codeGen(compiler, 0);
-                compiler.addInstruction(new CMP(new ImmediateInteger(0), Register.R0));
-                compiler.addInstruction(new BEQ(ifLabel));
-            }
-        } else {
-            if (condition instanceof AbstractIdentifier) {
-                AbstractIdentifier conditionIdentifier = (AbstractIdentifier) condition;
-
-                conditionIdentifier.codeGen(compiler, 0);
-                compiler.addInstruction(new CMP(new ImmediateInteger(0), Register.R0));
-                compiler.addInstruction(new BNE(ifLabel));
-            } else if (condition instanceof AbstractBranchable) {
-                AbstractBranchable conditionBranchable = (AbstractBranchable) condition;
-                conditionBranchable.setE(ifLabel);
-                conditionBranchable.setExpectedBool(true);
-                conditionBranchable.codeGenBranch(compiler);
-            }
-
-            compiler.addInstruction(new BRA(elseLabel));
-        }
+        // Generate code for branch
+        condition.codeGenIfBranch(compiler, true, ifLabel, elseLabel);
 
         // Create if branch
         compiler.addLabel(ifLabel);
