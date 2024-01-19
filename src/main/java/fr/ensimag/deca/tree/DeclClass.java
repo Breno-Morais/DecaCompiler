@@ -101,7 +101,7 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verifyClassBody DeclClass: start");
-
+        //TODO faire la vérification de env_exp
         listField.verifyListClassBody(compiler, superclass.getClassDefinition(), name.getClassDefinition());
         listMethod.verifyListClassBody(compiler, superclass.getClassDefinition(), name.getClassDefinition());
 

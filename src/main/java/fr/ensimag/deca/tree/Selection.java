@@ -5,10 +5,7 @@ import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.NullOperand;
-import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
@@ -102,19 +99,32 @@ public class Selection extends AbstractIdentifier {
     }
 
     @Override
+    public DAddr getAddress() {
+        if(obj instanceof AbstractIdentifier && ((AbstractIdentifier) obj).getDefinition().isExpression())
+            return ((AbstractIdentifier) obj).getExpDefinition().getOperand();
+        else if(obj instanceof This) {
+            return new RegisterOffset(-2, Register.LB); // Big assumption here
+        } else throw new DecacInternalError("Cannot get address of a class or type");
+    }
+
+    @Override
     protected void codeGen(DecacCompiler compiler, int registerNumber) {
+        GPRegister register = Register.getR(registerNumber);
+
         // I'll assume that the obj can only be a This or a Identifier
         if(obj instanceof This) {
-            /* TODO: Error Handler
-            compiler.addInstruction(new CMP(new NullOperand(), ));
-            compiler.addInstruction(new BEQ(new Label("dereferencement_null")));
-             */
-            //LOAD
-        }
-        else if(obj instanceof AbstractIdentifier){}
-            //compiler.addInstruction(new );
-        else throw new DecacInternalError("Selection of impossible type");
+            RegisterOffset implicitThis = new RegisterOffset(-2, Register.LB);
+            compiler.addInstruction(new LOAD(implicitThis, register));
 
-        compiler.addInstruction(new LOAD(getAddress(), Register.getR(registerNumber)));
+            /* TODO: Error Handler
+            compiler.addInstruction(new CMP(new NullOperand(), register));
+            compiler.addInstruction(new BEQ(new Label("dereferencement_null")));
+            */
+        }
+        else if(obj instanceof AbstractIdentifier) {
+            compiler.addInstruction(new LOAD(((AbstractIdentifier) obj).getAddress(), register));
+        } else throw new DecacInternalError("Selection of impossible type");
+
+        compiler.addInstruction(new LOAD(new RegisterOffset(getFieldDefinition().getIndex(), register), register));
     }
 }

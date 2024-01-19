@@ -51,6 +51,7 @@ public class ListDeclField extends TreeList<AbstractDeclField>{
         LOG.debug("verifyListClassBody ListDeclField: start");
         for (AbstractDeclField c: getList())
             c.verifyClassBody(compiler, superClass, classe);
+
         LOG.debug("verifyListClassBody ListDeclField: end");
     }
 

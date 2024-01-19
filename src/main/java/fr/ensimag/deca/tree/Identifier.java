@@ -233,4 +233,9 @@ public class Identifier extends AbstractIdentifier {
     protected void codeGen(DecacCompiler compiler, int registerNumber) {
         compiler.addInstruction(new LOAD(getAddress(), Register.getR(registerNumber)));
     }
+
+    @Override
+    public Type getType() {
+        return this.getDefinition().getType();
+    }
 }
