@@ -39,9 +39,9 @@ public class DeclField extends AbstractDeclField {
         Visibility visib = getStatusVisibility();
         //on veut vérifier que
         FieldDefinition fieldDefinition = new FieldDefinition(type.verifyType(compiler), getLocation(), visib, classe, index);
-
         try{
             classe.getMembers().declare(field.getName(), fieldDefinition);
+            classe.incNumberOfFields();
         }catch (EnvironmentExp.DoubleDefException e){
             throw new ContextualError("Error, field already declared in DeclField", this.getLocation());
         }
@@ -70,7 +70,7 @@ public class DeclField extends AbstractDeclField {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        visibility.decompile(s);      //TODO corriger visibility pour l'afficher correctement
+        visibility.decompile(s);
         s.print(" ");
         type.decompile(s);
         s.print(" ");
@@ -81,7 +81,7 @@ public class DeclField extends AbstractDeclField {
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        visibility.prettyPrint(s, prefix, false);     //TODO corriger visibility pour l'afficher correctement
+        visibility.prettyPrint(s, prefix, false);
         type.prettyPrint(s, prefix, false);
         field.prettyPrint(s, prefix, false);
         initialization.prettyPrint(s, prefix, true);

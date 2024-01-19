@@ -1,8 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import org.apache.log4j.Logger;
 
@@ -26,9 +25,24 @@ public class DeclMethod extends AbstractDeclMethod {
     /**
      * Pass 2 of [SyntaxeContextuelle]
      */
-    public void verifyClassMembers(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition classe) throws ContextualError {   //TODO manque des paramètres : env_types, super, class
+    public void verifyClassMembers(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition classe, int index) throws ContextualError {   //TODO manque des paramètres : env_types, super, class
         LOG.debug("verifyClassMembers DeclMethod: start");
+        EnvironmentType env_types = compiler.environmentType;
+        //Signature signature = parameters.verifyMachin(compiler);
+        //TODO il faut faire d'abord ListParam et Param avec une fonction qui renvoie la Signature
+        Signature signature = new Signature();
+        parameters.verifyListClassMembers(compiler, signature);
 
+        MethodDefinition methodDefinition = new MethodDefinition(type.verifyType(compiler), getLocation(), signature, index);
+        try{
+            classe.getMembers().declare(name.getName(), methodDefinition);
+            classe.incNumberOfMethods();
+            //incrémenter le nb de méthodes (pareil pour les field)
+        }catch (EnvironmentExp.DoubleDefException e){
+            throw new ContextualError("Error, field already declared in DeclMethod", this.getLocation());
+        }
+
+        //verifier si la méthode est déjà déclarée dans env_types. Alors il faut vérifier que elle a le même prototype que celle enregistrée
 
         LOG.debug("verifyClassMembers DeclMethod: end");
     }
@@ -38,6 +52,9 @@ public class DeclMethod extends AbstractDeclMethod {
      */
     public void verifyClassBody(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition classe) throws ContextualError {    //TODO manque des paramètres : env_types, super, class
         LOG.debug("verifyClassBody DeclMethod: start");
+
+
+        parameters.verifyListClassBody(compiler);
 
         LOG.debug("verifyClassBody DeclMethod: end");
         throw new UnsupportedOperationException("not yet implemented");
