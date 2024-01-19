@@ -28,19 +28,18 @@ public class DeclField extends AbstractDeclField {
      */
     public void verifyClassMembers(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition classe, int index) throws ContextualError {
         LOG.debug("verifyClassMembers DeclField: start");
-        EnvironmentType env_types = compiler.environmentType;
-        Type type1 = type.verifyType(compiler);
-        if(type1.isVoid()){
+
+        Type type_def = type.verifyType(compiler);
+        if(type_def.isVoid()){
             throw new ContextualError("type is Void in DeclField", getLocation());
         }
         if(classe.getSuperClass().getMembers() == null){ //Vérifier que env_exp_super(name) est défini  //TODO pas sur que ça soit comme ça ??
             throw new ContextualError("env_exp_super(name) not defined in DeclField", getLocation());
         }
         Visibility visib = getStatusVisibility();
-        //on veut vérifier que
-        FieldDefinition fieldDefinition = new FieldDefinition(type.verifyType(compiler), getLocation(), visib, classe, index);
-        field.setDefinition(fieldDefinition);
-        field.setType(type1);
+
+
+        FieldDefinition fieldDefinition = new FieldDefinition(type_def, getLocation(), visib, classe, index);
         try{
             classe.getMembers().declare(field.getName(), fieldDefinition);
             classe.incNumberOfFields();
@@ -48,6 +47,13 @@ public class DeclField extends AbstractDeclField {
             throw new ContextualError("Error, field already declared in DeclField", this.getLocation());
         }
 
+        FieldDefinition superFieldDefinition = (FieldDefinition) superClass.getMembers().get(field.getName());
+        if(superFieldDefinition != null && !superFieldDefinition.equals(fieldDefinition)){
+            throw new ContextualError("Field definition not compatible with the superClass in DeclField", getLocation());
+        }
+
+        field.setType(type_def);
+        field.setDefinition(fieldDefinition);
         LOG.debug("verifyClassMembers DeclField: end");
     }
 
@@ -56,7 +62,8 @@ public class DeclField extends AbstractDeclField {
      */
     public void verifyClassBody(DecacCompiler compiler, EnvironmentExp env_exp, ClassDefinition classe) throws ContextualError {
         LOG.debug("verifyClassBody DeclField: start");
-        initialization.verifyInitialization(compiler, type.verifyType(compiler), env_exp, classe);
+        initialization.verifyInitialization(compiler, type.getType(), classe.getMembers(), classe);
+        //a la place de classe.getMembers() env_exp
 
         LOG.debug("verifyClassBody DeclField: end");
     }

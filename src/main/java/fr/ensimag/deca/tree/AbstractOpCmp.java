@@ -30,7 +30,7 @@ public abstract class AbstractOpCmp extends AbstractBranchable {
         //On veut vérifier que les deux éléments sont des types Arith
         Type leftType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         Type rightType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
-        if(!this.areBothArith(leftType, rightType)){
+        if(!this.areBothArith(leftType, rightType)){   //TODO : on peut accepter les types boolean pour les EQ et NEQ
             throw new ContextualError("one operator is not an Arith type in AbstractOpCmp", getLocation());
         }
         this.setType(compiler.environmentType.BOOLEAN);

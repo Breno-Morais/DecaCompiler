@@ -24,7 +24,7 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod>{
     public void verifyListClassMembers(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition classe) throws ContextualError {
         LOG.debug("verifyListClassMembers ListDeclMethod: start");
         int index = 0;
-        for (AbstractDeclMethod c : getList()){   //TODO il y le calcul de (env_expr = env_expr + env_exp) à faire
+        for (AbstractDeclMethod c : getList()){
             c.verifyClassMembers(compiler, superClass, classe, index);
             index++;
         }

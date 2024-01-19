@@ -25,6 +25,7 @@ public class New extends AbstractUnaryExpr {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
                            ClassDefinition currentClass) throws ContextualError {
         LOG.debug("verifyExpr New : start");
+
 //        //Type type = this.getOperand().verifyExpr(compiler, localEnv, currentClass);
 //        setType(compiler.environmentType.OBJECT);
 //        if (!this.getType().isClass()){
@@ -40,6 +41,7 @@ public class New extends AbstractUnaryExpr {
 //        return typeNew;
         Type type = this.getOperand().verifyExpr(compiler, localEnv, currentClass);
         return type;
+
     }
 
     @Override

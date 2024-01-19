@@ -62,26 +62,28 @@ public class DeclClass extends AbstractDeclClass {
 
         EnvironmentType env_types = compiler.environmentType;
         TypeDefinition type_def = compiler.environmentType.get(superclass.getName());
+
         if(!superclass.getName().toString().equals("Object") && type_def==null){  //!superclass.getClassDefinition().isClass()
             throw new ContextualError("superclass is not a Class in DeclClass", getLocation());
         }
 
         if(superclass.getName().toString().equals("Object")){
             superclass.setDefinition(env_types.OBJECT.getDefinition());
+            //superclass.setType(compiler.environmentType.defOfType(superclass.getName()).getType());
         }else{
             superclass.setDefinition(env_types.get(superclass.getName()));
+            //superclass.setType(compiler.environmentType.defOfType(superclass.getName()).getType());
         }
 
         ClassType classType = new ClassType(name.getName(), getLocation(), superclass.getClassDefinition());
         ClassDefinition classDefinition = new ClassDefinition(classType, getLocation(), superclass.getClassDefinition());
-//        EnvironmentExp env_local =  classDefinition.getMembers();
 
         try{
             name.setDefinition(classDefinition);
-            name.setType(classType);
+            //name.setType(classType);
             env_types.declareClass(name.getName(), classType.getDefinition());
         }catch (EnvironmentType.DoubleDefException e){
-            throw new ContextualError("Error, class already declared in DeclClass", this.getLocation());
+            throw new ContextualError("Error, Class already declared in DeclClass", this.getLocation());
         }
         LOG.debug("verifyClass DeclClass: end");
     }
