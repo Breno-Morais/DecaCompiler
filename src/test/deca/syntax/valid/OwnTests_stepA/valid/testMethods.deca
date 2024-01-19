@@ -7,12 +7,17 @@
 // Historique:
 //    cree le 22/12/2023
 
+
+class B{
+    int b;
+}
+
 class A {
 	protected int x ;
 	int getX() {
 		return x ;
 	}
-	void setX(int x) {
+	void setX(int x, B b) {
 		this.x = x ;
 	}
 }

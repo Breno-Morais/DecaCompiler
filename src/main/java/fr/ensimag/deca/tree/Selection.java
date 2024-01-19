@@ -19,7 +19,6 @@ public class Selection extends AbstractIdentifier {
     private static final Logger LOG = Logger.getLogger(Identifier.class);
     private AbstractExpr obj;
     private AbstractIdentifier field;
-
     private Symbol name;
 
     public Selection(AbstractExpr obj, AbstractIdentifier field, Symbol name) {

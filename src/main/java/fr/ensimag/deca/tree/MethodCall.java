@@ -1,15 +1,15 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
+import fr.ensimag.deca.tools.SymbolTable;
+import fr.ensimag.ima.pseudocode.GPRegister;
 
 import java.io.PrintStream;
+import java.util.List;
 
 public class MethodCall extends AbstractExpr {
     private AbstractExpr obj;
@@ -47,7 +47,29 @@ public class MethodCall extends AbstractExpr {
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        // Vérifie que l'objet sur lequel est appelée la méthode est une classe
+        Type typeObj = this.obj.verifyExpr(compiler, localEnv, currentClass);
+        if (!typeObj.isClass()) {
+            throw new ContextualError("Object must be a class in MethodCall", getLocation());
+        }
+
+        // Vérifie que la classe possède la méthode
+        ClassType classType = (ClassType) typeObj;
+        SymbolTable.Symbol methodName = this.meth.getName();
+        ExpDefinition methodDef = classType.getDefinition().getMembers().get(methodName);
+        if (methodDef == null || !(methodDef instanceof MethodDefinition)){
+            throw new ContextualError("The method '" + methodName.toString() + "' doesn't exist in MethodCall", getLocation());
+        }
+        MethodDefinition methodDefOk = (MethodDefinition) methodDef;
+
+        //Vérifie les paramètres de la méthode
+        Signature signature = methodDefOk.getSignature();
+        signature.verifyParameters(compiler, this.param.getList(), getLocation(), localEnv, currentClass);
+
+        //SetType
+        Type returnType = signature.getReturnType();
+        setType(returnType);
+        return returnType;
     }
 
     @Override

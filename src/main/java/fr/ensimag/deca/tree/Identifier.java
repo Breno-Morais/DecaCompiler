@@ -193,7 +193,7 @@ public class Identifier extends AbstractIdentifier {
         LOG.debug("verifyType Identifier : start");
         TypeDefinition typeDef = compiler.environmentType.defOfType(this.getName());
         if (typeDef == null){
-            throw new ContextualError (getName() + " is an invalid type ", getLocation());
+            throw new ContextualError (getName() + " is an invalid type in Identifier", getLocation());
         }
         this.setDefinition(typeDef);
         Type type = typeDef.getType();
@@ -245,5 +245,10 @@ public class Identifier extends AbstractIdentifier {
             compiler.addInstruction(new LOAD(new RegisterOffset(getFieldDefinition().getIndex(), register), register));
         } else
             compiler.addInstruction(new LOAD(getAddress(), Register.getR(registerNumber)));
+    }
+
+    @Override
+    public Type getType() {
+        return this.getDefinition().getType();
     }
 }

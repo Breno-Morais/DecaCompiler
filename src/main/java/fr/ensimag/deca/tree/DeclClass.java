@@ -59,19 +59,19 @@ public class DeclClass extends AbstractDeclClass {
     protected void verifyClass(DecacCompiler compiler) throws ContextualError {
         //verifier le nom des classes et la hiérarchie de classes
         LOG.debug("verifyClass DeclClass: start");
-        //on ajoute que le nom des classes dans l'environnement
-        LOG.debug("name = " + name.prettyPrint());
-        LOG.debug("superclass.name = " + superclass.getName());
-        if (superclass.getName().toString() == "Object"){
-            superclass.setDefinition(compiler.environmentType.OBJECT.getDefinition());
-        } else {
-            superclass.setDefinition(compiler.environmentType.get(superclass.getName()));
-        }
+
         EnvironmentType env_types = compiler.environmentType;
         TypeDefinition type_def = compiler.environmentType.get(superclass.getName());
         if(!superclass.getName().toString().equals("Object") && type_def==null){  //!superclass.getClassDefinition().isClass()
             throw new ContextualError("superclass is not a Class in DeclClass", getLocation());
         }
+
+        if(superclass.getName().toString().equals("Object")){
+            superclass.setDefinition(env_types.OBJECT.getDefinition());
+        }else{
+            superclass.setDefinition(env_types.get(superclass.getName()));
+        }
+
         ClassType classType = new ClassType(name.getName(), getLocation(), superclass.getClassDefinition());
         ClassDefinition classDefinition = new ClassDefinition(classType, getLocation(), superclass.getClassDefinition());
 //        EnvironmentExp env_local =  classDefinition.getMembers();
@@ -90,9 +90,10 @@ public class DeclClass extends AbstractDeclClass {
             throws ContextualError {
         LOG.debug("verifyClassMembers DeclClass: start");
         EnvironmentType env_types = compiler.environmentType;   //on récupère l'environnement des types
-
+        //TODO rajouter toutes les verif : condition et affectation dans le poly
         listField.verifyListClassMembers(compiler, superclass.getClassDefinition(), name.getClassDefinition());
         listMethod.verifyListClassMembers(compiler, superclass.getClassDefinition(), name.getClassDefinition());
+
 
         LOG.debug("verifyClassMembers DeclClass: end");
     }
@@ -100,7 +101,7 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verifyClassBody DeclClass: start");
-
+        //TODO faire la vérification de env_exp
         listField.verifyListClassBody(compiler, superclass.getClassDefinition(), name.getClassDefinition());
         listMethod.verifyListClassBody(compiler, superclass.getClassDefinition(), name.getClassDefinition());
 
