@@ -53,8 +53,17 @@ public class Assign extends AbstractBinaryExpr {
         DAddr leftAddress = leftOperandId.getExpDefinition().getOperand();
 
         if(getLeftOperand() instanceof Identifier) {
-            getRightOperand().codeGen(compiler, 2);
-            compiler.addInstruction(new STORE(Register.R2, leftAddress));
+            if(((Identifier) getLeftOperand()).getDefinition().isField()) {
+                int fieldIndex = ((Identifier) getLeftOperand()).getFieldDefinition().getIndex();
+                compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R2));
+
+                getRightOperand().codeGen(compiler, 3);
+
+                compiler.addInstruction(new STORE(Register.R3, new RegisterOffset(fieldIndex, Register.R2)));
+            } else {
+                getRightOperand().codeGen(compiler, 3);
+                compiler.addInstruction(new STORE(Register.R2, leftAddress));
+            }
 
         } else if(getLeftOperand() instanceof Selection) {
             compiler.addInstruction(new LOAD(leftOperandId.getAddress(), Register.R2));
@@ -67,11 +76,6 @@ public class Assign extends AbstractBinaryExpr {
             compiler.addInstruction(new STORE(Register.R3, new RegisterOffset(leftOperandId.getFieldDefinition().getIndex(), Register.R2)));
         } else
             throw new DecacInternalError("Invalid left operand of assign operation");
-    }
-
-    @Override
-    public void addImaInstruction(DecacCompiler compiler, DVal value, GPRegister register) {
-        throw new UnsupportedOperationException("Not applicable");
     }
 
     public void decompile(IndentPrintStream s) {

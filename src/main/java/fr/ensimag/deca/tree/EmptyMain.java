@@ -19,8 +19,6 @@ public class EmptyMain extends AbstractMain {
     protected void verifyMain(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verifyMain EmptyMain : start");
         LOG.debug("verifyMain EmptyMain : end");
-        throw new UnsupportedOperationException("not yet implemented");
-
     }
 
     @Override

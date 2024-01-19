@@ -49,9 +49,4 @@ public class Not extends AbstractUnaryExpr {
 
         }
     }
-
-    @Override
-    public void addImaInstruction(DecacCompiler compiler, DVal value, GPRegister register) {
-        // Do nothing, should not be called
-    }
 }
