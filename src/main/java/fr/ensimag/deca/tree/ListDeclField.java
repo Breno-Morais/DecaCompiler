@@ -67,6 +67,7 @@ public class ListDeclField extends TreeList<AbstractDeclField>{
         compiler.addComment("Sauvegarde des registres");
         for(GPRegister reg : regsUsed) {
             compiler.addInstruction(new PUSH(reg));
+            compiler.addToStack(1);
         }
 
         compiler.addComment("Initialisation des registres");
@@ -89,6 +90,7 @@ public class ListDeclField extends TreeList<AbstractDeclField>{
         compiler.addComment("Restauration des registres");
         for(GPRegister reg : regsUsed) {
             compiler.addInstruction(new POP(reg));
+            compiler.removeFromStack(1);
         }
     }
 }

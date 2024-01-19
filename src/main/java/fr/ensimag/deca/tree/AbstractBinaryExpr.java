@@ -121,6 +121,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
             if(register == null)
                 break;
             compiler.addInstruction(new PUSH(register));
+            compiler.addToStack(1);
         }
     }
 
@@ -129,6 +130,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
             if(register == null)
                 break;
             compiler.addInstruction(new POP(register));
+            compiler.removeFromStack(1);
         }
     }
 
