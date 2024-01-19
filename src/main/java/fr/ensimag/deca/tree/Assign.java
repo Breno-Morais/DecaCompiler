@@ -57,7 +57,7 @@ public class Assign extends AbstractBinaryExpr {
             compiler.addInstruction(new STORE(Register.R2, leftAddress));
 
         } else if(getLeftOperand() instanceof Selection) {
-            compiler.addInstruction(new LOAD(leftOperandId.getAddress(), Register.R2)); // Change to get the address of the obj
+            compiler.addInstruction(new LOAD(leftOperandId.getAddress(), Register.R2));
             /* TODO: Error Handler
             compiler.addInstruction(new CMP(new NullOperand(), ));
             compiler.addInstruction(new BEQ(new Label("dereferencement_null")));
