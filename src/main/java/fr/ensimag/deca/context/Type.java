@@ -82,4 +82,8 @@ public abstract class Type {
     }
 
     public abstract DVal getDefaultValue(); // TODO: Review every default initialization value
+
+    public boolean isSubType(Type superType) {
+        return true;
+    }
 }

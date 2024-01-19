@@ -36,8 +36,11 @@ public class DeclMethod extends AbstractDeclMethod {
     public void verifyClassMembers(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition classe, int index) throws ContextualError {
         LOG.debug("verifyClassMembers DeclMethod: start");
         Signature signature = new Signature();
+        Type type_def = type.verifyType(compiler);
+
         parameters.verifyListClassMembers(compiler, signature);
-        MethodDefinition methodDefinition = new MethodDefinition(type.verifyType(compiler), getLocation(), signature, index);
+
+        MethodDefinition methodDefinition = new MethodDefinition(type_def, getLocation(), signature, index);
         try{
             classe.getMembers().declare(name.getName(), methodDefinition);
             classe.incNumberOfMethods();
@@ -49,7 +52,7 @@ public class DeclMethod extends AbstractDeclMethod {
 //        Type superType = superMethodDefinition.getType();
 //        Signature superSignature = superMethodDefinition.getSignature();
 //        if(superMethodDefinition != null){
-//            if(!superSignature.equals(signature) && !superType.isSubType(superType)){
+//            if(!superSignature.equals(signature) && !type_def.isSubType(superType)){
 //                throw new ContextualError("Method definition not compatible with the superClass in DeclMethod", getLocation());
 //            }
 //        }

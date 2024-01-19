@@ -4,6 +4,7 @@ import fr.ensimag.deca.codegen.MethodName;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.ima.pseudocode.instructions.RTS;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -59,32 +60,35 @@ public class DeclClass extends AbstractDeclClass {
     protected void verifyClass(DecacCompiler compiler) throws ContextualError {
         //verifier le nom des classes et la hiérarchie de classes
         LOG.debug("verifyClass DeclClass: start");
+        ClassDefinition superClassDefinition = (ClassDefinition) compiler.environmentType.defOfType(superclass.getName());
 
         EnvironmentType env_types = compiler.environmentType;
-        TypeDefinition type_def = compiler.environmentType.get(superclass.getName());
+//        TypeDefinition type_def = compiler.environmentType.get(superclass.getName());
+//
+//        if(!superclass.getName().toString().equals("Object") && type_def==null){  //!superclass.getClassDefinition().isClass()
+//            throw new ContextualError("superclass is not a Class in DeclClass", getLocation());
+//        }
 
-        if(!superclass.getName().toString().equals("Object") && type_def==null){  //!superclass.getClassDefinition().isClass()
-            throw new ContextualError("superclass is not a Class in DeclClass", getLocation());
-        }
 
-        if(superclass.getName().toString().equals("Object")){
-            superclass.setDefinition(env_types.OBJECT.getDefinition());
-            //superclass.setType(compiler.environmentType.defOfType(superclass.getName()).getType());
-        }else{
-            superclass.setDefinition(env_types.get(superclass.getName()));
-            //superclass.setType(compiler.environmentType.defOfType(superclass.getName()).getType());
-        }
-
-        ClassType classType = new ClassType(name.getName(), getLocation(), superclass.getClassDefinition());
-        ClassDefinition classDefinition = new ClassDefinition(classType, getLocation(), superclass.getClassDefinition());
-
+        ClassType classType = new ClassType(name.getName(), getLocation(), superClassDefinition);
         try{
-            name.setDefinition(classDefinition);
-            //name.setType(classType);
+            name.setDefinition(classType.getDefinition());
+            name.setType(classType.getDefinition().getType());
             env_types.declareClass(name.getName(), classType.getDefinition());
         }catch (EnvironmentType.DoubleDefException e){
             throw new ContextualError("Error, Class already declared in DeclClass", this.getLocation());
         }
+
+//        if(superclass.getName().toString().equals("Object")){
+//            superclass.setDefinition(classType.getDefinition());
+//            superclass.setType(compiler.environmentType.defOfType(superclass.getName()).getType());
+//        }else{
+//            superclass.setDefinition(env_types.get(superclass.getName()));
+//            superclass.setType(compiler.environmentType.defOfType(superclass.getName()).getType());
+//        }
+        superclass.setDefinition(compiler.environmentType.defOfType(superclass.getName()));
+        superclass.setType(compiler.environmentType.defOfType(superclass.getName()).getType());
+
         LOG.debug("verifyClass DeclClass: end");
     }
 
