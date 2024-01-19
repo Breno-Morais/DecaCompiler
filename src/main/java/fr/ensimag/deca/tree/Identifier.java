@@ -246,9 +246,4 @@ public class Identifier extends AbstractIdentifier {
         } else
             compiler.addInstruction(new LOAD(getAddress(), Register.getR(registerNumber)));
     }
-
-    @Override
-    public Type getType() {
-        return this.getDefinition().getType();
-    }
 }

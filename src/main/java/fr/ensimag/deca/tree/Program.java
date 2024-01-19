@@ -36,8 +36,23 @@ public class Program extends AbstractProgram {
     }
     private ListDeclClass classes;
     private AbstractMain main;
-
     private static int indexGB = 3;
+    private static int maxStack = 0;
+    private static int currentStack = 0;
+
+    public static void addToStack(int i) {
+        currentStack += 1;
+        if(maxStack < currentStack)
+            maxStack = currentStack;
+    }
+
+    public static void removeFromStack(int i) {
+        currentStack -= i;
+    }
+
+    public static int getMaxStack() {
+        return maxStack;
+    }
 
     @Override
     public void verifyProgram(DecacCompiler compiler) throws ContextualError {
@@ -51,10 +66,6 @@ public class Program extends AbstractProgram {
 
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
-        // TODO: TSTO with the maximum size of the pile
-        // TODO: Error handler
-        compiler.addInstruction(new ADDSP(main.getNumGlobalVariables())); // TODO: Add size of method table
-
         // Create the Method Table
         compiler.addComment("--------------------------------------------------");
         compiler.addComment("      Construction des tables des methodes        ");
@@ -95,8 +106,6 @@ public class Program extends AbstractProgram {
             incrementIndexGB();
         }
 
-        // Generate the code of the fields and methods of the classes
-
         // Create Main Program
         compiler.addComment("--------------------------------------------------");
         compiler.addComment("           Code du programme principal            ");
@@ -108,6 +117,11 @@ public class Program extends AbstractProgram {
         // Add The methods
         addObjectsCode(compiler);
         getClasses().addClassesMethods(compiler);
+
+        // Add header test
+        compiler.addFirst(new ADDSP(getIndexGB() + main.getNumGlobalVariables()));
+        // compiler.addFirst(new BOV(new Label("pile_pleine"))); // TODO: Error handler
+        compiler.addFirst(new TSTO(getMaxStack()));
     }
 
     @Override

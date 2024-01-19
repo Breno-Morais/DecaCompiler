@@ -59,6 +59,8 @@ public class Main extends AbstractMain {
     // affichage en flottant de la moitié du carré d'un entier
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
+        DecacCompiler blockCompiler = new DecacCompiler(compiler.getCompilerOptions(), compiler.getSource());
+
         compiler.addComment("Variables declarations:");
         declVariables.codeGenListVariables(compiler);
 

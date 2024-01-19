@@ -115,15 +115,15 @@ public class Selection extends AbstractIdentifier {
         if(obj instanceof This) {
             RegisterOffset implicitThis = new RegisterOffset(-2, Register.LB);
             compiler.addInstruction(new LOAD(implicitThis, register));
-
-            /* TODO: Error Handler
-            compiler.addInstruction(new CMP(new NullOperand(), register));
-            compiler.addInstruction(new BEQ(new Label("dereferencement_null")));
-            */
         }
         else if(obj instanceof AbstractIdentifier) {
             compiler.addInstruction(new LOAD(((AbstractIdentifier) obj).getAddress(), register));
         } else throw new DecacInternalError("Selection of impossible type");
+
+        /* TODO: Error Handler
+        compiler.addInstruction(new CMP(new NullOperand(), register));
+        compiler.addInstruction(new BEQ(new Label("dereferencement_null")));
+        */
 
         compiler.addInstruction(new LOAD(new RegisterOffset(getFieldDefinition().getIndex(), register), register));
     }
