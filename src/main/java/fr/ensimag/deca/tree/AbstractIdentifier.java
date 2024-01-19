@@ -103,11 +103,6 @@ public abstract class AbstractIdentifier extends AbstractLValue {
         return getName().getName();
     }
 
-    @Override
-    public Type getType() {
-        return this.getDefinition().getType();
-    }
-
     public DAddr getAddress() {
         if(getDefinition().isExpression())
             return getExpDefinition().getOperand();
