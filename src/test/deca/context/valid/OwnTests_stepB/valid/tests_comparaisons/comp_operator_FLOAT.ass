@@ -1,0 +1,359 @@
+; start main program
+; Main program
+; Variables declarations:
+	LOAD #0x1.0p0, R2
+	CMP #0x1.0p1, R2
+; boolean dans AbstractBin
+; on passe dans codeGenBool
+	BLE E_SiTrue0
+	LOAD #0, R2
+	BRA E_finDecl0
+E_SiTrue0:
+	LOAD #1, R2
+E_finDecl0:
+	STORE R2, 2(GB)
+; Beginning of main instructions:
+	WSTR "inf ou egal"
+	WNL
+; Beginning of IF ELSE
+	LOAD 2(GB), R0
+	CMP #0, R0
+	BNE E_Sioui.0
+	BRA E_Sinon.0
+E_Sioui.0:
+	WSTR "true"
+	WNL
+	WSTR "nombre hexa = "
+; Print AbstractExpr 
+	LOAD #0x1.0p-1, R1
+	WFLOATX
+	WNL
+	BRA E_Fin.0
+E_Sinon.0:
+	WSTR "false"
+	WNL
+E_Fin.0:
+	LOAD #0x1.0p1, R2
+	CMP #0x1.0p1, R2
+; boolean dans AbstractBin
+; on passe dans codeGenBool
+	BLE E_SiTrue1
+	LOAD #0, R2
+	BRA E_finDecl1
+E_SiTrue1:
+	LOAD #1, R2
+E_finDecl1:
+	STORE R2, 2(GB)
+; Beginning of IF ELSE
+	LOAD 2(GB), R0
+	CMP #0, R0
+	BNE E_Sioui.1
+	BRA E_Sinon.1
+E_Sioui.1:
+	WSTR "true"
+	WNL
+	BRA E_Fin.1
+E_Sinon.1:
+	WSTR "false"
+	WNL
+E_Fin.1:
+	LOAD #0x1.8p1, R2
+	CMP #0x1.0p1, R2
+; boolean dans AbstractBin
+; on passe dans codeGenBool
+	BLE E_SiTrue2
+	LOAD #0, R2
+	BRA E_finDecl2
+E_SiTrue2:
+	LOAD #1, R2
+E_finDecl2:
+	STORE R2, 2(GB)
+; Beginning of IF ELSE
+	LOAD 2(GB), R0
+	CMP #0, R0
+	BNE E_Sioui.2
+	BRA E_Sinon.2
+E_Sioui.2:
+	WSTR "true"
+	WNL
+	BRA E_Fin.2
+E_Sinon.2:
+	WSTR "false"
+	WNL
+E_Fin.2:
+	WSTR "inf str"
+	WNL
+	LOAD #0x1.0p0, R2
+	CMP #0x1.0p1, R2
+; boolean dans AbstractBin
+; on passe dans codeGenBool
+	BLT E_SiTrue3
+	LOAD #0, R2
+	BRA E_finDecl3
+E_SiTrue3:
+	LOAD #1, R2
+E_finDecl3:
+	STORE R2, 2(GB)
+; Beginning of IF ELSE
+	LOAD 2(GB), R0
+	CMP #0, R0
+	BNE E_Sioui.3
+	BRA E_Sinon.3
+E_Sioui.3:
+	WSTR "true"
+	WNL
+	BRA E_Fin.3
+E_Sinon.3:
+	WSTR "false"
+	WNL
+E_Fin.3:
+	LOAD #0x1.8p1, R2
+	CMP #0x1.0p1, R2
+; boolean dans AbstractBin
+; on passe dans codeGenBool
+	BLT E_SiTrue4
+	LOAD #0, R2
+	BRA E_finDecl4
+E_SiTrue4:
+	LOAD #1, R2
+E_finDecl4:
+	STORE R2, 2(GB)
+; Beginning of IF ELSE
+	LOAD 2(GB), R0
+	CMP #0, R0
+	BNE E_Sioui.4
+	BRA E_Sinon.4
+E_Sioui.4:
+	WSTR "true"
+	WNL
+	BRA E_Fin.4
+E_Sinon.4:
+	WSTR "false"
+	WNL
+E_Fin.4:
+	WSTR "égalit"
+	WNL
+	LOAD #0x1.0p0, R2
+	CMP #0x1.0p1, R2
+; boolean dans AbstractBin
+; on passe dans codeGenBool
+	BEQ E_SiTrue5
+	LOAD #0, R2
+	BRA E_finDecl5
+E_SiTrue5:
+	LOAD #1, R2
+E_finDecl5:
+	STORE R2, 2(GB)
+; Beginning of IF ELSE
+	LOAD 2(GB), R0
+	CMP #0, R0
+	BNE E_Sioui.5
+	BRA E_Sinon.5
+E_Sioui.5:
+	WSTR "true"
+	WNL
+	BRA E_Fin.5
+E_Sinon.5:
+	WSTR "false"
+	WNL
+E_Fin.5:
+	LOAD #0x1.0p0, R2
+	CMP #0x1.0p0, R2
+; boolean dans AbstractBin
+; on passe dans codeGenBool
+	BEQ E_SiTrue6
+	LOAD #0, R2
+	BRA E_finDecl6
+E_SiTrue6:
+	LOAD #1, R2
+E_finDecl6:
+	STORE R2, 2(GB)
+; Beginning of IF ELSE
+	LOAD 2(GB), R0
+	CMP #0, R0
+	BNE E_Sioui.6
+	BRA E_Sinon.6
+E_Sioui.6:
+	WSTR "true"
+	WNL
+	BRA E_Fin.6
+E_Sinon.6:
+	WSTR "false"
+	WNL
+E_Fin.6:
+	WSTR "pas egal"
+	WNL
+	LOAD #0x1.0p0, R2
+	CMP #0x1.0p0, R2
+; boolean dans AbstractBin
+; on passe dans codeGenBool
+	BNE E_SiTrue7
+	LOAD #0, R2
+	BRA E_finDecl7
+E_SiTrue7:
+	LOAD #1, R2
+E_finDecl7:
+	STORE R2, 2(GB)
+; Beginning of IF ELSE
+	LOAD 2(GB), R0
+	CMP #0, R0
+	BNE E_Sioui.7
+	BRA E_Sinon.7
+E_Sioui.7:
+	WSTR "true"
+	WNL
+	BRA E_Fin.7
+E_Sinon.7:
+	WSTR "false"
+	WNL
+E_Fin.7:
+	LOAD #0x1.0p0, R2
+	CMP #0x1.0p1, R2
+; boolean dans AbstractBin
+; on passe dans codeGenBool
+	BNE E_SiTrue8
+	LOAD #0, R2
+	BRA E_finDecl8
+E_SiTrue8:
+	LOAD #1, R2
+E_finDecl8:
+	STORE R2, 2(GB)
+; Beginning of IF ELSE
+	LOAD 2(GB), R0
+	CMP #0, R0
+	BNE E_Sioui.8
+	BRA E_Sinon.8
+E_Sioui.8:
+	WSTR "true"
+	WNL
+	BRA E_Fin.8
+E_Sinon.8:
+	WSTR "false"
+	WNL
+E_Fin.8:
+	WSTR "supp ou egal"
+	WNL
+	LOAD #0x1.8p1, R2
+	CMP #0x1.0p1, R2
+; boolean dans AbstractBin
+; on passe dans codeGenBool
+	BGE E_SiTrue9
+	LOAD #0, R2
+	BRA E_finDecl9
+E_SiTrue9:
+	LOAD #1, R2
+E_finDecl9:
+	STORE R2, 2(GB)
+; Beginning of IF ELSE
+	LOAD 2(GB), R0
+	CMP #0, R0
+	BNE E_Sioui.9
+	BRA E_Sinon.9
+E_Sioui.9:
+	WSTR "true"
+	WNL
+	BRA E_Fin.9
+E_Sinon.9:
+	WSTR "false"
+	WNL
+E_Fin.9:
+	LOAD #0x1.0p1, R2
+	CMP #0x1.0p1, R2
+; boolean dans AbstractBin
+; on passe dans codeGenBool
+	BGE E_SiTrue10
+	LOAD #0, R2
+	BRA E_finDecl10
+E_SiTrue10:
+	LOAD #1, R2
+E_finDecl10:
+	STORE R2, 2(GB)
+; Beginning of IF ELSE
+	LOAD 2(GB), R0
+	CMP #0, R0
+	BNE E_Sioui.10
+	BRA E_Sinon.10
+E_Sioui.10:
+	WSTR "true"
+	WNL
+	BRA E_Fin.10
+E_Sinon.10:
+	WSTR "false"
+	WNL
+E_Fin.10:
+	LOAD #0x1.0p0, R2
+	CMP #0x1.0p1, R2
+; boolean dans AbstractBin
+; on passe dans codeGenBool
+	BGE E_SiTrue11
+	LOAD #0, R2
+	BRA E_finDecl11
+E_SiTrue11:
+	LOAD #1, R2
+E_finDecl11:
+	STORE R2, 2(GB)
+; Beginning of IF ELSE
+	LOAD 2(GB), R0
+	CMP #0, R0
+	BNE E_Sioui.11
+	BRA E_Sinon.11
+E_Sioui.11:
+	WSTR "true"
+	WNL
+	BRA E_Fin.11
+E_Sinon.11:
+	WSTR "false"
+	WNL
+E_Fin.11:
+	WSTR "supp str"
+	WNL
+	LOAD #0x1.8p1, R2
+	CMP #0x1.0p1, R2
+; boolean dans AbstractBin
+; on passe dans codeGenBool
+	BGT E_SiTrue12
+	LOAD #0, R2
+	BRA E_finDecl12
+E_SiTrue12:
+	LOAD #1, R2
+E_finDecl12:
+	STORE R2, 2(GB)
+; Beginning of IF ELSE
+	LOAD 2(GB), R0
+	CMP #0, R0
+	BNE E_Sioui.12
+	BRA E_Sinon.12
+E_Sioui.12:
+	WSTR "true"
+	WNL
+	BRA E_Fin.12
+E_Sinon.12:
+	WSTR "false"
+	WNL
+E_Fin.12:
+	LOAD #0x1.0p0, R2
+	CMP #0x1.0p1, R2
+; boolean dans AbstractBin
+; on passe dans codeGenBool
+	BGT E_SiTrue13
+	LOAD #0, R2
+	BRA E_finDecl13
+E_SiTrue13:
+	LOAD #1, R2
+E_finDecl13:
+	STORE R2, 2(GB)
+; Beginning of IF ELSE
+	LOAD 2(GB), R0
+	CMP #0, R0
+	BNE E_Sioui.13
+	BRA E_Sinon.13
+E_Sioui.13:
+	WSTR "true"
+	WNL
+	BRA E_Fin.13
+E_Sinon.13:
+	WSTR "false"
+	WNL
+E_Fin.13:
+	HALT
+; end main program
