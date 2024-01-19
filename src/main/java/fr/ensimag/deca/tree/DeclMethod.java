@@ -4,11 +4,8 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.*;
-import fr.ensimag.ima.pseudocode.instructions.POP;
-import fr.ensimag.ima.pseudocode.instructions.PUSH;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.log4j.Logger;
-import fr.ensimag.ima.pseudocode.instructions.ADDSP;
-import fr.ensimag.ima.pseudocode.instructions.RTS;
 
 import java.io.PrintStream;
 import java.util.LinkedList;
@@ -96,6 +93,8 @@ public class DeclMethod extends AbstractDeclMethod {
 
     @Override
     public void codeGenMethod(DecacCompiler compiler, String className) {
+        DecacCompiler blockCompiler = new DecacCompiler(compiler.getCompilerOptions(), compiler.getSource());
+
         // Before everything, it defines the address of the parameters
         for (int i = 0; i < parameters.size(); i++) {
             DAddr addr = new RegisterOffset(-3 - i, Register.LB);
@@ -104,32 +103,36 @@ public class DeclMethod extends AbstractDeclMethod {
 
         compiler.addComment("---------- Code de la methode " + getName() + " dans la classe " + className);
         compiler.addLabel(new Label("code." + className + "." + getName()));
-        // TODO: Add pile shenanigans
-        compiler.addInstruction(new ADDSP(parameters.size()));
 
         // Get all the registers used
         List<GPRegister> regsUsed =  methodBody.getRegisters();
 
         // Register Saving
-        compiler.addComment("Sauvegarde des registres");
+        blockCompiler.addComment("Sauvegarde des registres");
         for(GPRegister reg : regsUsed) {
-            compiler.addInstruction(new PUSH(reg));
-            compiler.addToStack(1);
+            blockCompiler.addInstruction(new PUSH(reg));
+            blockCompiler.addToStack(1);
         }
 
         // Main code
-        methodBody.codeGenMethod(compiler);
+        methodBody.codeGenMethod(blockCompiler);
 
         // TODO: Error handling
-        compiler.addLabel(new Label("fin." + className + "." + getName()));
+        blockCompiler.addLabel(new Label("fin." + className + "." + getName()));
         // Register Restauration
-        compiler.addComment("Restauration des registres");
+        blockCompiler.addComment("Restauration des registres");
         for(GPRegister reg : regsUsed) {
-            compiler.addInstruction(new POP(reg));
-            compiler.removeFromStack(1);
+            blockCompiler.addInstruction(new POP(reg));
+            blockCompiler.removeFromStack(1);
         }
 
-        compiler.addLabel(new Label("fin." + className + "." + getName()));
-        compiler.addInstruction(new RTS());
+        blockCompiler.addLabel(new Label("fin." + className + "." + getName()));
+        blockCompiler.addInstruction(new RTS());
+
+        blockCompiler.addInstruction(new ADDSP(parameters.size())); // TODO: Put local variables instead
+        blockCompiler.addFirst(new BOV(new Label("pile_pleine")));
+        blockCompiler.addFirst(new TSTO(blockCompiler.getMaxStack()));
+
+        compiler.append(blockCompiler);
     }
 }
