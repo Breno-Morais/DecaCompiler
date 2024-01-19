@@ -15,7 +15,6 @@ import java.io.PrintStream;
 public class Return extends AbstractInst {
     private static final Logger LOG = Logger.getLogger(Identifier.class);
     private AbstractExpr expression;
-
     private Label endMethod = new Label("PLACEHOLDER"); // TODO: Assign the class and method in STEP B
 
     public Return(AbstractExpr expression) {

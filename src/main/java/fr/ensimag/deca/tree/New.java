@@ -28,7 +28,7 @@ public class New extends AbstractUnaryExpr {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
                            ClassDefinition currentClass) throws ContextualError {
         LOG.debug("verifyExpr New : start");
-
+        
         LOG.debug("verifyExpr New : end");
         throw new UnsupportedOperationException("not yet implemented");
     }

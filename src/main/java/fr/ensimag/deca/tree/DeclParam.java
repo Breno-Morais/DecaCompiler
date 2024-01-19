@@ -31,7 +31,8 @@ public class DeclParam extends AbstractDeclParam {
         }
 
         signature.add(type.verifyType(compiler));
-        //ident.setDefinition();
+
+//        ident.setDefinition(type.getDefinition());   //TODO : faire les setDefinition() et setType()
         ident.setType(type.getType());
         LOG.debug("verifyClassMembers DeclParam: end");
     }
@@ -42,7 +43,7 @@ public class DeclParam extends AbstractDeclParam {
     public void verifyClassBody(DecacCompiler compiler, EnvironmentExp env_exp_params) throws ContextualError {
         LOG.debug("verifyClassBody DeclParam: start");
         try{
-            env_exp_params.declare(ident.getName(), ident.getExpDefinition());  //TODO : pas sûr des paramètres
+            env_exp_params.declare(ident.getName(), ident.getExpDefinition());
         }catch (EnvironmentExp.DoubleDefException e){
             throw new ContextualError("Error on type declaration in DeclParam", getLocation());
         }

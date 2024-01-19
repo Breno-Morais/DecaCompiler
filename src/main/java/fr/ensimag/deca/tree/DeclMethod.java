@@ -33,10 +33,8 @@ public class DeclMethod extends AbstractDeclMethod {
     /**
      * Pass 2 of [SyntaxeContextuelle]
      */
-    public void verifyClassMembers(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition classe, int index) throws ContextualError {   //TODO manque des paramètres : env_types, super, class
+    public void verifyClassMembers(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition classe, int index) throws ContextualError {
         LOG.debug("verifyClassMembers DeclMethod: start");
-        //Signature signature = parameters.verifyMachin(compiler);
-        //TODO il faut faire d'abord ListParam et Param avec une fonction qui renvoie la Signature
         Signature signature = new Signature();
         parameters.verifyListClassMembers(compiler, signature);
 
@@ -44,12 +42,11 @@ public class DeclMethod extends AbstractDeclMethod {
         try{
             classe.getMembers().declare(name.getName(), methodDefinition);
             classe.incNumberOfMethods();
-            //incrémenter le nb de méthodes (pareil pour les field)
         }catch (EnvironmentExp.DoubleDefException e){
             throw new ContextualError("Error, field already declared in DeclMethod", this.getLocation());
         }
 
-        //verifier si la méthode est déjà déclarée dans env_types. Alors il faut vérifier que elle a le même prototype que celle enregistrée
+        //TODO : verifier si la méthode est déjà déclarée dans env_types. Alors il faut vérifier que elle a le même prototype que celle enregistrée
 
         LOG.debug("verifyClassMembers DeclMethod: end");
     }
@@ -57,9 +54,12 @@ public class DeclMethod extends AbstractDeclMethod {
     /**
      * Pass 3 of [SyntaxeContextuelle]
      */
-    public void verifyClassBody(DecacCompiler compiler, EnvironmentExp env_exp, ClassDefinition classe) throws ContextualError {    //TODO manque des paramètres : env_types, super, class
+    public void verifyClassBody(DecacCompiler compiler, EnvironmentExp env_exp, ClassDefinition classe) throws ContextualError {
         LOG.debug("verifyClassBody DeclMethod: start");
-        //type est le type de retour    //TODO pour etape C de Breno
+        //type est le type de retour
+        MethodDefinition methodDefinition = (MethodDefinition) classe.getMembers().get(name.getName());
+        methodDefinition.getSignature().setReturnType(type.getType());  //enregistrement de la valeur de retour dans signature
+
         EnvironmentExp env_exp_params = parameters.verifyListClassBody(compiler, classe);
         methodBody.verifyClassBody(compiler, env_exp, env_exp_params, classe, type);
         //TODO : une declaration à ajouter ?
