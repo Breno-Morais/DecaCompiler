@@ -13,9 +13,4 @@ public abstract class AbstractLiteral extends AbstractExpr{
     protected void codeGen(DecacCompiler compiler, int registerNumber) {
         compiler.addInstruction(new LOAD(getDValue(), Register.getR(registerNumber)));
     }
-
-    @Override
-    public void addImaInstruction(DecacCompiler compiler, DVal value, GPRegister register) {
-        // Not necessary when codeGen in overriden
-    }
 }

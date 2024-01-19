@@ -13,6 +13,8 @@ import fr.ensimag.deca.context.VariableDefinition;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 
 import java.util.Objects;
 
@@ -101,11 +103,6 @@ public abstract class AbstractIdentifier extends AbstractLValue {
     @Override
     public String toString() {
         return getName().getName();
-    }
-
-    @Override
-    public Type getType() {
-        return this.getDefinition().getType();
     }
 
     public DAddr getAddress() {

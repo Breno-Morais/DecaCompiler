@@ -19,7 +19,7 @@ public class DeclField extends AbstractDeclField {
         this.visibility = visibility;
         this.type = type;
         this.field = field;
-        // field.setDefinition(new FieldDefinition());
+        //field.setDefinition(new FieldDefinition());
         this.initialization = initialization;
     }
 
