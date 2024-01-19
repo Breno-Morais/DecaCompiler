@@ -61,8 +61,15 @@ public class New extends AbstractUnaryExpr {
         DAddr methodTableAddr = ident.getClassDefinition().getMethodTableAddress();
         compiler.addInstruction(new LEA(methodTableAddr, Register.R0));
         compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(0, register)));
+
         compiler.addInstruction(new PUSH(register));
+        compiler.addToStack(1);
+
         compiler.addInstruction(new BSR(new Label("init." + ident)));
+        compiler.addToStack(2);
+        compiler.removeFromStack(2);
+
         compiler.addInstruction(new POP(register));
+        compiler.removeFromStack(1);
     }
 }

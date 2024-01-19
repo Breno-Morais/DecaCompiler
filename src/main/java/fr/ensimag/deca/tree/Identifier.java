@@ -246,5 +246,4 @@ public class Identifier extends AbstractIdentifier {
         } else
             compiler.addInstruction(new LOAD(getAddress(), Register.getR(registerNumber)));
     }
-
 }

@@ -36,7 +36,6 @@ public class Program extends AbstractProgram {
     }
     private ListDeclClass classes;
     private AbstractMain main;
-
     private static int indexGB = 3;
 
     @Override
@@ -51,10 +50,6 @@ public class Program extends AbstractProgram {
 
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
-        // TODO: TSTO with the maximum size of the pile
-        // TODO: Error handler
-        compiler.addInstruction(new ADDSP(main.getNumGlobalVariables())); // TODO: Add size of method table
-
         // Create the Method Table
         compiler.addComment("--------------------------------------------------");
         compiler.addComment("      Construction des tables des methodes        ");
@@ -95,7 +90,9 @@ public class Program extends AbstractProgram {
             incrementIndexGB();
         }
 
-        // Generate the code of the fields and methods of the classes
+        // Add the Method table and the variable to the currentStack
+        compiler.addToStack(getIndexGB());
+        compiler.addToStack(main.getNumGlobalVariables());
 
         // Create Main Program
         compiler.addComment("--------------------------------------------------");
@@ -103,11 +100,15 @@ public class Program extends AbstractProgram {
         compiler.addComment("--------------------------------------------------");
 
         main.codeGenMain(compiler);
-        compiler.addInstruction(new HALT());
 
         // Add The methods
         addObjectsCode(compiler);
         getClasses().addClassesMethods(compiler);
+
+        // Add header test
+        compiler.addFirst(new ADDSP(getIndexGB() + main.getNumGlobalVariables() - 1));
+        // compiler.addFirst(new BOV(new Label("pile_pleine"))); // TODO: Error handler
+        compiler.addFirst(new TSTO(compiler.getMaxStack()));
     }
 
     @Override
@@ -135,7 +136,7 @@ public class Program extends AbstractProgram {
         compiler.addComment("---------- Code de la methode equals dans la classe Object");
         compiler.addLabel(new Label("code.Object.equals"));
         compiler.addInstruction(new TSTO(new ImmediateInteger(1)));
-        // TODO: compiler.addInstruction(new BOV(new Label("pile_pleine"));
+        compiler.addInstruction(new BOV(new Label("pile_pleine"))); // TODO: Error Handle
         compiler.addComment("Sauvegarde des registres");
         compiler.addInstruction(new PUSH(Register.R2));
 
@@ -158,6 +159,7 @@ public class Program extends AbstractProgram {
         compiler.addLabel(objEnd);
         compiler.addComment("Restauration des registres");
         compiler.addInstruction(new POP(Register.R2));
+        compiler.removeFromStack(1);
         compiler.addInstruction(new RTS());
     }
 

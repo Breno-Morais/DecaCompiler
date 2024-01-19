@@ -109,6 +109,14 @@ public class DecacCompiler {
     public void addInstruction(Instruction instruction, String comment) {
         program.addInstruction(instruction, comment);
     }
+
+    /**
+     * @see
+     * fr.ensimag.ima.pseudocode.IMAProgram#addFirst(fr.ensimag.ima.pseudocode.Instruction)
+     */
+    public void addFirst(Instruction instruction) {
+        program.addFirst(instruction);
+    }
     
     /**
      * @see 
@@ -254,6 +262,26 @@ public class DecacCompiler {
         DecaParser parser = new DecaParser(tokens);
         parser.setDecacCompiler(this);
         return parser.parseProgramAndManageErrors(err);
+    }
+
+    // Highest occupation of the stack at one point
+    private int maxStack = 0;
+
+    // Counter of stack of that moment of the code
+    private int currentStack = 0;
+
+    public void addToStack(int i) {
+        currentStack += i;
+        if(maxStack < currentStack)
+            maxStack = currentStack;
+    }
+
+    public void removeFromStack(int i) {
+        currentStack -= i;
+    }
+
+    public int getMaxStack() {
+        return maxStack;
     }
 
 }
