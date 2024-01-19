@@ -28,6 +28,7 @@ public class DeclField extends AbstractDeclField {
      */
     public void verifyClassMembers(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition classe, int index) throws ContextualError {
         LOG.debug("verifyClassMembers DeclField: start");
+
         Type type_def = type.verifyType(compiler);
         if(type_def.isVoid()){
             throw new ContextualError("type is Void in DeclField", getLocation());
@@ -36,6 +37,7 @@ public class DeclField extends AbstractDeclField {
             throw new ContextualError("env_exp_super(name) not defined in DeclField", getLocation());
         }
         Visibility visib = getStatusVisibility();
+
 
         FieldDefinition fieldDefinition = new FieldDefinition(type_def, getLocation(), visib, classe, index);
         try{

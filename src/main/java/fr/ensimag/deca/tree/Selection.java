@@ -32,15 +32,15 @@ public class Selection extends AbstractIdentifier {
         LOG.debug("verifyExpr Selection : start");
         Type typeObj = obj.verifyExpr(compiler, localEnv, currentClass);
         FieldDefinition def = field.getFieldDefinition();
-        if(def.getVisibility() == Visibility.PROTECTED){
+        //if(def.getVisibility() == Visibility.PROTECTED){
             //vérifier que c'est une sous class et sous type je crois
 //            ClassType currentType = currentClass.getType();
 //            if (!fi
-        }
-        Type selectType = typeObj;
-        setType(selectType);
+        //}
+        Type fieldType = def.getType();
+        setType(fieldType);
         LOG.debug("verifyExpr Selection : end");
-        return selectType;
+        return fieldType;
         //setTyep
 
 

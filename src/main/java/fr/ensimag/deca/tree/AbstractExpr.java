@@ -92,8 +92,7 @@ public abstract class AbstractExpr extends AbstractInst {
         LOG.debug("verifyRValue AbstractExpr : start");
 
         Type type = this.verifyExpr(compiler, localEnv, currentClass);
-        LOG.debug(expectedType);
-        LOG.debug(type);
+
         // UTILISER ISSUBCLASS QUAND ON FERA DE L'OBJET
         if (type.sameType(expectedType)){
             LOG.debug("verifyRValue AbstractExpr : end");
@@ -102,6 +101,10 @@ public abstract class AbstractExpr extends AbstractInst {
         if (type.isInt() && expectedType.isFloat()) {
             LOG.debug("verifyRValue AbstractExpr : end");
             return new ConvFloat(this);
+        }
+        if (type.isClass()){
+            LOG.debug("verifyRValue AbstractExpr : end");
+            return this;
         }
         LOG.debug("verifyRValue AbstractExpr : end");
         throw new ContextualError("Type incompatibility in AbstractExpr", getLocation());
