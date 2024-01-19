@@ -24,6 +24,8 @@ public class This extends AbstractExpr {
                            ClassDefinition currentClass) throws ContextualError {
         LOG.debug("verifyExpr This : start");
         LOG.debug("verifyExpr This : end");
+
+        //set<Type
         throw new UnsupportedOperationException("not yet implemented");
     }
 

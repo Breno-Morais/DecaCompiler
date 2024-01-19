@@ -17,6 +17,6 @@ class B extends A {
 }
 
 {
-    A a = new A();
-    B b = new B();
+    //A a = new A();
+    //B b = new B();
 }

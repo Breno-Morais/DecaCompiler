@@ -37,7 +37,6 @@ public class DeclMethod extends AbstractDeclMethod {
         LOG.debug("verifyClassMembers DeclMethod: start");
         Signature signature = new Signature();
         parameters.verifyListClassMembers(compiler, signature);
-
         MethodDefinition methodDefinition = new MethodDefinition(type.verifyType(compiler), getLocation(), signature, index);
         try{
             classe.getMembers().declare(name.getName(), methodDefinition);
@@ -46,8 +45,16 @@ public class DeclMethod extends AbstractDeclMethod {
             throw new ContextualError("Error, field already declared in DeclMethod", this.getLocation());
         }
 
-        //TODO : verifier si la méthode est déjà déclarée dans env_types. Alors il faut vérifier que elle a le même prototype que celle enregistrée
+//        MethodDefinition superMethodDefinition = (MethodDefinition) superClass.getMembers().get(name.getName());
+//        Type superType = superMethodDefinition.getType();
+//        Signature superSignature = superMethodDefinition.getSignature();
+//        if(superMethodDefinition != null){
+//            if(!superSignature.equals(signature) && !superType.isSubType(superType)){
+//                throw new ContextualError("Method definition not compatible with the superClass in DeclMethod", getLocation());
+//            }
+//        }
 
+        name.setDefinition(methodDefinition);
         LOG.debug("verifyClassMembers DeclMethod: end");
     }
 
@@ -61,7 +68,7 @@ public class DeclMethod extends AbstractDeclMethod {
         methodDefinition.getSignature().setReturnType(type.getType());  //enregistrement de la valeur de retour dans signature
 
         EnvironmentExp env_exp_params = parameters.verifyListClassBody(compiler, classe);
-        methodBody.verifyClassBody(compiler, env_exp, env_exp_params, classe, type);
+        methodBody.verifyClassBody(compiler, env_exp, env_exp_params, classe, name);
         //TODO : une declaration à ajouter ?
         LOG.debug("verifyClassBody DeclMethod: end");
     }

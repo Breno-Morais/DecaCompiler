@@ -22,7 +22,8 @@ public class DeclParam extends AbstractDeclParam {
      */
     public void verifyClassMembers(DecacCompiler compiler, Signature signature) throws ContextualError {
         LOG.debug("verifyClassMembers DeclParam: start");
-        if(type.verifyType(compiler).isVoid()){
+        Type type_def = type.verifyType(compiler);
+        if(type_def.isVoid()){
             throw new ContextualError("type is Void in DeclParam", getLocation());
         }
         EnvironmentType env_type = compiler.environmentType;
@@ -30,10 +31,11 @@ public class DeclParam extends AbstractDeclParam {
             throw new ContextualError("type is not declared in env_type in DeclParam", getLocation());
         }
 
-        signature.add(type.verifyType(compiler));
+        signature.add(type_def);
+        ParamDefinition paramDefinition = new ParamDefinition(type_def, getLocation());
 
-//        ident.setDefinition(type.getDefinition());   //TODO : faire les setDefinition() et setType()
-        ident.setType(type.getType());
+        ident.setDefinition(paramDefinition);   //TODO : faire les setDefinition() et setType()
+
         LOG.debug("verifyClassMembers DeclParam: end");
     }
 
