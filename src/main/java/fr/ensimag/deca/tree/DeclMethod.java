@@ -116,6 +116,7 @@ public class DeclMethod extends AbstractDeclMethod {
         compiler.addComment("Sauvegarde des registres");
         for(GPRegister reg : regsUsed) {
             compiler.addInstruction(new PUSH(reg));
+            compiler.addToStack(1);
         }
 
         // Main code
@@ -127,6 +128,7 @@ public class DeclMethod extends AbstractDeclMethod {
         compiler.addComment("Restauration des registres");
         for(GPRegister reg : regsUsed) {
             compiler.addInstruction(new POP(reg));
+            compiler.removeFromStack(1);
         }
 
         compiler.addLabel(new Label("fin." + className + "." + getName()));

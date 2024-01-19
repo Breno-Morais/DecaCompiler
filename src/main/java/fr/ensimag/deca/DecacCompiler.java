@@ -264,4 +264,24 @@ public class DecacCompiler {
         return parser.parseProgramAndManageErrors(err);
     }
 
+    // Highest occupation of the stack at one point
+    private int maxStack = 0;
+
+    // Counter of stack of that moment of the code
+    private int currentStack = 0;
+
+    public void addToStack(int i) {
+        currentStack += i;
+        if(maxStack < currentStack)
+            maxStack = currentStack;
+    }
+
+    public void removeFromStack(int i) {
+        currentStack -= i;
+    }
+
+    public int getMaxStack() {
+        return maxStack;
+    }
+
 }

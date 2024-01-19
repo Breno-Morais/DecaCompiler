@@ -75,8 +75,10 @@ public class MethodCall extends AbstractExpr {
     @Override
     protected void codeGen(DecacCompiler compiler, int registerNumber) {
         GPRegister register = Register.R2;
-        if(registerNumber > 2)
+        if(registerNumber > 2) {
             compiler.addInstruction(new PUSH(Register.R2));
+            compiler.addToStack(1);
+        }
 
         // Add to the pile register the number of parameters + 1
         int frameSize = param.size() + 1;
@@ -106,9 +108,13 @@ public class MethodCall extends AbstractExpr {
 
         // BSR to the table
         compiler.addInstruction(new BSR(new RegisterOffset(meth.getMethodDefinition().getIndex(), Register.R2)));
+        compiler.addToStack(2);
+        compiler.removeFromStack(2);
 
-        if(registerNumber > 2)
+        if(registerNumber > 2) {
             compiler.addInstruction(new POP(Register.R2));
+            compiler.removeFromStack(1);
+        }
 
         compiler.addInstruction(new LOAD(Register.R0, Register.getR(registerNumber)));
         compiler.addInstruction(new SUBSP(frameSize));
