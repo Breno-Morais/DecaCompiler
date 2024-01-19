@@ -233,28 +233,4 @@ public class Identifier extends AbstractIdentifier {
     protected void codeGen(DecacCompiler compiler, int registerNumber) {
         compiler.addInstruction(new LOAD(getAddress(), Register.getR(registerNumber)));
     }
-
-    @Override
-    public Type getType() {
-        return this.getDefinition().getType();
-    }
-
-    public DAddr getAddress() {
-        if(getDefinition().isExpression())
-            return getExpDefinition().getOperand();
-        else throw new DecacInternalError("Cannot get address of a class or type");
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Identifier that = (Identifier) o;
-        return getName().equals(that.getName());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getName());
-    }
 }

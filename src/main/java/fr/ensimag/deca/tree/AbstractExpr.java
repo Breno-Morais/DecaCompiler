@@ -12,6 +12,7 @@ import java.io.PrintStream;
 import java.util.LinkedList;
 import java.util.List;
 
+import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.ImmediateString;
 import fr.ensimag.ima.pseudocode.Register;
@@ -205,13 +206,7 @@ public abstract class AbstractExpr extends AbstractInst {
         }
     }
 
-    // Return list of register used in the resolution of the expression
-    public List<GPRegister> getRegisters(int registerNumber) {
-        List<GPRegister> regs = new LinkedList<GPRegister>();
-        GPRegister reg = Register.getR(registerNumber);
-        if(reg != null)
-            regs.add(reg);
+    public void addImaInstruction(DecacCompiler compiler, DVal value, GPRegister register) {
 
-        return regs;
     }
 }

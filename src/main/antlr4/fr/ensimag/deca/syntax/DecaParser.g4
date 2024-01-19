@@ -423,7 +423,7 @@ select_expr returns[AbstractExpr tree]
         }
         | /* epsilon */ {
             // we matched "e.i"
-            $tree = new Selection($e1.tree, $i.tree);
+            $tree = new Selection($e1.tree, $i.tree, getDecacCompiler().symbolTable.create($e1.text + "." + $i.text));
         }
         )
     ;

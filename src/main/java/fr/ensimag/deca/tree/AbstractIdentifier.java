@@ -10,7 +10,11 @@ import fr.ensimag.deca.context.FieldDefinition;
 import fr.ensimag.deca.context.MethodDefinition;
 import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.context.VariableDefinition;
+import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.SymbolTable;
+import fr.ensimag.ima.pseudocode.DAddr;
+
+import java.util.Objects;
 
 /**
  *
@@ -99,5 +103,27 @@ public abstract class AbstractIdentifier extends AbstractLValue {
         return getName().getName();
     }
 
+    @Override
+    public Type getType() {
+        return this.getDefinition().getType();
+    }
 
+    public DAddr getAddress() {
+        if(getDefinition().isExpression())
+            return getExpDefinition().getOperand();
+        else throw new DecacInternalError("Cannot get address of a class or type");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AbstractIdentifier that = (AbstractIdentifier) o;
+        return getName().equals(that.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName());
+    }
 }

@@ -73,9 +73,8 @@ public class ListDeclField extends TreeList<AbstractDeclField>{
         // I'm loading "this" in R1 before because I belive nothing else modifies it except the read, may be changed later
         compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
 
-        int fieldCounter = 1;
         for(AbstractDeclField declVarAbs : this.getList()) {
-            DAddr addr = new RegisterOffset(fieldCounter, Register.R1);
+            DAddr addr = new RegisterOffset(declVarAbs.getField().getFieldDefinition().getIndex(), Register.R1);
 
             if(declVarAbs.getInitialization() instanceof Initialization) {
                 declVarAbs.getInitialization().getExpression().codeGenInst(compiler);
@@ -85,8 +84,6 @@ public class ListDeclField extends TreeList<AbstractDeclField>{
                 compiler.addInstruction(new LOAD(declVarAbs.getField().getType().getDefaultValue(), Register.R0));
                 compiler.addInstruction(new STORE(Register.R0, addr));
             }
-
-            fieldCounter++;
         }
 
         compiler.addComment("Restauration des registres");

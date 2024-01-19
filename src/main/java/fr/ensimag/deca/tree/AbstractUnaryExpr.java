@@ -53,8 +53,6 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
         addImaInstruction(compiler, Register.R2, Register.R2);
     }
 
-    public abstract void addImaInstruction(DecacCompiler compiler, DVal value, GPRegister register);
-
     @Override
     protected void codeGen(DecacCompiler compiler, int registerNumber) {
         getOperand().codeGen(compiler, registerNumber);

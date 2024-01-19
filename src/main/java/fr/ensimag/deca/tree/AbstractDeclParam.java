@@ -7,5 +7,6 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 public abstract class AbstractDeclParam extends Tree {
-
+    public abstract AbstractIdentifier getType();
+    public abstract AbstractIdentifier getIdent();
 }

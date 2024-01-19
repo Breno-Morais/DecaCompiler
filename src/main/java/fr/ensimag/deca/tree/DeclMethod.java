@@ -4,9 +4,17 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.POP;
+import fr.ensimag.ima.pseudocode.instructions.PUSH;
 import org.apache.log4j.Logger;
+import fr.ensimag.ima.pseudocode.instructions.ADDSP;
+import fr.ensimag.ima.pseudocode.instructions.RTS;
 
 import java.io.PrintStream;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class DeclMethod extends AbstractDeclMethod {
     private static final Logger LOG = Logger.getLogger(ListDeclClass.class);
@@ -69,5 +77,42 @@ public class DeclMethod extends AbstractDeclMethod {
 
     public AbstractIdentifier getName() {
         return name;
+    }
+
+    @Override
+    public void codeGenMethod(DecacCompiler compiler, String className) {
+        // Before everything, it defines the address of the parameters
+        for (int i = 0; i < parameters.size(); i++) {
+            DAddr addr = new RegisterOffset(-3 - i, Register.LB);
+            parameters.getList().get(i).getIdent().getExpDefinition().setOperand(addr);
+        }
+
+        compiler.addComment("---------- Code de la methode " + getName() + " dans la classe " + className);
+        compiler.addLabel(new Label("code." + className + "." + getName()));
+        // TODO: Add pile shenanigans
+        compiler.addInstruction(new ADDSP(parameters.size()));
+
+        // Get all the registers used
+        List<GPRegister> regsUsed =  methodBody.getRegisters();
+
+        // Register Saving
+        compiler.addComment("Sauvegarde des registres");
+        for(GPRegister reg : regsUsed) {
+            compiler.addInstruction(new PUSH(reg));
+        }
+
+        // Main code
+        methodBody.codeGenMethod(compiler);
+
+        // TODO: Error handling
+        compiler.addLabel(new Label("fin." + className + "." + getName()));
+        // Register Restauration
+        compiler.addComment("Restauration des registres");
+        for(GPRegister reg : regsUsed) {
+            compiler.addInstruction(new POP(reg));
+        }
+
+        compiler.addLabel(new Label("fin." + className + "." + getName()));
+        compiler.addInstruction(new RTS());
     }
 }
