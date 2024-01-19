@@ -90,7 +90,7 @@ public class DeclClass extends AbstractDeclClass {
             throws ContextualError {
         LOG.debug("verifyClassMembers DeclClass: start");
         EnvironmentType env_types = compiler.environmentType;   //on récupère l'environnement des types
-
+        //TODO rajouter toutes les verif : condition et affectation dans le poly
         listField.verifyListClassMembers(compiler, superclass.getClassDefinition(), name.getClassDefinition());
         listMethod.verifyListClassMembers(compiler, superclass.getClassDefinition(), name.getClassDefinition());
 
@@ -158,8 +158,7 @@ public class DeclClass extends AbstractDeclClass {
         compiler.addComment("--------------------------------------------------");
 
         addInit(compiler);
-
-
+        addMethods(compiler);
     }
 
     private void addInit(DecacCompiler compiler) {
@@ -170,5 +169,11 @@ public class DeclClass extends AbstractDeclClass {
         listField.codeGenListField(compiler);
 
         compiler.addInstruction(new RTS());
+    }
+
+    private void addMethods(DecacCompiler compiler) {
+        for(AbstractDeclMethod declMethod : listMethod.getList()) {
+            declMethod.codeGenMethod(compiler, getName().toString());
+        }
     }
 }

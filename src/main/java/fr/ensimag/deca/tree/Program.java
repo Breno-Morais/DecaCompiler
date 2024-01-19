@@ -37,6 +37,8 @@ public class Program extends AbstractProgram {
     private ListDeclClass classes;
     private AbstractMain main;
 
+    private static int indexGB = 3;
+
     @Override
     public void verifyProgram(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verifyProgram Program: start");
@@ -63,7 +65,6 @@ public class Program extends AbstractProgram {
         compiler.addInstruction(new LOAD(new LabelOperand(new Label("code.Object.equals")), Register.R0));
         compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(2, Register.GB)));
 
-        int currentGB = 3;
         HashMap<String, Integer> methodTableOffsetMap = new HashMap<String, Integer>();
         methodTableOffsetMap.put("Object", 1);
 
@@ -72,25 +73,26 @@ public class Program extends AbstractProgram {
             // Inherent the classes of the superclass
             getClasses().updateMethodNames(declClass); // TODO: Check the order
             // Update the address of the method table of the class so the children can access it
-            methodTableOffsetMap.put(declClass.getName().toString(), currentGB);
+            methodTableOffsetMap.put(declClass.getName().toString(), getIndexGB());
 
             // Add the method table of the parent
             String superName = declClass.getSuperclass().toString();
             RegisterOffset superOffset = new RegisterOffset(methodTableOffsetMap.get(superName), Register.GB);
             compiler.addInstruction(new LEA(superOffset, Register.R0));
-            RegisterOffset currentOffset = new RegisterOffset(currentGB, Register.GB);
+            RegisterOffset currentOffset = new RegisterOffset(getIndexGB(), Register.GB);
             compiler.addInstruction(new STORE(Register.R0, currentOffset));
+            declClass.getName().getClassDefinition().setMethodTableAddress(currentOffset);
 
             // Add each method
             for(MethodName methodName : declClass.getMethodNames()) {
-                currentGB++;
+                incrementIndexGB();
 
                 LabelOperand codeLabel = new LabelOperand(methodName.toCodeLabel());
                 compiler.addInstruction(new LOAD(codeLabel, Register.R0));
-                compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(currentGB, Register.GB)));
+                compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(getIndexGB(), Register.GB)));
             }
 
-            currentGB++;
+            incrementIndexGB();
         }
 
         // Generate the code of the fields and methods of the classes
@@ -100,7 +102,7 @@ public class Program extends AbstractProgram {
         compiler.addComment("           Code du programme principal            ");
         compiler.addComment("--------------------------------------------------");
 
-        main.codeGenMain(compiler, currentGB);
+        main.codeGenMain(compiler);
         compiler.addInstruction(new HALT());
 
         // Add The methods
@@ -157,5 +159,13 @@ public class Program extends AbstractProgram {
         compiler.addComment("Restauration des registres");
         compiler.addInstruction(new POP(Register.R2));
         compiler.addInstruction(new RTS());
+    }
+
+    public static int getIndexGB() {
+        return indexGB;
+    }
+
+    public static void incrementIndexGB() {
+        indexGB++;
     }
 }

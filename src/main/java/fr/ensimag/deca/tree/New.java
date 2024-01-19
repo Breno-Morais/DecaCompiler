@@ -6,8 +6,8 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.log4j.Logger;
 
 public class New extends AbstractUnaryExpr {
@@ -39,7 +39,21 @@ public class New extends AbstractUnaryExpr {
     }
 
     @Override
+    protected void codeGen(DecacCompiler compiler, int registerNumber) {
+        int classSize = ((Identifier) getOperand()).getClassDefinition().getNumberOfFields() + 1;
+        addImaInstruction(compiler, new ImmediateInteger(classSize), Register.getR(registerNumber));
+    }
+
+    @Override
     public void addImaInstruction(DecacCompiler compiler, DVal value, GPRegister register) {
-        // Objects later
+        compiler.addInstruction(new NEW(value, register));
+        // TODO: BOV tas_plein
+        Identifier ident = (Identifier) getOperand();
+        DAddr methodTableAddr = ident.getClassDefinition().getMethodTableAddress();
+        compiler.addInstruction(new LEA(methodTableAddr, Register.R0));
+        compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(0, register)));
+        compiler.addInstruction(new PUSH(register));
+        compiler.addInstruction(new BSR(new Label("init." + ident)));
+        compiler.addInstruction(new POP(register));
     }
 }

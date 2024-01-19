@@ -49,7 +49,7 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
 
     }
 
-    public void codeGenListVariables(DecacCompiler compiler, int currentVar) {
+    public void codeGenListVariables(DecacCompiler compiler) {
         for(AbstractDeclVar declVar : this.getList()) {
             AbstractInitialization initVar;
             Identifier identVar;
@@ -62,7 +62,7 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
             }
 
             // Initialize the address of the variable
-            RegisterOffset addr = new RegisterOffset(currentVar, Register.GB);
+            RegisterOffset addr = new RegisterOffset(Program.getIndexGB(), Register.GB);
 
             // Don't know if it should be a test or a try and catch
             if(identVar.getDefinition().isExpression()){
@@ -77,7 +77,7 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
                 }
             }
 
-            currentVar++;
+            Program.incrementIndexGB();
         }
     }
 }

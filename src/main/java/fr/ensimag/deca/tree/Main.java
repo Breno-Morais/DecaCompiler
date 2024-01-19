@@ -58,9 +58,9 @@ public class Main extends AbstractMain {
 
     // affichage en flottant de la moitié du carré d'un entier
     @Override
-    protected void codeGenMain(DecacCompiler compiler, int currentSP) {
+    protected void codeGenMain(DecacCompiler compiler) {
         compiler.addComment("Variables declarations:");
-        declVariables.codeGenListVariables(compiler, currentSP);
+        declVariables.codeGenListVariables(compiler);
 
         compiler.addComment("Beginning of main instructions:");
         insts.codeGenListInst(compiler);

@@ -18,4 +18,6 @@ public abstract class AbstractDeclMethod extends Tree {
      */
     protected abstract void verifyClassBody(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition classe)         //TODO pas sur des paramètres dedans
             throws ContextualError;
+
+    public abstract void codeGenMethod(DecacCompiler compiler, String className);
 }

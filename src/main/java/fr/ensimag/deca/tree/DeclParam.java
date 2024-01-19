@@ -62,4 +62,14 @@ public class DeclParam extends AbstractDeclParam {
     protected void iterChildren(TreeFunction f) {
 
     }
+
+    @Override
+    public AbstractIdentifier getType() {
+        return type;
+    }
+
+    @Override
+    public AbstractIdentifier getIdent() {
+        return ident;
+    }
 }

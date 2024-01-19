@@ -24,7 +24,7 @@ public class EmptyMain extends AbstractMain {
     }
 
     @Override
-    protected void codeGenMain(DecacCompiler compiler, int currentSP) {
+    protected void codeGenMain(DecacCompiler compiler) {
         // Do nothing
     }
 

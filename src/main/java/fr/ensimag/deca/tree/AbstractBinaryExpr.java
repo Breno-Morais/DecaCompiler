@@ -116,8 +116,6 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         codeGen(compiler, 2);
     }
 
-    public abstract void addImaInstruction(DecacCompiler compiler, DVal value, GPRegister register);
-
     private void pushRegisters(DecacCompiler compiler, GPRegister[] registers) {
         for (GPRegister register : registers) {
             if(register == null)

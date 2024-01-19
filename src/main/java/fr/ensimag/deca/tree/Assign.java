@@ -8,6 +8,7 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.log4j.Logger;
 
@@ -48,21 +49,24 @@ public class Assign extends AbstractBinaryExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        System.out.println(getRightOperand().getRegisters(2));
+        AbstractIdentifier leftOperandId = (AbstractIdentifier) getLeftOperand();
+        DAddr leftAddress = leftOperandId.getExpDefinition().getOperand();
 
-        DAddr leftAddress;
         if(getLeftOperand() instanceof Identifier) {
-            Identifier leftOperandId = (Identifier) getLeftOperand();
+            getRightOperand().codeGen(compiler, 2);
+            compiler.addInstruction(new STORE(Register.R2, leftAddress));
 
-            leftAddress = leftOperandId.getExpDefinition().getOperand();
-        } /*else if(getLeftOperand() instanceof Selection) {
-            // TODO: Object parameter assignment
-        }*/ else
+        } else if(getLeftOperand() instanceof Selection) {
+            compiler.addInstruction(new LOAD(leftOperandId.getAddress(), Register.R2)); // Change to get the address of the obj
+            /* TODO: Error Handler
+            compiler.addInstruction(new CMP(new NullOperand(), ));
+            compiler.addInstruction(new BEQ(new Label("dereferencement_null")));
+             */
+
+            getRightOperand().codeGen(compiler, 3);
+            compiler.addInstruction(new STORE(Register.R3, new RegisterOffset(leftOperandId.getFieldDefinition().getIndex(), Register.R2)));
+        } else
             throw new DecacInternalError("Invalid left operand of assign operation");
-
-
-        getRightOperand().codeGen(compiler, 2);
-        compiler.addInstruction(new STORE(Register.R2, leftAddress));
     }
 
     @Override

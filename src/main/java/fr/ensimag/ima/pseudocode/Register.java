@@ -90,8 +90,8 @@ public class Register extends DVal {
     /** Return an array of 2 arrays of Registers, the first array contains the register that need to be saved
      * The second array contain the array available to use after the
      * */
-    public static GPRegister[][] getUsableRegisters(int numberOfRegister, int firstRegister) {
-        GPRegister[][] registers = new GPRegister[2][numberOfRegister];
+    public static GPRegister[][] getUsableRegisters(int numberOfRegisters, int firstRegister) {
+        GPRegister[][] registers = new GPRegister[2][numberOfRegisters];
 
         // All way the registers after the firstRegister I assumed they are safe to use,
         // I only need to save the ones before it
@@ -99,12 +99,12 @@ public class Register extends DVal {
         int trueStart = safeMax;
 
         // Check if there are enough registers, If not, update the trueStart
-        if((firstRegister + numberOfRegister - 1) >= getMaxRegister()) {
+        if((firstRegister + numberOfRegisters - 1) >= getMaxRegister()) {
             // Discover the number of register that need to be saved
-            trueStart -= (safeMax + (numberOfRegister - 1)) - getMaxRegister();
+            trueStart -= (safeMax + (numberOfRegisters - 1)) - getMaxRegister();
         }
 
-        for (int i = trueStart; i <= (trueStart + numberOfRegister - 1); i++) {
+        for (int i = trueStart; i <= (trueStart + numberOfRegisters - 1); i++) {
             // If the register could have been used, saves in the array of used register
             if(i < safeMax)
                 registers[0][i - trueStart] = getR(i);
