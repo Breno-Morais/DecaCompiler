@@ -30,8 +30,19 @@ public class Selection extends AbstractIdentifier {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
         LOG.debug("verifyExpr Selection : start");
+        Type typeObj = obj.verifyExpr(compiler, localEnv, currentClass);
+        FieldDefinition def = field.getFieldDefinition();
+        if(def.getVisibility() == Visibility.PROTECTED){
+            //vérifier que c'est une sous class et sous type je crois
+//            ClassType currentType = currentClass.getType();
+//            if (!fi
+        }
+        Type selectType = typeObj;
+        setType(selectType);
         LOG.debug("verifyExpr Selection : end");
-        throw new UnsupportedOperationException("not yet implemented");
+        return selectType;
+        //setTyep
+
 
     }
 

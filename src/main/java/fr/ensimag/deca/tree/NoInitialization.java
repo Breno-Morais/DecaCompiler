@@ -26,7 +26,6 @@ public class NoInitialization extends AbstractInitialization {
             throws ContextualError {
         LOG.debug("verifyInitialization NoInitialization : start");
         LOG.debug("verifyInitialization NoInitialization : end");
-        //throw new UnsupportedOperationException("not yet implemented");
     }
 
 

@@ -28,9 +28,17 @@ public class New extends AbstractUnaryExpr {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
                            ClassDefinition currentClass) throws ContextualError {
         LOG.debug("verifyExpr New : start");
-
+        if (!this.getType().isClass()){
+            throw new ContextualError("The Object is not a Class in new", getLocation());
+        }
+        if (compiler.environmentType.get(this.getType().getName()) == null){
+            throw new ContextualError("The Class doesn't exist in EnvType in New", getLocation());
+        }
         LOG.debug("verifyExpr New : end");
-        throw new UnsupportedOperationException("not yet implemented");
+        //Settype New
+        Type typeNew = this.getType();
+        setType(typeNew);
+        return typeNew;
     }
 
     @Override
