@@ -1,6 +1,9 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.ClassDefinition;
+import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.instructions.ERROR;
@@ -70,5 +73,21 @@ public class MethodBody extends AbstractMethodBody {
         compiler.addInstruction(new WSTR("Erreur : sortie de la methode sans return"));
         compiler.addInstruction(new WNL());
         compiler.addInstruction(new ERROR());
+    }
+
+    @Override
+    public void verifyClassBody(DecacCompiler compiler, EnvironmentExp env_exp, EnvironmentExp env_exp_params, ClassDefinition classe, AbstractIdentifier type) throws ContextualError {
+        if (declVariables != null){
+            //LOG.debug("     Main : declVariables not null");
+            declVariables.verifyListDeclVariable(compiler, env_exp_params, classe);
+        } else {
+            throw new ContextualError("Liste des declarations de variables est null", getLocation());
+        }
+
+        if (insts != null){
+            insts.verifyListInst(compiler, env_exp_params, classe, type.getType());
+        } else {
+            throw new ContextualError("Liste des declarations des instructionx null", getLocation());
+        }
     }
 }

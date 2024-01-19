@@ -3,6 +3,7 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentExp;
 
 public abstract class AbstractDeclMethod extends Tree {
     /**
@@ -16,7 +17,7 @@ public abstract class AbstractDeclMethod extends Tree {
      * Pass 3 of [SyntaxeContextuelle]. Verify that instructions and expressions
      * contained in the class are OK.
      */
-    protected abstract void verifyClassBody(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition classe)         //TODO pas sur des paramètres dedans
+    protected abstract void verifyClassBody(DecacCompiler compiler, EnvironmentExp env_exp, ClassDefinition classe)         //TODO pas sur des paramètres dedans
             throws ContextualError;
 
     public abstract void codeGenMethod(DecacCompiler compiler, String className);

@@ -102,11 +102,10 @@ public class DeclClass extends AbstractDeclClass {
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verifyClassBody DeclClass: start");
         //TODO faire la vérification de env_exp
-        listField.verifyListClassBody(compiler, superclass.getClassDefinition(), name.getClassDefinition());
-        listMethod.verifyListClassBody(compiler, superclass.getClassDefinition(), name.getClassDefinition());
+        listField.verifyListClassBody(compiler, env_exp, name.getClassDefinition());
+        listMethod.verifyListClassBody(compiler, env_exp, name.getClassDefinition());
 
         LOG.debug("verifyClassBody DeclClass: end");
-        throw new UnsupportedOperationException("not yet implemented");
     }
 
 

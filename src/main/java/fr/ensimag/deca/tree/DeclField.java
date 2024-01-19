@@ -52,11 +52,11 @@ public class DeclField extends AbstractDeclField {
     /**
      * Pass 3 of [SyntaxeContextuelle]
      */
-    public void verifyClassBody(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition classe) throws ContextualError {
+    public void verifyClassBody(DecacCompiler compiler, EnvironmentExp env_exp, ClassDefinition classe) throws ContextualError {
         LOG.debug("verifyClassBody DeclField: start");
+        initialization.verifyInitialization(compiler, type.verifyType(compiler), env_exp, classe);
 
         LOG.debug("verifyClassBody DeclField: end");
-        throw new UnsupportedOperationException("not yet implemented");
     }
 
     public Visibility getStatusVisibility(){

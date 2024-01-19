@@ -20,7 +20,7 @@ public class DeclParam extends AbstractDeclParam {
     /**
      * Pass 2 of [SyntaxeContextuelle]
      */
-    public void verifyClassMembers(DecacCompiler compiler, Signature signature) throws ContextualError {   //TODO manque des paramètres : env_types, super, class
+    public void verifyClassMembers(DecacCompiler compiler, Signature signature) throws ContextualError {
         LOG.debug("verifyClassMembers DeclParam: start");
         if(type.verifyType(compiler).isVoid()){
             throw new ContextualError("type is Void in DeclParam", getLocation());
@@ -31,18 +31,22 @@ public class DeclParam extends AbstractDeclParam {
         }
 
         signature.add(type.verifyType(compiler));
-
+        //ident.setDefinition();
+        ident.setType(type.getType());
         LOG.debug("verifyClassMembers DeclParam: end");
     }
 
     /**
      * Pass 3 of [SyntaxeContextuelle]
      */
-    public void verifyClassBody(DecacCompiler compiler) throws ContextualError {    //TODO manque des paramètres : env_types, super, class
+    public void verifyClassBody(DecacCompiler compiler, EnvironmentExp env_exp_params) throws ContextualError {
         LOG.debug("verifyClassBody DeclParam: start");
-
+        try{
+            env_exp_params.declare(ident.getName(), ident.getExpDefinition());  //TODO : pas sûr des paramètres
+        }catch (EnvironmentExp.DoubleDefException e){
+            throw new ContextualError("Error on type declaration in DeclParam", getLocation());
+        }
         LOG.debug("verifyClassBody DeclParam: end");
-        throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override

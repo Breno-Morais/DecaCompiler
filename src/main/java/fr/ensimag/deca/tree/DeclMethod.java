@@ -35,7 +35,6 @@ public class DeclMethod extends AbstractDeclMethod {
      */
     public void verifyClassMembers(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition classe, int index) throws ContextualError {   //TODO manque des paramètres : env_types, super, class
         LOG.debug("verifyClassMembers DeclMethod: start");
-        EnvironmentType env_types = compiler.environmentType;
         //Signature signature = parameters.verifyMachin(compiler);
         //TODO il faut faire d'abord ListParam et Param avec une fonction qui renvoie la Signature
         Signature signature = new Signature();
@@ -58,14 +57,13 @@ public class DeclMethod extends AbstractDeclMethod {
     /**
      * Pass 3 of [SyntaxeContextuelle]
      */
-    public void verifyClassBody(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition classe) throws ContextualError {    //TODO manque des paramètres : env_types, super, class
+    public void verifyClassBody(DecacCompiler compiler, EnvironmentExp env_exp, ClassDefinition classe) throws ContextualError {    //TODO manque des paramètres : env_types, super, class
         LOG.debug("verifyClassBody DeclMethod: start");
-
-
-        parameters.verifyListClassBody(compiler);
-
+        //type est le type de retour    //TODO pour etape C de Breno
+        EnvironmentExp env_exp_params = parameters.verifyListClassBody(compiler, classe);
+        methodBody.verifyClassBody(compiler, env_exp, env_exp_params, classe, type);
+        //TODO : une declaration à ajouter ?
         LOG.debug("verifyClassBody DeclMethod: end");
-        throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
