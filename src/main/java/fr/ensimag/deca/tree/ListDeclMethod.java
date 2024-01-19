@@ -3,6 +3,7 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import org.apache.log4j.Logger;
 
@@ -33,10 +34,10 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod>{
     /**
      * Pass 3 of [SyntaxeContextuelle]
      */
-    public void verifyListClassBody(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition classe) throws ContextualError {
+    public void verifyListClassBody(DecacCompiler compiler, EnvironmentExp env_exp, ClassDefinition classe) throws ContextualError {
         LOG.debug("verifyListClassBody ListDeclMethod: start");
         for (AbstractDeclMethod c: getList())
-            c.verifyClassBody(compiler, superClass, classe);
+            c.verifyClassBody(compiler, env_exp, classe);
         LOG.debug("verifyListClassBody ListDeclMethod: end");
     }
 }

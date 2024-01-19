@@ -3,6 +3,7 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Signature;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import org.apache.log4j.Logger;
@@ -34,10 +35,12 @@ public class ListDeclParam extends TreeList<AbstractDeclParam> {
     /**
      * Pass 3 of [SyntaxeContextuelle]
      */
-    public void verifyListClassBody(DecacCompiler compiler) throws ContextualError {
+    public EnvironmentExp verifyListClassBody(DecacCompiler compiler, ClassDefinition classDef) throws ContextualError {
         LOG.debug("ListDeclParam ListDeclMethod: start");
+        EnvironmentExp env_exp_params = new EnvironmentExp(classDef.getMembers());
         for (AbstractDeclParam c: getList())
-            c.verifyClassBody(compiler);
+            c.verifyClassBody(compiler, env_exp_params);
         LOG.debug("ListDeclParam ListDeclMethod: end");
+        return env_exp_params;
     }
 }

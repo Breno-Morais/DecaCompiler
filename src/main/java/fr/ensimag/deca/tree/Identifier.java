@@ -9,7 +9,9 @@ import java.io.PrintStream;
 import java.util.Objects;
 
 import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -144,6 +146,12 @@ public class Identifier extends AbstractIdentifier {
         }
     }
 
+    // TODO: Take this function to AbstractIdentifier, it is here until Selection has been correctly verified
+    @Override
+    public Type getType() {
+        return this.getDefinition().getType();
+    }
+
     @Override
     public void setDefinition(Definition definition) {
         this.definition = definition;
@@ -231,11 +239,12 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     protected void codeGen(DecacCompiler compiler, int registerNumber) {
-        compiler.addInstruction(new LOAD(getAddress(), Register.getR(registerNumber)));
+        if(getDefinition().isField()) {
+            GPRegister register = Register.getR(registerNumber);
+            compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), register));
+            compiler.addInstruction(new LOAD(new RegisterOffset(getFieldDefinition().getIndex(), register), register));
+        } else
+            compiler.addInstruction(new LOAD(getAddress(), Register.getR(registerNumber)));
     }
 
-    @Override
-    public Type getType() {
-        return this.getDefinition().getType();
-    }
 }
