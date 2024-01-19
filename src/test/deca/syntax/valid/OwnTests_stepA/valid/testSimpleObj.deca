@@ -10,10 +10,11 @@
 class A {
 	int x;
 }
-class B extends A {
-	int y;
-}
+//class B extends A {
+//	int y;
+//}
 
 {
+    int a = 10;
     A a = new A();
 }

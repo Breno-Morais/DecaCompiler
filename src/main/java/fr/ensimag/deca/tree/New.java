@@ -1,20 +1,23 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
+import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
 public class New extends AbstractUnaryExpr {
     private static final Logger LOG = Logger.getLogger(Identifier.class);
 
-    public New(AbstractExpr operand) {
+
+//    private final AbstractIdentifier operand;
+    public New(AbstractIdentifier operand) {
         super(operand);
+//        Validate.notNull(operand);
+//        this.operand = operand;
     }
 
     @Override
@@ -28,17 +31,13 @@ public class New extends AbstractUnaryExpr {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
                            ClassDefinition currentClass) throws ContextualError {
         LOG.debug("verifyExpr New : start");
-        if (!this.getType().isClass()){
-            throw new ContextualError("The Object is not a Class in new", getLocation());
-        }
-        if (compiler.environmentType.get(this.getType().getName()) == null){
-            throw new ContextualError("The Class doesn't exist in EnvType in New", getLocation());
-        }
+        SymbolTable jsp = new SymbolTable();
+        SymbolTable.Symbol jsp2 = jsp.create(this.getOperand().toString());
+        TypeDefinition typDef = compiler.environmentType.get(jsp2);
+        this.setType(typDef.getType());
         LOG.debug("verifyExpr New : end");
-        //Settype New
-        Type typeNew = this.getType();
-        setType(typeNew);
-        return typeNew;
+        return getType();
+
     }
 
     @Override

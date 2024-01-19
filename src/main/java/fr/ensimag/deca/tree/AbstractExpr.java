@@ -103,6 +103,10 @@ public abstract class AbstractExpr extends AbstractInst {
             LOG.debug("verifyRValue AbstractExpr : end");
             return new ConvFloat(this);
         }
+        if (type.isClass()){
+            LOG.debug("verifyRValue AbstractExpr : end");
+            return this;
+        }
         LOG.debug("verifyRValue AbstractExpr : end");
         throw new ContextualError("Type incompatibility in AbstractExpr", getLocation());
     }

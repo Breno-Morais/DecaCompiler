@@ -28,10 +28,10 @@
         counter = counter + 1;
     }
 
-
     if (condition != false) {
         println("Condition is true");
     } else {
         println("Condition is false");
     }
+
 }

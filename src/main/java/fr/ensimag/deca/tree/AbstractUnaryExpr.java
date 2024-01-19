@@ -1,9 +1,11 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.EnvironmentType;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
+import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Instruction;
@@ -58,4 +60,5 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
         getOperand().codeGen(compiler, registerNumber);
         addImaInstruction(compiler, Register.getR(registerNumber), Register.getR(registerNumber));
     }
+
 }
