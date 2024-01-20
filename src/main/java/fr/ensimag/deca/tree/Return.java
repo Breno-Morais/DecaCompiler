@@ -15,7 +15,7 @@ import java.io.PrintStream;
 public class Return extends AbstractInst {
     private static final Logger LOG = Logger.getLogger(Identifier.class);
     private AbstractExpr expression;
-    private Label endMethod = new Label("PLACEHOLDER"); // TODO: Assign the class and method in STEP B
+    private Label endMethod;
 
     public Return(AbstractExpr expression) {
         this.expression = expression;
@@ -56,5 +56,9 @@ public class Return extends AbstractInst {
     @Override
     protected void iterChildren(TreeFunction f) {
         expression.iter(f);
+    }
+
+    public void setEndMethod(Label endMethod) {
+        this.endMethod = endMethod;
     }
 }

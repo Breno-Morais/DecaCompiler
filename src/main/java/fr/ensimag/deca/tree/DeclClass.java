@@ -185,8 +185,10 @@ public class DeclClass extends AbstractDeclClass {
 
         blockCompiler.addInstruction(new RTS());
 
-        blockCompiler.addFirst(new BOV(new Label("pile_pleine")));
-        blockCompiler.addFirst(new TSTO(blockCompiler.getMaxStack()));
+        if(blockCompiler.getMaxStack() != 0) {
+            blockCompiler.addFirst(new BOV(new Label("pile_pleine")));
+            blockCompiler.addFirst(new TSTO(blockCompiler.getMaxStack()));
+        }
 
         compiler.append(blockCompiler);
     }

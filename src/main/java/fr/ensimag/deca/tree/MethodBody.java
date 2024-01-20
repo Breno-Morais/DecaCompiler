@@ -6,6 +6,9 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.ERROR;
 import fr.ensimag.ima.pseudocode.instructions.WNL;
 import fr.ensimag.ima.pseudocode.instructions.WSTR;
@@ -68,7 +71,23 @@ public class MethodBody extends AbstractMethodBody {
 
     @Override
     public void codeGenMethod(DecacCompiler compiler) {
+        Return possibleReturn = null;
+
+        if(insts.getList().get(insts.size() - 1) instanceof Return) {
+            possibleReturn = (Return) insts.getList().get(insts.size() - 1);
+            insts.getModifiableList().remove(insts.size() - 1);
+        }
+
         insts.codeGenListInst(compiler);
+
+        // Return logic
+        Label endMethodLabel = new Label("fin." + getDeclMethod().getClassDefinition().getType() + "." + getDeclMethod().getName());
+        if(possibleReturn == null) {
+            compiler.addInstruction(new BRA(endMethodLabel));
+        } else {
+            possibleReturn.setEndMethod(endMethodLabel);
+            possibleReturn.codeGenInst(compiler);
+        }
 
         compiler.addInstruction(new WSTR("Erreur : sortie de la methode sans return"));
         compiler.addInstruction(new WNL());

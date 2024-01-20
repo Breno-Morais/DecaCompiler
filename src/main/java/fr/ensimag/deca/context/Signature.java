@@ -30,14 +30,6 @@ public class Signature {
         return args.size();
     }
 
-    public Type getReturnType() {
-        return returnType;
-    }
-
-    public void setReturnType(Type returnType) {
-        this.returnType = returnType;
-    }
-
     public void verifyParameters(DecacCompiler compiler, List<AbstractExpr> parameters, Location location, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError{
         //Vérifie qu'on a le même nombre d'arg
         if (parameters.size() != args.size()){
@@ -50,5 +42,13 @@ public class Signature {
                 throw new ContextualError("Incompatible Type in Signature", location);
             }
         }
+    }
+
+    public Type getReturnType() {
+        return returnType;
+    }
+
+    public void setReturnType(Type returnType) {
+        this.returnType = returnType;
     }
 }

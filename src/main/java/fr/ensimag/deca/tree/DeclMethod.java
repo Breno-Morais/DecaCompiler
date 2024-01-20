@@ -16,6 +16,7 @@ public class DeclMethod extends AbstractDeclMethod {
     private static final Logger LOG = Logger.getLogger(ListDeclClass.class);
     private AbstractIdentifier type;
     private AbstractIdentifier name;
+    private ClassDefinition classDefinition;
     private ListDeclParam parameters;
     private AbstractMethodBody methodBody;
 
@@ -25,6 +26,8 @@ public class DeclMethod extends AbstractDeclMethod {
         this.name = name;
         this.parameters = parameters;
         this.methodBody = methodBody;
+
+        this.methodBody.setDeclMethod(this);
     }
 
     /**
@@ -42,6 +45,7 @@ public class DeclMethod extends AbstractDeclMethod {
         try{
             classe.getMembers().declare(name.getName(), methodDefinition);
             classe.incNumberOfMethods();
+            setClassDefinition(classe);
         }catch (EnvironmentExp.DoubleDefException e){
             throw new ContextualError("Error, field already declared in DeclMethod", this.getLocation());
         }
@@ -145,5 +149,13 @@ public class DeclMethod extends AbstractDeclMethod {
         blockCompiler.addFirst(new TSTO(blockCompiler.getMaxStack()));
 
         compiler.append(blockCompiler);
+    }
+
+    public ClassDefinition getClassDefinition() {
+        return classDefinition;
+    }
+
+    public void setClassDefinition(ClassDefinition classDefinition) {
+        this.classDefinition = classDefinition;
     }
 }

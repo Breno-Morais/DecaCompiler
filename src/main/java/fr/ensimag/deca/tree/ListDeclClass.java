@@ -8,6 +8,7 @@ import fr.ensimag.ima.pseudocode.Label;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -70,12 +71,12 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
 
     // Inherent the methods of the parent and don't add the Overridden
     public void updateMethodNames(AbstractDeclClass declClass) {
-        List<MethodName> methodNames = declClass.getMethodNames();
+        LinkedList<MethodName> methodNames = (LinkedList<MethodName>) declClass.getMethodNames();
 
         if(declClass.getSuperclass().toString().equals("object")) {
             if(methodNames.stream()
                     .noneMatch(childMethod -> childMethod.getName().equals("equals"))) {
-                methodNames.add(new MethodName("object", "equals"));
+                methodNames.addFirst(new MethodName("object", "equals"));
             }
         } else {
             AbstractDeclClass superClass = getClassDecl(declClass.getSuperclass());
@@ -85,7 +86,7 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
                         .anyMatch(childMethod -> childMethod.getName().equals(superMethod.getName()));
 
                 if (!exists) {
-                    methodNames.add(superMethod);
+                    methodNames.addFirst(superMethod);
                 }
             }
         }
