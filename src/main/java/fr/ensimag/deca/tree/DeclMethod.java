@@ -137,7 +137,7 @@ public class DeclMethod extends AbstractDeclMethod {
             blockCompiler.removeFromStack(1);
         }
 
-        blockCompiler.addLabel(new Label("fin." + className + "." + getName()));
+
         blockCompiler.addInstruction(new RTS());
 
         blockCompiler.addInstruction(new ADDSP(parameters.size())); // TODO: Put local variables instead

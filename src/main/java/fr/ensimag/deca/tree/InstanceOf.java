@@ -5,9 +5,7 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.*;
-import fr.ensimag.ima.pseudocode.instructions.BEQ;
-import fr.ensimag.ima.pseudocode.instructions.CMP;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 public class InstanceOf extends AbstractOpExactCmp {
 
@@ -45,32 +43,59 @@ public class InstanceOf extends AbstractOpExactCmp {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         getObject().codeGenInst(compiler);
-        codeGenInstanceOf(compiler);
+        codeGenInstanceOf(compiler, Register.getR(2));
     }
 
     // TODO: InstanceOf
-    public void codeGenInstanceOf(DecacCompiler compiler) {
+    public void codeGenInstanceOf(DecacCompiler compiler, GPRegister register) {
         // If its checking that it is an object, return true
-        if(compiler.environmentType.defOfType(getClassName().getName()).getType().sameType(compiler.environmentType.OBJECT))
-            compiler.addInstruction(new LOAD(1, Register.R2));
+        if(getClassName().toString().equals("object"))
+            compiler.addInstruction(new LOAD(1, register));
         else {
-            // Check if the object is null
+            Label instanceTrue = new Label("INSTANCE_true");
+            Label instanceFalse = new Label("INSTANCE_false");
+            Label instanceLoop = new Label("INSTANCE_start_loop");
+            Label instanceEnd = new Label("INSTANCE_fin");
 
-            // Get the address in the heap, get method table of the class
+            // Check if the object is null
+            getObject().codeGen(compiler, register.getNumber());
+            compiler.addInstruction(new CMP(new NullOperand(), register));
+            compiler.addInstruction(new BEQ(instanceFalse));
+
+            // Get the address in the heap,
+            compiler.addInstruction(new LOAD(new RegisterOffset(0, register), register));
+            // Get method table of the class
+            compiler.addInstruction(new LOAD(new RegisterOffset(0, register), register)); // Maybe a LEA
+
+            // Get the address of the method table of object
+            compiler.addInstruction(new LOAD(getClassName().getClassDefinition().getMethodTableAddress(), Register.R1)); // Maybe a LEA
 
             // Add label of the while loop
+            compiler.addLabel(instanceLoop);
 
             // Check the address of the method table is false
+            compiler.addInstruction(new CMP(new NullOperand(), register));
+            compiler.addInstruction(new BEQ(instanceFalse));
 
-            // Get the address of the method table of object, if the method table is equal, than true
+            // If the method tables are equal, than true
+            compiler.addInstruction(new CMP(Register.R1, register));
+            compiler.addInstruction(new BEQ(instanceTrue));
 
             // Go one level deeper, go to the begging of the while loop
+            compiler.addInstruction(new LOAD(new RegisterOffset(0, register), register));
+            compiler.addInstruction(new BRA(instanceLoop));
 
             // Put the label of returning true
+            compiler.addLabel(instanceTrue);
+            compiler.addInstruction(new LOAD(1, register));
+            compiler.addInstruction(new BRA(instanceEnd));
 
             // Put the label of returning false
+            compiler.addLabel(instanceFalse);
+            compiler.addInstruction(new LOAD(0, register));
 
             // Put the label of end
+            compiler.addLabel(instanceEnd);
         }
     }
 
