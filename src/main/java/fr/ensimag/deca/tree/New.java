@@ -35,6 +35,10 @@ public class New extends AbstractUnaryExpr {
         SymbolTable.Symbol jsp2 = jsp.create(this.getOperand().toString());
         TypeDefinition typDef = compiler.environmentType.get(jsp2);
         this.setType(typDef.getType());
+//        Identifier test = new Identifier(this.getType().getName());
+//        test.setType(test.verifyType(compiler));
+        AbstractIdentifier operand1 = (AbstractIdentifier) getOperand();
+        operand1.verifyType(compiler);
         LOG.debug("verifyExpr New : end");
         return getType();
 
