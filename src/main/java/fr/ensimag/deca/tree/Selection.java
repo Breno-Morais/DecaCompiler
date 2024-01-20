@@ -137,6 +137,6 @@ public class Selection extends AbstractIdentifier {
         compiler.addInstruction(new CMP(new NullOperand(), register));
         compiler.addInstruction(new BEQ(new Label("dereferencement_null")));
 
-        compiler.addInstruction(new LOAD(new RegisterOffset(getFieldDefinition().getIndex(), register), register));
+        compiler.addInstruction(new LOAD(new RegisterOffset(getFieldDefinition().getIndex() , register), register));
     }
 }

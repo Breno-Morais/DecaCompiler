@@ -94,7 +94,7 @@ public class MethodCall extends AbstractExpr {
         }
 
         // Store the parameters
-        for (int i = param.size(); i > 0; i++) {
+        for (int i = param.size(); i > 0; i--) {
             param.getList().get(i - 1).codeGen(compiler, 2);
 
             compiler.addInstruction(new STORE(Register.R2, new RegisterOffset(-i, Register.SP)));

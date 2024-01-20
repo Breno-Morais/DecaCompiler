@@ -5,6 +5,7 @@ import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.instructions.BOV;
+import fr.ensimag.ima.pseudocode.instructions.BSR;
 import fr.ensimag.ima.pseudocode.instructions.RTS;
 import fr.ensimag.ima.pseudocode.instructions.TSTO;
 import org.apache.commons.lang.StringUtils;
@@ -173,6 +174,12 @@ public class DeclClass extends AbstractDeclClass {
 
         compiler.addComment("---------- Initialisation des champs de " + getName());
         compiler.addLabel(new Label("init." + getName()));
+
+        if(!getSuperclass().toString().equals("object")) {
+            blockCompiler.addInstruction(new BSR(new Label("init." + getSuperclass())));
+            blockCompiler.addToStack(2);
+            blockCompiler.removeFromStack(2);
+        }
 
         listField.codeGenListField(blockCompiler);
 

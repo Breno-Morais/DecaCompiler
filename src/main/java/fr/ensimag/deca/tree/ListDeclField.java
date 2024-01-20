@@ -58,10 +58,12 @@ public class ListDeclField extends TreeList<AbstractDeclField>{
         // Get all the registers used
         List<GPRegister> regsUsed =  new LinkedList<GPRegister>();
         for(AbstractDeclField declVarAbs : this.getList()) {
-            regsUsed.addAll(declVarAbs.getInitialization().getExpression().getRegisters(2));
+            if(declVarAbs.getInitialization() instanceof Initialization) {
+                regsUsed.addAll(declVarAbs.getInitialization().getExpression().getRegisters(2));
 
-            // Don't know if is faster doing only once with an enormous list
-            regsUsed = regsUsed.stream().distinct().collect(Collectors.toList());
+                // Don't know if is faster doing only once with an enormous list
+                regsUsed = regsUsed.stream().distinct().collect(Collectors.toList());
+            }
         }
 
         compiler.addComment("Sauvegarde des registres");
@@ -75,7 +77,7 @@ public class ListDeclField extends TreeList<AbstractDeclField>{
         compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
 
         for(AbstractDeclField declVarAbs : this.getList()) {
-            DAddr addr = new RegisterOffset(declVarAbs.getField().getFieldDefinition().getIndex(), Register.R1);
+            DAddr addr = new RegisterOffset(declVarAbs.getField().getFieldDefinition().getIndex(), Register.R1); // TODO: Maybe the index is a bit short, or maybe there is no index
 
             if(declVarAbs.getInitialization() instanceof Initialization) {
                 declVarAbs.getInitialization().getExpression().codeGenInst(compiler);
