@@ -68,7 +68,10 @@ public class IfThenElse extends AbstractInst {
         countIfLabels++;
 
         // Generate code for branch
-        condition.codeGenIfBranch(compiler, true, ifLabel, elseLabel);
+        condition.codeGen(compiler, 0);
+        compiler.addInstruction(new CMP(0, Register.R0));
+        compiler.addInstruction(new BNE(ifLabel));
+        compiler.addInstruction(new BRA(elseLabel));
 
         // Create if branch
         compiler.addLabel(ifLabel);

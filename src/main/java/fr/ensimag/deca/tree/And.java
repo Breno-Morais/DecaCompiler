@@ -23,42 +23,32 @@ public class And extends AbstractOpBool {
         return "&&";
     }
 
-    @Override
-    public void codeGenBranch(DecacCompiler compiler) {
+    public void codeGenIfBranch(DecacCompiler compiler, Label ifLabel, Label elseLabel) {
         compiler.addComment("Beginning of AND");
-        Label skipUnevaluated = new Label("And_Fin." + andCount);
-        andCount++;
+        // Check first operand
+        getLeftOperand().codeGen(compiler, 2);
+        compiler.addInstruction(new CMP(0, Register.R2));
+        compiler.addInstruction(new BEQ(elseLabel));
 
-        // TODO: Refactor all of this mess
-        if(getExpectedBool()) {
-            // Check first operand
-            getLeftOperand().codeGenIfBranch(compiler, false, skipUnevaluated);
-            // Check second operand
-            getRightOperand().codeGenIfBranch(compiler, true, getE(), skipUnevaluated);
-        } else {
-            // Check first operand
-            getLeftOperand().codeGenIfBranch(compiler, false, getE());
-            // Check second operand
-            getRightOperand().codeGenIfBranch(compiler, false, getE());
-        }
-
-        compiler.addLabel(skipUnevaluated);
+        // Check second operand
+        getRightOperand().codeGen(compiler, 2);
+        compiler.addInstruction(new CMP(0, Register.R2));
+        compiler.addInstruction(new BNE(ifLabel));
+        compiler.addInstruction(new BRA(elseLabel));
     }
 
-    @Override
-    public void addImaInstruction(DecacCompiler compiler, DVal value, GPRegister register) {
+    public void codeGenBool(DecacCompiler compiler, GPRegister register, boolean not) {
         // Create the label to the code that sets the boolean result
         Label isTrue = new Label("AND_bool." + andCount);
         Label isFalse = new Label("AND_not_bool." + andCount);
         Label end = new Label("AND_bool_fin." + andCount);
-        this.setExpectedBool(false);
-        this.setE(isFalse);
         andCount++;
 
-        // Generate the code to resolve the operands (They'll branch to isFalse if they are false)
-        codeGenBranch(compiler);
-
-        compiler.addInstruction(new BRA(isTrue));
+        // Generate the code to resolve the operands (They'll branch to isTrue if they are true)
+        if(!not) // Inverts true and false if called by the Not operator
+            codeGenIfBranch(compiler, isTrue, isFalse);
+        else
+            codeGenIfBranch(compiler, isFalse, isTrue);
 
         compiler.addLabel(isTrue);
         compiler.addInstruction(new LOAD(new ImmediateInteger(1), register));

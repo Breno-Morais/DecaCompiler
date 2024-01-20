@@ -63,7 +63,7 @@ public class Assign extends AbstractBinaryExpr {
 
                 compiler.addInstruction(new STORE(Register.R3, new RegisterOffset(fieldIndex, Register.R2)));
             } else {
-                getRightOperand().codeGen(compiler, 3);
+                getRightOperand().codeGen(compiler, 2);
                 compiler.addInstruction(new STORE(Register.R2, leftAddress));
             }
 

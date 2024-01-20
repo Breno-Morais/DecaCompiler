@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.BooleanValue;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -16,7 +17,7 @@ import org.apache.log4j.Logger;
  * @author gl25
  * @date 01/01/2024
  */
-public abstract class AbstractOpCmp extends AbstractBranchable {
+public abstract class AbstractOpCmp extends AbstractBinaryExpr implements BooleanValue {
     private static final Logger LOG = Logger.getLogger(AbstractExpr.class);
 
     public AbstractOpCmp(AbstractExpr leftOperand, AbstractExpr rightOperand) {
@@ -59,31 +60,12 @@ public abstract class AbstractOpCmp extends AbstractBranchable {
     protected void codeGen(DecacCompiler compiler, int registerNumber) {
         super.codeGen(compiler, registerNumber);
 
-        if (getE() == null){
-            this.codeGenBool(compiler, registerNumber);
-        }
-    }
-
-    @Override
-    public void codeGenBranch(DecacCompiler compiler) {
-        codeGen(compiler, 0);
-        compareCondition(compiler, getE());
+        codeGenBool(compiler, registerNumber, false);
     }
 
     private static int countDeclLabels = 0;
 
-
-    protected void codeGenBool(DecacCompiler compiler, int registerNumber) {
-        Label trueLabel = new Label("E_CMPTrue" + countDeclLabels);
-        Label fin = new Label("E_CMPFin" + countDeclLabels);
-        countDeclLabels++;
-        compareCondition(compiler, trueLabel);
-        compiler.addInstruction(new LOAD(0, Register.getR(registerNumber)));
-        compiler.addInstruction(new BRA(fin));
-        compiler.addLabel(trueLabel);
-        compiler.addInstruction(new LOAD(1, Register.getR(registerNumber)));
-        compiler.addLabel(fin);
-    }
+    protected abstract void codeGenBool(DecacCompiler compiler, int registerNumber, boolean not);
 
     @Override
     public void addImaInstruction(DecacCompiler compiler, DVal value, GPRegister register) {
@@ -92,4 +74,11 @@ public abstract class AbstractOpCmp extends AbstractBranchable {
 
     // Compare the condition and branch to the label E if true
     public abstract void compareCondition(DecacCompiler compiler, Label E);
+
+    @Override
+    public void codeGenNot(DecacCompiler compiler, int registerNumber) {
+        super.codeGen(compiler, registerNumber);
+
+        codeGenBool(compiler, registerNumber, true);
+    }
 }

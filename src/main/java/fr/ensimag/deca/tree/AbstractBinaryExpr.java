@@ -87,13 +87,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         GPRegister firstReg = (allRegisters[1][0].getNumber() == registerNumber) ? allRegisters[1][0] : allRegisters[1][1];
         GPRegister secondReg = (allRegisters[1][1].getNumber() == registerNumber) ? allRegisters[1][0] : allRegisters[1][1];
 
-        if(getLeftOperand() instanceof AbstractLiteral) {
-            compiler.addInstruction(new LOAD(((AbstractLiteral) getLeftOperand()).getDValue(), firstReg));
-        } else if(getLeftOperand() instanceof Identifier) {
-            compiler.addInstruction(new LOAD(((Identifier) getLeftOperand()).getAddress(), firstReg));
-        } else {
-            getLeftOperand().codeGen(compiler, firstReg.getNumber());
-        }
+        getLeftOperand().codeGen(compiler, firstReg.getNumber());
 
         DVal value = secondReg;
 

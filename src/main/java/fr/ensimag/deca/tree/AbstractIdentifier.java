@@ -125,18 +125,4 @@ public abstract class AbstractIdentifier extends AbstractLValue {
     public int hashCode() {
         return Objects.hash(getName());
     }
-
-    @Override
-    public void codeGenIfBranch(DecacCompiler compiler, boolean expected, Label ifLabel, Label elseLabel) {
-        codeGenIfBranch(compiler, expected, ifLabel);
-        if(expected)
-                compiler.addInstruction(new BRA(elseLabel));
-    }
-
-    @Override
-    public void codeGenIfBranch(DecacCompiler compiler, boolean expected, Label ifLabel) {
-        this.codeGen(compiler, 0);
-        compiler.addInstruction(new CMP(new ImmediateInteger(0), Register.R0));
-        compiler.addInstruction((expected) ? new BNE(ifLabel) : new BEQ(ifLabel));
-    }
 }

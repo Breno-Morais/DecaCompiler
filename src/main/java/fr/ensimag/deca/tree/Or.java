@@ -22,43 +22,34 @@ public class Or extends AbstractOpBool {
         return "||";
     }
 
-    @Override
-    public void codeGenBranch(DecacCompiler compiler) {
+    public void codeGenIfBranch(DecacCompiler compiler, Label ifLabel, Label elseLabel) {
         compiler.addComment("Beginning of OR");
 
-        if(getExpectedBool()) {
-            // Left Operand
-            getLeftOperand().codeGenIfBranch(compiler, true, getE());
-            // Right Operand
-            getRightOperand().codeGenIfBranch(compiler, true, getE());
+        // Left Operand
+        getLeftOperand().codeGen(compiler, 2);
+        compiler.addInstruction(new CMP(0, Register.R2));
+        compiler.addInstruction(new BNE(ifLabel));
 
-        } else {
-            Label skipUnevaluated = new Label("OR_Fin." + orCount);
-            orCount++;
+        // Right Operand
+        getRightOperand().codeGen(compiler, 2);
+        compiler.addInstruction(new CMP(0, Register.R2));
+        compiler.addInstruction(new BNE(ifLabel));
 
-            // Check first operand
-            getLeftOperand().codeGenIfBranch(compiler, true, skipUnevaluated);
-            // Check second operand
-            getRightOperand().codeGenIfBranch(compiler, false, getE());
-
-            compiler.addLabel(skipUnevaluated);
-        }
+        compiler.addInstruction(new BRA(elseLabel));
     }
 
-    @Override
-    public void addImaInstruction(DecacCompiler compiler, DVal value, GPRegister register) {
+    public void codeGenBool(DecacCompiler compiler, GPRegister register, boolean not) {
         // Create the label to the code that sets the boolean result
         Label isTrue = new Label("OR_bool." + orCount);
         Label isFalse = new Label("OR_not_bool." + orCount);
         Label end = new Label("OR_bool_fin." + orCount);
-        this.setExpectedBool(true);
-        this.setE(isTrue);
         orCount++;
 
         // Generate the code to resolve the operands (They'll branch to isTrue if they are true)
-        codeGenBranch(compiler);
-
-        compiler.addInstruction(new BRA(isFalse));
+        if(!not) // Inverts true and false if called by the Not operator
+            codeGenIfBranch(compiler, isTrue, isFalse);
+        else
+            codeGenIfBranch(compiler, isFalse, isTrue);
 
         compiler.addLabel(isTrue);
         compiler.addInstruction(new LOAD(new ImmediateInteger(1), register));

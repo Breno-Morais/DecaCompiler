@@ -58,7 +58,10 @@ public class While extends AbstractInst {
         body.codeGenListInst(compiler);
 
         compiler.addLabel(condLabel);
-        condition.codeGenIfBranch(compiler, true, startCodeLabel, null);
+
+        condition.codeGen(compiler, 1);
+        compiler.addInstruction(new CMP(0, Register.R1));
+        compiler.addInstruction(new BNE(startCodeLabel));
     }
 
     @Override

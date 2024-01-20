@@ -3,8 +3,8 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.instructions.BEQ;
-import fr.ensimag.ima.pseudocode.instructions.BNE;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
  *
@@ -24,5 +24,13 @@ public class NotEquals extends AbstractOpExactCmp {
     @Override
     public void compareCondition(DecacCompiler compiler, Label E) {
         compiler.addInstruction(new BNE(E));
+    }
+
+    @Override
+    protected void codeGenBool(DecacCompiler compiler, int registerNumber, boolean not) {
+        if(!not)
+            compiler.addInstruction(new SNE(Register.getR(registerNumber)));
+        else
+            compiler.addInstruction(new SEQ(Register.getR(registerNumber)));
     }
 }

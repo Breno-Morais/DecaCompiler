@@ -73,4 +73,9 @@ public class InstanceOf extends AbstractOpExactCmp {
             // Put the label of end
         }
     }
+
+    @Override
+    protected void codeGenBool(DecacCompiler compiler, int registerNumber, boolean not) {
+        // TODO
+    }
 }
