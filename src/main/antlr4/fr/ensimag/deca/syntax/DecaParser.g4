@@ -541,7 +541,7 @@ class_decl returns[DeclClass tree]
             if($superclass.tree != null) {
                 $tree = new DeclClass($name.tree, $superclass.tree, $class_body.listField, $class_body.listMethod);
             } else {
-                Identifier idObj = new Identifier(getDecacCompiler().symbolTable.create("Object"));
+                Identifier idObj = new Identifier(getDecacCompiler().symbolTable.create("object"));
                 $tree = new DeclClass($name.tree, idObj, $class_body.listField, $class_body.listMethod);
             }
             setLocation($tree, $CLASS);
@@ -555,7 +555,9 @@ class_extension returns[AbstractIdentifier tree]
             setLocation($tree, $EXTENDS);
         }
     | /* epsilon */ {
-            $tree = null;
+            AbstractIdentifier object = new Identifier(getDecacCompiler().createSymbol("object"));
+            $tree = object;
+            object.setDefinition(getDecacCompiler().environmentType.OBJECT.getDefinition());
         }
     ;
 

@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.BooleanValue;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -8,6 +9,8 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Register;
 import org.apache.log4j.Logger;
 
 /**
@@ -15,7 +18,7 @@ import org.apache.log4j.Logger;
  * @author gl25
  * @date 01/01/2024
  */
-public class Not extends AbstractUnaryExpr {
+public class Not extends AbstractUnaryExpr implements BooleanValue {
     private static final Logger LOG = Logger.getLogger(Identifier.class);
     public Not(AbstractExpr operand) {
         super(operand);
@@ -45,8 +48,12 @@ public class Not extends AbstractUnaryExpr {
 
     @Override
     protected void codeGen(DecacCompiler compiler, int registerNumber) {
-        if (getOperand() instanceof BooleanLiteral) {
+        if(getOperand() instanceof BooleanValue)
+            ((BooleanValue) getOperand()).codeGenNot(compiler, registerNumber);
+    }
 
-        }
+    @Override
+    public void codeGenNot(DecacCompiler compiler, int registerNumber) {
+        getOperand().codeGen(compiler, registerNumber);
     }
 }

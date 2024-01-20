@@ -4,7 +4,9 @@ import fr.ensimag.deca.codegen.MethodName;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.RTS;
+import fr.ensimag.ima.pseudocode.instructions.TSTO;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import fr.ensimag.ima.pseudocode.Label;
@@ -59,32 +61,35 @@ public class DeclClass extends AbstractDeclClass {
     protected void verifyClass(DecacCompiler compiler) throws ContextualError {
         //verifier le nom des classes et la hiérarchie de classes
         LOG.debug("verifyClass DeclClass: start");
+        ClassDefinition superClassDefinition = (ClassDefinition) compiler.environmentType.defOfType(superclass.getName());
 
         EnvironmentType env_types = compiler.environmentType;
-        TypeDefinition type_def = compiler.environmentType.get(superclass.getName());
+//        TypeDefinition type_def = compiler.environmentType.get(superclass.getName());
+//
+//        if(!superclass.getName().toString().equals("Object") && type_def==null){  //!superclass.getClassDefinition().isClass()
+//            throw new ContextualError("superclass is not a Class in DeclClass", getLocation());
+//        }
 
-        if(!superclass.getName().toString().equals("Object") && type_def==null){  //!superclass.getClassDefinition().isClass()
-            throw new ContextualError("superclass is not a Class in DeclClass", getLocation());
-        }
 
-        if(superclass.getName().toString().equals("Object")){
-            superclass.setDefinition(env_types.OBJECT.getDefinition());
-            //superclass.setType(compiler.environmentType.defOfType(superclass.getName()).getType());
-        }else{
-            superclass.setDefinition(env_types.get(superclass.getName()));
-            //superclass.setType(compiler.environmentType.defOfType(superclass.getName()).getType());
-        }
-
-        ClassType classType = new ClassType(name.getName(), getLocation(), superclass.getClassDefinition());
-        ClassDefinition classDefinition = new ClassDefinition(classType, getLocation(), superclass.getClassDefinition());
-
+        ClassType classType = new ClassType(name.getName(), getLocation(), superClassDefinition);
         try{
-            name.setDefinition(classDefinition);
-            //name.setType(classType);
+            name.setDefinition(classType.getDefinition());
+            name.setType(classType.getDefinition().getType());
             env_types.declareClass(name.getName(), classType.getDefinition());
         }catch (EnvironmentType.DoubleDefException e){
             throw new ContextualError("Error, Class already declared in DeclClass", this.getLocation());
         }
+
+//        if(superclass.getName().toString().equals("Object")){
+//            superclass.setDefinition(classType.getDefinition());
+//            superclass.setType(compiler.environmentType.defOfType(superclass.getName()).getType());
+//        }else{
+//            superclass.setDefinition(env_types.get(superclass.getName()));
+//            superclass.setType(compiler.environmentType.defOfType(superclass.getName()).getType());
+//        }
+        superclass.setDefinition(compiler.environmentType.defOfType(superclass.getName()));
+        superclass.setType(compiler.environmentType.defOfType(superclass.getName()).getType());
+
         LOG.debug("verifyClass DeclClass: end");
     }
 
@@ -164,13 +169,19 @@ public class DeclClass extends AbstractDeclClass {
     }
 
     private void addInit(DecacCompiler compiler) {
+        DecacCompiler blockCompiler = new DecacCompiler(compiler.getCompilerOptions(), compiler.getSource());
+
         compiler.addComment("---------- Initialisation des champs de " + getName());
         compiler.addLabel(new Label("init." + getName()));
-        // TODO: add the pile stuff
 
-        listField.codeGenListField(compiler);
+        listField.codeGenListField(blockCompiler);
 
-        compiler.addInstruction(new RTS());
+        blockCompiler.addInstruction(new RTS());
+
+        blockCompiler.addFirst(new BOV(new Label("pile_pleine")));
+        blockCompiler.addFirst(new TSTO(blockCompiler.getMaxStack()));
+
+        compiler.append(blockCompiler);
     }
 
     private void addMethods(DecacCompiler compiler) {

@@ -58,42 +58,10 @@ public class While extends AbstractInst {
         body.codeGenListInst(compiler);
 
         compiler.addLabel(condLabel);
-        if(condition instanceof BooleanLiteral) {
-            BooleanLiteral conditionValue = (BooleanLiteral) condition;
-            if (conditionValue.getValue())
-                compiler.addInstruction(new BRA(startCodeLabel));
 
-        } else if (condition instanceof AbstractIdentifier) {
-            AbstractIdentifier conditionIdentifier = (AbstractIdentifier) condition;
-
-            conditionIdentifier.codeGen(compiler, 0);
-            compiler.addInstruction(new CMP(new ImmediateInteger(0), Register.R0));
-            compiler.addInstruction(new BNE(startCodeLabel));
-        } else if (condition instanceof AbstractBranchable) {
-            AbstractBranchable conditionBranchable = (AbstractBranchable) condition;
-            conditionBranchable.setE(startCodeLabel);
-            conditionBranchable.setExpectedBool(true);
-            conditionBranchable.codeGenBranch(compiler);
-        } else if (condition instanceof Not) {
-            if (((Not) condition).getOperand() instanceof BooleanLiteral) {
-                BooleanLiteral conditionValue = (BooleanLiteral) ((Not) condition).getOperand();
-                if (!conditionValue.getValue())
-                    compiler.addInstruction(new BRA(startCodeLabel));
-
-            } else if (((Not) condition).getOperand() instanceof AbstractBranchable) {
-                AbstractBranchable conditionBranchable = (AbstractBranchable) condition;
-                conditionBranchable.setE(startCodeLabel);
-                conditionBranchable.setExpectedBool(false);
-                conditionBranchable.codeGenBranch(compiler);
-
-            } else if (((Not) condition).getOperand() instanceof AbstractIdentifier) {
-                AbstractIdentifier conditionIdentifier = (AbstractIdentifier) condition;
-
-                conditionIdentifier.codeGen(compiler, 0);
-                compiler.addInstruction(new CMP(new ImmediateInteger(0), Register.R0));
-                compiler.addInstruction(new BEQ(startCodeLabel));
-            }
-        }
+        condition.codeGen(compiler, 1);
+        compiler.addInstruction(new CMP(0, Register.R1));
+        compiler.addInstruction(new BNE(startCodeLabel));
     }
 
     @Override

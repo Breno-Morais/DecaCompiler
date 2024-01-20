@@ -92,8 +92,7 @@ public abstract class AbstractExpr extends AbstractInst {
         LOG.debug("verifyRValue AbstractExpr : start");
 
         Type type = this.verifyExpr(compiler, localEnv, currentClass);
-        LOG.debug(expectedType);
-        LOG.debug(type);
+
         // UTILISER ISSUBCLASS QUAND ON FERA DE L'OBJET
         if (type.sameType(expectedType)){
             LOG.debug("verifyRValue AbstractExpr : end");
@@ -180,6 +179,7 @@ public abstract class AbstractExpr extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
+        codeGen(compiler, 2);
     }
 
     /**

@@ -8,6 +8,8 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.BEQ;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.log4j.Logger;
@@ -61,16 +63,14 @@ public class Assign extends AbstractBinaryExpr {
 
                 compiler.addInstruction(new STORE(Register.R3, new RegisterOffset(fieldIndex, Register.R2)));
             } else {
-                getRightOperand().codeGen(compiler, 3);
+                getRightOperand().codeGen(compiler, 2);
                 compiler.addInstruction(new STORE(Register.R2, leftAddress));
             }
 
         } else if(getLeftOperand() instanceof Selection) {
             compiler.addInstruction(new LOAD(leftOperandId.getAddress(), Register.R2));
-            /* TODO: Error Handler
-            compiler.addInstruction(new CMP(new NullOperand(), ));
+            compiler.addInstruction(new CMP(new NullOperand(), Register.R2));
             compiler.addInstruction(new BEQ(new Label("dereferencement_null")));
-             */
 
             getRightOperand().codeGen(compiler, 3);
             compiler.addInstruction(new STORE(Register.R3, new RegisterOffset(leftOperandId.getFieldDefinition().getIndex(), Register.R2)));

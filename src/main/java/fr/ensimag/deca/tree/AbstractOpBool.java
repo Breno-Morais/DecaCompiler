@@ -1,10 +1,13 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.BooleanValue;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
 import org.apache.log4j.Logger;
 
 /**
@@ -12,7 +15,7 @@ import org.apache.log4j.Logger;
  * @author gl25
  * @date 01/01/2024
  */
-public abstract class AbstractOpBool extends AbstractBranchable {
+public abstract class AbstractOpBool extends AbstractBinaryExpr implements BooleanValue {
     private static final Logger LOG = Logger.getLogger(AbstractExpr.class);
 
     public AbstractOpBool(AbstractExpr leftOperand, AbstractExpr rightOperand) {
@@ -32,5 +35,19 @@ public abstract class AbstractOpBool extends AbstractBranchable {
             return leftType;
         }
         throw new ContextualError("a BOOL was expected in AbstractOpBool", getLocation());
+    }
+
+    public abstract void codeGenBool(DecacCompiler compiler, GPRegister register, boolean not);
+
+    @Override
+    protected void codeGen(DecacCompiler compiler, int registerNumber) {
+        super.codeGen(compiler, registerNumber);
+        codeGenBool(compiler, Register.getR(registerNumber), false);
+    }
+
+    @Override
+    public void codeGenNot(DecacCompiler compiler, int registerNumber) {
+        super.codeGen(compiler, registerNumber);
+        codeGenBool(compiler, Register.getR(registerNumber), true);
     }
 }
