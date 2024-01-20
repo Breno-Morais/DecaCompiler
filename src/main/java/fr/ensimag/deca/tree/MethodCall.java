@@ -57,6 +57,7 @@ public class MethodCall extends AbstractExpr {
         ClassType classType = (ClassType) typeObj;
         SymbolTable.Symbol methodName = this.meth.getName();
         ExpDefinition methodDef = classType.getDefinition().getMembers().get(methodName);
+        meth.setDefinition(methodDef);
         if (methodDef == null || !(methodDef instanceof MethodDefinition)){
             throw new ContextualError("The method '" + methodName.toString() + "' doesn't exist in MethodCall", getLocation());
         }

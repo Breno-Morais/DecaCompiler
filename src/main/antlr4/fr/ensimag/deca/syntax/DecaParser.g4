@@ -558,6 +558,7 @@ class_extension returns[AbstractIdentifier tree]
             AbstractIdentifier object = new Identifier(getDecacCompiler().createSymbol("object"));
             $tree = object;
             object.setDefinition(getDecacCompiler().environmentType.OBJECT.getDefinition());
+            object.setLocation(Location.BUILTIN);
         }
     ;
 
@@ -573,6 +574,7 @@ class_body returns[ListDeclField listField, ListDeclMethod listMethod]
       | d=decl_field_set[$listField]
       )*
     ;
+
 
 decl_field_set[ListDeclField listField]
     : v=visibility t=type list_decl_field[$v.tree, $t.tree, $listField]
@@ -634,12 +636,14 @@ decl_method returns[AbstractDeclMethod tree]
             methodBody = new MethodBody($block.decls, $block.insts);
             $tree = new DeclMethod($type.tree, $ident.tree, $params.tree, methodBody);
             setLocation($tree, $type.start);
+            setLocation(methodBody, $block.start);
         }
       | ASM OPARENT code=multi_line_string CPARENT SEMI {
             assert($code.text != null);
             methodBody = new MethodAsmBody($code.text);
             $tree = new DeclMethod($type.tree, $ident.tree, $params.tree, methodBody);
             setLocation($tree, $ASM);
+            setLocation(methodBody, $ASM);
         }
       ) {
             assert($type.tree != null);

@@ -31,16 +31,19 @@ public class Selection extends AbstractIdentifier {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
         LOG.debug("verifyExpr Selection : start");
         Type typeObj = obj.verifyExpr(compiler, localEnv, currentClass);
-        FieldDefinition def = field.getFieldDefinition();
+        ExpDefinition test = currentClass.getMembers().get(field.getName());
+
         //if(def.getVisibility() == Visibility.PROTECTED){
             //vérifier que c'est une sous class et sous type je crois
 //            ClassType currentType = currentClass.getType();
 //            if (!fi
         //}
-        Type fieldType = def.getType();
-        setType(fieldType);
+
+        setType(test.getType());
+        ExpDefinition defField = currentClass.getMembers().get(field.getName());
+        field.setDefinition(defField);
         LOG.debug("verifyExpr Selection : end");
-        return fieldType;
+        return test.getType();
         //setTyep
 
 
