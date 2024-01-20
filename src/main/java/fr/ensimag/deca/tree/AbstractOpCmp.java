@@ -74,8 +74,8 @@ public abstract class AbstractOpCmp extends AbstractBranchable {
 
 
     protected void codeGenBool(DecacCompiler compiler, int registerNumber) {
-        Label trueLabel = new Label("E_SiTrue" + countDeclLabels);
-        Label fin = new Label("E_finDecl" + countDeclLabels);
+        Label trueLabel = new Label("E_CMPTrue" + countDeclLabels);
+        Label fin = new Label("E_CMPFin" + countDeclLabels);
         countDeclLabels++;
         compareCondition(compiler, trueLabel);
         compiler.addInstruction(new LOAD(0, Register.getR(registerNumber)));

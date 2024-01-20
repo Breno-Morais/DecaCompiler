@@ -10,6 +10,7 @@ import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -107,8 +108,10 @@ public class Program extends AbstractProgram {
 
         // Add header test
         compiler.addFirst(new ADDSP(getIndexGB() + main.getNumGlobalVariables() - 1));
-        // compiler.addFirst(new BOV(new Label("pile_pleine"))); // TODO: Error handler
+        compiler.addFirst(new BOV(new Label("pile_pleine")));
         compiler.addFirst(new TSTO(compiler.getMaxStack()));
+
+        addCompleteErrorHandles(compiler);
     }
 
     @Override
@@ -136,7 +139,8 @@ public class Program extends AbstractProgram {
         compiler.addComment("---------- Code de la methode equals dans la classe Object");
         compiler.addLabel(new Label("code.Object.equals"));
         compiler.addInstruction(new TSTO(new ImmediateInteger(1)));
-        compiler.addInstruction(new BOV(new Label("pile_pleine"))); // TODO: Error Handle
+        compiler.addInstruction(new BOV(new Label("pile_pleine")));
+
         compiler.addComment("Sauvegarde des registres");
         compiler.addInstruction(new PUSH(Register.R2));
 
@@ -169,5 +173,23 @@ public class Program extends AbstractProgram {
 
     public static void incrementIndexGB() {
         indexGB++;
+    }
+
+    private void addCompleteErrorHandles(DecacCompiler compiler) {
+        addErrorHandle(compiler, "Erreur: pile pleine", new Label("pile_pleine"));
+        addErrorHandle(compiler, "Erreur: dereferencement de null", new Label("dereferencement_null"));
+        addErrorHandle(compiler, "Erreur: Input/Output error", new Label("io_error"));
+        addErrorHandle(compiler, "Erreur: tas plein", new Label("tas_plein"));
+    }
+
+    private void addErrorHandle(DecacCompiler compiler, String message, Label label) {
+        String strMessage = "Message d'erreur : " + label.toString();
+        compiler.addComment("--------------------------------------------------");
+        compiler.addComment(StringUtils.center(strMessage, 75 - strMessage.length()));
+        compiler.addComment("--------------------------------------------------");
+        compiler.addLabel(label);
+        compiler.addInstruction(new WSTR(message));
+        compiler.addInstruction(new WNL());
+        compiler.addInstruction(new ERROR());
     }
 }

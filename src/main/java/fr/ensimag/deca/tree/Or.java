@@ -26,7 +26,6 @@ public class Or extends AbstractOpBool {
     public void codeGenBranch(DecacCompiler compiler) {
         compiler.addComment("Beginning of OR");
 
-        // TODO: Refactor all of this mess ( NOT can be recursive :| )
         if(getExpectedBool()) {
             // Left Operand
             getLeftOperand().codeGenIfBranch(compiler, true, getE());

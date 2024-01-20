@@ -83,6 +83,7 @@ public class MethodCall extends AbstractExpr {
         // Add to the pile register the number of parameters + 1
         int frameSize = param.size() + 1;
         compiler.addInstruction(new ADDSP(frameSize));
+        compiler.addToStack(frameSize);
 
         // Stores the method table in the pile
         if(obj instanceof Identifier) { // Add selection later if possible
@@ -100,10 +101,8 @@ public class MethodCall extends AbstractExpr {
         
         // Loads the address of the method table
         compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.SP), Register.R2));
-        /* TODO: Error Handler
         compiler.addInstruction(new CMP(new NullOperand(), Register.R2));
         compiler.addInstruction(new BEQ(new Label("dereferencement_null")));
-        */
         compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.R2), Register.R2));
 
         // BSR to the table
@@ -118,6 +117,7 @@ public class MethodCall extends AbstractExpr {
 
         compiler.addInstruction(new LOAD(Register.R0, Register.getR(registerNumber)));
         compiler.addInstruction(new SUBSP(frameSize));
+        compiler.removeFromStack(frameSize);
     }
 
     @Override

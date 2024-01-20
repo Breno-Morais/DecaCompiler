@@ -54,7 +54,8 @@ public class New extends AbstractUnaryExpr {
     @Override
     public void addImaInstruction(DecacCompiler compiler, DVal value, GPRegister register) {
         compiler.addInstruction(new NEW(value, register));
-        compiler.addInstruction(new BOV(new Label("tas_plein"))); // TODO: Error Handler
+        compiler.addInstruction(new BOV(new Label("tas_plein")));
+
         Identifier ident = (Identifier) getOperand();
         DAddr methodTableAddr = ident.getClassDefinition().getMethodTableAddress();
         compiler.addInstruction(new LEA(methodTableAddr, Register.R0));

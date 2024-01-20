@@ -131,10 +131,8 @@ public class Selection extends AbstractIdentifier {
             compiler.addInstruction(new LOAD(((AbstractIdentifier) obj).getAddress(), register));
         } else throw new DecacInternalError("Selection of impossible type");
 
-        /* TODO: Error Handler
         compiler.addInstruction(new CMP(new NullOperand(), register));
         compiler.addInstruction(new BEQ(new Label("dereferencement_null")));
-        */
 
         compiler.addInstruction(new LOAD(new RegisterOffset(getFieldDefinition().getIndex(), register), register));
     }
