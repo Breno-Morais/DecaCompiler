@@ -1,13 +1,14 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ClassType;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
+import org.apache.log4j.Logger;
 
 public class InstanceOf extends AbstractOpExactCmp {
+    private static final Logger LOG = Logger.getLogger(AbstractExpr.class);
 
     public InstanceOf(AbstractExpr leftOperand, AbstractIdentifier rightOperand) {
         super(leftOperand, rightOperand);
@@ -19,6 +20,23 @@ public class InstanceOf extends AbstractOpExactCmp {
 
     public AbstractIdentifier getClassName() {
         return (AbstractIdentifier) getRightOperand();
+    }
+
+    @Override
+    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
+        LOG.debug("verifyExpr InstanceOf : start");
+        //On veut vérifier que les deux éléments sont des types Arith
+        Type leftType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
+        Type rightType = getClassName().verifyType(compiler);
+
+        this.setType(compiler.environmentType.BOOLEAN);
+        if(leftType.sameType((rightType))){
+            LOG.debug("verifyExpr InstanceOf : end");
+            return compiler.environmentType.BOOLEAN;
+        }
+
+        LOG.debug("verifyExpr InstanceOf : end");
+        throw new ContextualError("Type error in AbstractOpCmp", getLocation());
     }
 
     @Override
@@ -42,20 +60,21 @@ public class InstanceOf extends AbstractOpExactCmp {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        getObject().codeGenInst(compiler);
-        codeGenInstanceOf(compiler, Register.getR(2));
+        codeGenInstanceOf(compiler, 0);
     }
 
-    // TODO: InstanceOf
-    public void codeGenInstanceOf(DecacCompiler compiler, GPRegister register) {
+    @Override
+    protected void codeGen(DecacCompiler compiler, int registerNumber) {
+        GPRegister register = Register.getR(registerNumber);
         // If its checking that it is an object, return true
         if(getClassName().toString().equals("object"))
             compiler.addInstruction(new LOAD(1, register));
         else {
-            Label instanceTrue = new Label("INSTANCE_true");
-            Label instanceFalse = new Label("INSTANCE_false");
-            Label instanceLoop = new Label("INSTANCE_start_loop");
-            Label instanceEnd = new Label("INSTANCE_fin");
+            Label instanceTrue = new Label("INSTANCE_true." + instanceCounter);
+            Label instanceFalse = new Label("INSTANCE_false." + instanceCounter);
+            Label instanceLoop = new Label("INSTANCE_start_loop." + instanceCounter);
+            Label instanceEnd = new Label("INSTANCE_fin." + instanceCounter);
+            instanceCounter++;
 
             // Check if the object is null
             getObject().codeGen(compiler, register.getNumber());
@@ -65,10 +84,11 @@ public class InstanceOf extends AbstractOpExactCmp {
             // Get the address in the heap,
             compiler.addInstruction(new LOAD(new RegisterOffset(0, register), register));
             // Get method table of the class
-            compiler.addInstruction(new LOAD(new RegisterOffset(0, register), register)); // Maybe a LEA
+            compiler.addInstruction(new LEA(new RegisterOffset(0, register), register)); // Maybe a LEA
 
             // Get the address of the method table of object
-            compiler.addInstruction(new LOAD(getClassName().getClassDefinition().getMethodTableAddress(), Register.R1)); // Maybe a LEA
+            DAddr methodTableAddr = ((ClassDefinition) compiler.environmentType.defOfType(getClassName().getName())).getMethodTableAddress();
+            compiler.addInstruction(new LEA(methodTableAddr, Register.R1)); // Maybe a LEA
 
             // Add label of the while loop
             compiler.addLabel(instanceLoop);
@@ -99,8 +119,14 @@ public class InstanceOf extends AbstractOpExactCmp {
         }
     }
 
+    public void codeGenInstanceOf(DecacCompiler compiler, int registerNumber) {
+
+    }
+
     @Override
     protected void codeGenBool(DecacCompiler compiler, int registerNumber, boolean not) {
         // TODO
     }
+
+    private static int instanceCounter = 0;
 }

@@ -132,7 +132,6 @@ public class DeclMethod extends AbstractDeclMethod {
         // Main code
         methodBody.codeGenMethod(blockCompiler);
 
-        // TODO: Error handling
         blockCompiler.addLabel(new Label("fin." + className + "." + getName()));
         // Register Restauration
         blockCompiler.addComment("Restauration des registres");
