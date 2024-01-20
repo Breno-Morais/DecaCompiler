@@ -51,7 +51,7 @@ public class InstanceOf extends AbstractOpExactCmp {
     // TODO: InstanceOf
     public void codeGenInstanceOf(DecacCompiler compiler) {
         // If its checking that it is an object, return true
-        if(getClassName().toString().equals("Object"))
+        if(compiler.environmentType.defOfType(getClassName().getName()).getType().sameType(compiler.environmentType.OBJECT))
             compiler.addInstruction(new LOAD(1, Register.R2));
         else {
             // Check if the object is null

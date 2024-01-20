@@ -72,10 +72,10 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
     public void updateMethodNames(AbstractDeclClass declClass) {
         List<MethodName> methodNames = declClass.getMethodNames();
 
-        if(declClass.getSuperclass().toString().equals("Object")) {
+        if(declClass.getSuperclass().toString().equals("object")) {
             if(methodNames.stream()
                     .noneMatch(childMethod -> childMethod.getName().equals("equals"))) {
-                methodNames.add(new MethodName("Object", "equals"));
+                methodNames.add(new MethodName("object", "equals"));
             }
         } else {
             AbstractDeclClass superClass = getClassDecl(declClass.getSuperclass());
