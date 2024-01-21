@@ -144,8 +144,7 @@ public class DeclMethod extends AbstractDeclMethod {
             }
         }
 
-        if(methodBody instanceof MethodBody) // The inline code doesn't need an RTS
-            blockCompiler.addInstruction(new RTS());
+        blockCompiler.addInstruction(new RTS());
 
         blockCompiler.addInstruction(new ADDSP(parameters.size())); // TODO: Put local variables instead
         blockCompiler.addFirst(new BOV(new Label("pile_pleine")));

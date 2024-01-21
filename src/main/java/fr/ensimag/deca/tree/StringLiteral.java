@@ -25,6 +25,11 @@ public class StringLiteral extends AbstractStringLiteral {
         return value;
     }
 
+    @Override
+    public String getASMValue() {
+        return value.substring(1, value.length() - 1);
+    }
+
     private String value;
 
 

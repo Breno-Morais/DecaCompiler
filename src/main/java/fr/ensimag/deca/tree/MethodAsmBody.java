@@ -43,7 +43,7 @@ public class MethodAsmBody extends AbstractMethodBody {
 
     @Override
     public void codeGenMethod(DecacCompiler compiler) {
-        compiler.add(new InlinePortion(code.getValue()));
+        compiler.add(new InlinePortion(code.getASMValue()));
     }
 
     @Override

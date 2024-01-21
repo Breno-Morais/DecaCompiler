@@ -13,4 +13,5 @@ public abstract class AbstractStringLiteral extends AbstractExpr {
 
     public abstract String getValue();
 
+    public abstract String getASMValue();
 }
