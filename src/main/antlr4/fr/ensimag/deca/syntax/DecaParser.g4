@@ -587,7 +587,6 @@ visibility returns[AbstractVisibility tree]
         }
     | PROTECTED {
             $tree = new Protected();
-            setLocation($tree, $PROTECTED);
         }
     ;
 
