@@ -31,7 +31,7 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr implements Boolea
         //On veut vérifier que les deux éléments sont des types Arith
         Type leftType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         Type rightType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
-        if(!this.areBothArith(leftType, rightType)){   //TODO : on peut accepter les types boolean pour les EQ et NEQ
+        if(!this.areBothArith(leftType, rightType) && !(leftType.isBoolean() && rightType.isBoolean())){   //TODO : on peut accepter les types boolean pour les EQ et NEQ
             throw new ContextualError("one operator is not an Arith type in AbstractOpCmp", getLocation());
         }
         this.setType(compiler.environmentType.BOOLEAN);

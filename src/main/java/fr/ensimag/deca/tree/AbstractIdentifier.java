@@ -26,7 +26,6 @@ import java.util.Objects;
  * @date 01/01/2024
  */
 public abstract class AbstractIdentifier extends AbstractLValue {
-
     /**
      * Like {@link #getDefinition()}, but works only if the definition is a
      * ClassDefinition.
@@ -38,8 +37,6 @@ public abstract class AbstractIdentifier extends AbstractLValue {
      *             if the definition is not a class definition.
      */
     public abstract ClassDefinition getClassDefinition();
-
-    public abstract Definition getDefinition();
 
     /**
      * Like {@link #getDefinition()}, but works only if the definition is a
@@ -90,9 +87,10 @@ public abstract class AbstractIdentifier extends AbstractLValue {
      */
     public abstract VariableDefinition getVariableDefinition();
 
-    public abstract void setDefinition(Definition definition);
-
-
+    @Override
+    public Type getType() {
+        return this.getDefinition().getType();
+    }
 
     /**
      * Implements non-terminal "type" of [SyntaxeContextuelle] in the 3 passes
@@ -105,12 +103,6 @@ public abstract class AbstractIdentifier extends AbstractLValue {
     @Override
     public String toString() {
         return getName().getName();
-    }
-
-    public DAddr getAddress() {
-        if(getDefinition().isExpression())
-            return getExpDefinition().getOperand();
-        else throw new DecacInternalError("Cannot get address of a class or type");
     }
 
     @Override

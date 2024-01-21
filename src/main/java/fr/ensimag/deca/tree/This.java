@@ -6,6 +6,9 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import org.apache.log4j.Logger;
 
 import java.io.PrintStream;
@@ -44,4 +47,10 @@ public class This extends AbstractExpr {
 
     @Override
     protected void iterChildren(TreeFunction f) { }
+
+    @Override
+    protected void codeGen(DecacCompiler compiler, int registerNumber) {
+        RegisterOffset implicitThis = new RegisterOffset(-2, Register.LB);
+        compiler.addInstruction(new LOAD(implicitThis, Register.getR(registerNumber)));
+    }
 }

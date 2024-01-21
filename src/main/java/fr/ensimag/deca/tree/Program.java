@@ -62,7 +62,7 @@ public class Program extends AbstractProgram {
         compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(2, Register.GB)));
 
         HashMap<String, Integer> methodTableOffsetMap = new HashMap<String, Integer>();
-        methodTableOffsetMap.put("object", 1);
+        methodTableOffsetMap.put("Object", 1);
 
         for(AbstractDeclClass declClass : getClasses().getList()) {
             compiler.addComment("Construction de la table des methodes de " + declClass.getName());

@@ -32,11 +32,6 @@ public class Identifier extends AbstractIdentifier {
         }
     }
 
-    @Override
-    public Definition getDefinition() {
-        return definition;
-    }
-
     /**
      * Like {@link #getDefinition()}, but works only if the definition is a
      * ClassDefinition.
@@ -50,7 +45,7 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public ClassDefinition getClassDefinition() {
         try {
-            return (ClassDefinition) definition;
+            return (ClassDefinition) getDefinition();
         } catch (ClassCastException e) {
             throw new DecacInternalError(
                     "Identifier "
@@ -72,7 +67,7 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public MethodDefinition getMethodDefinition() {
         try {
-            return (MethodDefinition) definition;
+            return (MethodDefinition) getDefinition();
         } catch (ClassCastException e) {
             throw new DecacInternalError(
                     "Identifier "
@@ -94,7 +89,7 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public FieldDefinition getFieldDefinition() {
         try {
-            return (FieldDefinition) definition;
+            return (FieldDefinition) getDefinition();
         } catch (ClassCastException e) {
             throw new DecacInternalError(
                     "Identifier "
@@ -116,7 +111,7 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public VariableDefinition getVariableDefinition() {
         try {
-            return (VariableDefinition) definition;
+            return (VariableDefinition) getDefinition();
         } catch (ClassCastException e) {
             throw new DecacInternalError(
                     "Identifier "
@@ -137,24 +132,13 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public ExpDefinition getExpDefinition() {
         try {
-            return (ExpDefinition) definition;
+            return (ExpDefinition) getDefinition();
         } catch (ClassCastException e) {
             throw new DecacInternalError(
                     "Identifier "
                             + getName()
                             + " is not a Exp identifier, you can't call getExpDefinition on it");
         }
-    }
-
-    // TODO: Take this function to AbstractIdentifier, it is here until Selection has been correctly verified
-    @Override
-    public Type getType() {
-        return this.getDefinition().getType();
-    }
-
-    @Override
-    public void setDefinition(Definition definition) {
-        this.definition = definition;
     }
 
     @Override
@@ -169,6 +153,10 @@ public class Identifier extends AbstractIdentifier {
         this.name = name;
     }
 
+    public Identifier(Identifier identifier) {
+        // TODO: Create a deep copy
+    }
+
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
                            ClassDefinition currentClass) throws ContextualError {
@@ -178,8 +166,10 @@ public class Identifier extends AbstractIdentifier {
             throw new ContextualError(getName() +" is an invalid expression in Identifier", getLocation());
         }
         this.setDefinition(expDef);
+        this.setAddress(expDef.getOperand());
+
         Type exprType = expDef.getType();
-//            setType(exprType);
+        setType(exprType);
         LOG.debug("verifyExpr Identifier : end");
         return exprType;
     }
@@ -201,10 +191,6 @@ public class Identifier extends AbstractIdentifier {
         LOG.debug("verifyType Identifier : end");
         return type;
     }
-    
-    
-    private Definition definition;
-
 
     @Override
     protected void iterChildren(TreeFunction f) {
@@ -238,12 +224,18 @@ public class Identifier extends AbstractIdentifier {
     }
 
     @Override
+    public DAddr getAddress() {
+        return getExpDefinition().getOperand();
+    }
+
+    @Override
     protected void codeGen(DecacCompiler compiler, int registerNumber) {
-        if(getDefinition().isField()) {
+        if (getDefinition().isField()) {
             GPRegister register = Register.getR(registerNumber);
             compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), register));
             compiler.addInstruction(new LOAD(new RegisterOffset(getFieldDefinition().getIndex(), register), register));
-        } else
+        } else {
             compiler.addInstruction(new LOAD(getAddress(), Register.getR(registerNumber)));
+        }
     }
 }

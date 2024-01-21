@@ -23,6 +23,13 @@ public class DeclField extends AbstractDeclField {
         this.initialization = initialization;
     }
 
+    public DeclField(DeclField otherField) {
+        this.visibility = otherField.getVisibility();
+        this.type = otherField.getType();
+        this.field = new Identifier((Identifier) otherField.getField());
+        this.initialization = otherField.getInitialization();
+    }
+
     /**
      * Pass 2 of [SyntaxeContextuelle]
      */
@@ -39,6 +46,7 @@ public class DeclField extends AbstractDeclField {
         Visibility visib = getStatusVisibility();
 
 
+        classe.setNumberOfFields(superClass.getNumberOfFields());
         FieldDefinition fieldDefinition = new FieldDefinition(type_def, getLocation(), visib, classe, index);
         try{
             classe.getMembers().declare(field.getName(), fieldDefinition);

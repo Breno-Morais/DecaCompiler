@@ -87,4 +87,9 @@ public class ClassDefinition extends TypeDefinition {
     public void setMethodTableAddress(DAddr methodTableAddress) {
         this.methodTableAddress = methodTableAddress;
     }
+
+    @Override
+    public ClassDefinition asClassDefinition(String errorMessage, Location l) throws ContextualError {
+        return this;
+    }
 }

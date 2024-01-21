@@ -423,7 +423,7 @@ select_expr returns[AbstractExpr tree]
         }
         | /* epsilon */ {
             // we matched "e.i"
-            $tree = new Selection($e1.tree, $i.tree, getDecacCompiler().symbolTable.create($e1.text + "." + $i.text));
+            $tree = new Selection($e1.tree, $i.tree);
         }
         )
     ;
@@ -541,7 +541,7 @@ class_decl returns[DeclClass tree]
             if($superclass.tree != null) {
                 $tree = new DeclClass($name.tree, $superclass.tree, $class_body.listField, $class_body.listMethod);
             } else {
-                Identifier idObj = new Identifier(getDecacCompiler().symbolTable.create("object"));
+                Identifier idObj = new Identifier(getDecacCompiler().symbolTable.create("Object"));
                 $tree = new DeclClass($name.tree, idObj, $class_body.listField, $class_body.listMethod);
             }
             setLocation($tree, $CLASS);
@@ -555,7 +555,7 @@ class_extension returns[AbstractIdentifier tree]
             setLocation($tree, $EXTENDS);
         }
     | /* epsilon */ {
-            AbstractIdentifier object = new Identifier(getDecacCompiler().createSymbol("object"));
+            AbstractIdentifier object = new Identifier(getDecacCompiler().createSymbol("Object"));
             $tree = object;
             object.setDefinition(getDecacCompiler().environmentType.OBJECT.getDefinition());
             object.setLocation(Location.BUILTIN);

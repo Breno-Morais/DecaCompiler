@@ -19,9 +19,23 @@ class A {
    }
 }
 
+class B extends A {
+   protected int y ;
+   int getY() {
+      return y ;
+   }
+   void setY(int y) {
+      this.y = y ;
+   }
+}
+
 {
    A a = new A() ;
-
-   a.setX(1) ;
+   B b = new B() ;
+   a.setX(2) ;
+   //b.setX(a.getX() + 1);
+   b.setY(a.getX() + 2);
    println("a.getX() = ", a.getX()) ;
+   println("b.getX() = ", b.getX()) ;
+   println("b.getY() = ", b.getY()) ;
 }

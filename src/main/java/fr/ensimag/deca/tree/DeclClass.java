@@ -59,7 +59,7 @@ public class DeclClass extends AbstractDeclClass {
     private static EnvironmentExp env_exp = new EnvironmentExp(null);
 
     @Override
-    protected void verifyClass(DecacCompiler compiler) throws ContextualError {
+    protected void verifyClass(DecacCompiler compiler, ListDeclField listFieldsSuper) throws ContextualError {
         //verifier le nom des classes et la hiérarchie de classes
         LOG.debug("verifyClass DeclClass: start");
         ClassDefinition superClassDefinition = (ClassDefinition) compiler.environmentType.defOfType(superclass.getName());
@@ -90,6 +90,12 @@ public class DeclClass extends AbstractDeclClass {
 //        }
         superclass.setDefinition(compiler.environmentType.defOfType(superclass.getName()));
         superclass.setType(compiler.environmentType.defOfType(superclass.getName()).getType());
+
+        if(listFieldsSuper != null)
+            for (int i = listFieldsSuper.getList().size() - 1; i >= 0; i--) {
+                DeclField fieldSuper = new DeclField((DeclField) listFieldsSuper.getList().get(i));
+                ((LinkedList) listField.getModifiableList()).addFirst(fieldSuper);
+            }
 
         LOG.debug("verifyClass DeclClass: end");
     }
@@ -159,6 +165,11 @@ public class DeclClass extends AbstractDeclClass {
     }
 
     @Override
+    public ListDeclField getListFields() {
+        return listField;
+    }
+
+    @Override
     public void addClassMethod(DecacCompiler compiler) {
         compiler.addComment("--------------------------------------------------");
         String strClassName = "Class " + getName();
@@ -175,15 +186,15 @@ public class DeclClass extends AbstractDeclClass {
         compiler.addComment("---------- Initialisation des champs de " + getName());
         compiler.addLabel(new Label("init." + getName()));
 
-        if(!getSuperclass().toString().equals("object")) {
+        if(!getSuperclass().toString().equals("Object")) {
             blockCompiler.addInstruction(new BSR(new Label("init." + getSuperclass())));
             blockCompiler.addToStack(2);
-            blockCompiler.removeFromStack(2);
         }
 
         listField.codeGenListField(blockCompiler);
 
         blockCompiler.addInstruction(new RTS());
+
 
         if(blockCompiler.getMaxStack() != 0) {
             blockCompiler.addFirst(new BOV(new Label("pile_pleine")));

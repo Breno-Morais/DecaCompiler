@@ -7,10 +7,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import org.apache.log4j.Logger;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  *
@@ -27,6 +24,10 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
         classHashMap.put(i.getName(), i);
     }
 
+    public AbstractDeclClass get(AbstractIdentifier i) {
+        return classHashMap.get(i);
+    }
+
     @Override
     public void decompile(IndentPrintStream s) {
         for (AbstractDeclClass c : getList()) {
@@ -40,8 +41,10 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
      */
     public void verifyListClass(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verifyListClass ListDeclClass : start");
-        for (AbstractDeclClass c: getList())
-            c.verifyClass(compiler);
+        for (AbstractDeclClass c: getList()) {
+            ListDeclField listDeclField = (c.getSuperclass().toString().equals("Object")) ? null : get(c.getSuperclass()).getListFields();
+            c.verifyClass(compiler, listDeclField);
+        }
         LOG.debug("verifyListClass ListDeclClass : end");
     }
 
@@ -73,15 +76,16 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
     public void updateMethodNames(AbstractDeclClass declClass) {
         LinkedList<MethodName> methodNames = (LinkedList<MethodName>) declClass.getMethodNames();
 
-        if(declClass.getSuperclass().toString().equals("object")) {
+        if(declClass.getSuperclass().toString().equals("Object")) {
             if(methodNames.stream()
                     .noneMatch(childMethod -> childMethod.getName().equals("equals"))) {
-                methodNames.addFirst(new MethodName("object", "equals"));
+                methodNames.addFirst(new MethodName("Object", "equals"));
             }
         } else {
             AbstractDeclClass superClass = getClassDecl(declClass.getSuperclass());
 
-            for (MethodName superMethod : superClass.getMethodNames()) {
+            for (int i = superClass.getMethodNames().size() - 1; i >= 0; i--) {
+                MethodName superMethod = superClass.getMethodNames().get(i);
                 boolean exists = methodNames.stream()
                         .anyMatch(childMethod -> childMethod.getName().equals(superMethod.getName()));
 

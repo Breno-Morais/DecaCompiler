@@ -123,10 +123,12 @@ public class DeclMethod extends AbstractDeclMethod {
         List<GPRegister> regsUsed =  methodBody.getRegisters();
 
         // Register Saving
-        blockCompiler.addComment("Sauvegarde des registres");
-        for(GPRegister reg : regsUsed) {
-            blockCompiler.addInstruction(new PUSH(reg));
-            blockCompiler.addToStack(1);
+        if(regsUsed != null && !regsUsed.isEmpty()) {
+            blockCompiler.addComment("Sauvegarde des registres");
+            for (GPRegister reg : regsUsed) {
+                blockCompiler.addInstruction(new PUSH(reg));
+                blockCompiler.addToStack(1);
+            }
         }
 
         // Main code
@@ -134,14 +136,16 @@ public class DeclMethod extends AbstractDeclMethod {
 
         blockCompiler.addLabel(new Label("fin." + className + "." + getName()));
         // Register Restauration
-        blockCompiler.addComment("Restauration des registres");
-        for(GPRegister reg : regsUsed) {
-            blockCompiler.addInstruction(new POP(reg));
-            blockCompiler.removeFromStack(1);
+        if(regsUsed != null && !regsUsed.isEmpty()) {
+            blockCompiler.addComment("Restauration des registres");
+            for (GPRegister reg : regsUsed) {
+                blockCompiler.addInstruction(new POP(reg));
+                blockCompiler.removeFromStack(1);
+            }
         }
 
-
-        blockCompiler.addInstruction(new RTS());
+        if(methodBody instanceof MethodBody) // The inline code doesn't need an RTS
+            blockCompiler.addInstruction(new RTS());
 
         blockCompiler.addInstruction(new ADDSP(parameters.size())); // TODO: Put local variables instead
         blockCompiler.addFirst(new BOV(new Label("pile_pleine")));

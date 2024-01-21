@@ -93,14 +93,16 @@ public abstract class AbstractExpr extends AbstractInst {
 
         Type type = this.verifyExpr(compiler, localEnv, currentClass);
 
-        // UTILISER ISSUBCLASS QUAND ON FERA DE L'OBJET
+        // TODO: UTILISER ISSUBCLASS QUAND ON FERA DE L'OBJET
         if (type.sameType(expectedType)){
             LOG.debug("verifyRValue AbstractExpr : end");
             return this;
         }
         if (type.isInt() && expectedType.isFloat()) {
             LOG.debug("verifyRValue AbstractExpr : end");
-            return new ConvFloat(this);
+            ConvFloat convFloat = new ConvFloat(this);
+            convFloat.verifyExpr(compiler, localEnv, currentClass);
+            return convFloat;
         }
         if (type.isClass()){
             LOG.debug("verifyRValue AbstractExpr : end");
@@ -160,7 +162,6 @@ public abstract class AbstractExpr extends AbstractInst {
      * @param compiler
      */
     protected void codeGenPrint(DecacCompiler compiler, boolean hex) {
-        compiler.addComment("Print AbstractExpr ");
         this.codeGen(compiler, 1);
         if (this.getType() != null) {
             if (this.getType().toString() == "int") {

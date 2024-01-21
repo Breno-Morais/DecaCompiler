@@ -70,7 +70,6 @@ public class New extends AbstractUnaryExpr {
 
         compiler.addInstruction(new BSR(new Label("init." + ident)));
         compiler.addToStack(2);
-        compiler.removeFromStack(2);
 
         compiler.addInstruction(new POP(register));
         compiler.removeFromStack(1);

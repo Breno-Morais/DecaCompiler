@@ -2,4 +2,5 @@
 //
 {
     float f = (float)(1);
+    println(f);
 }

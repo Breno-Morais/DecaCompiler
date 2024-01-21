@@ -36,7 +36,7 @@ public class ListDeclField extends TreeList<AbstractDeclField>{
      */
     public void verifyListClassMembers(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition classe) throws ContextualError {
         LOG.debug("verifyListClassMembers ListDeclField: start");
-        int index = 0;
+        int index = ((superClass.getType().getName().getName().equals("Object")) ? 0 : superClass.getNumberOfFields());;
         for (AbstractDeclField c : getList()){   //TODO il y le calcul de (env_expr = env_expr + env_exp) à faire
             c.verifyClassMembers(compiler, superClass, classe, index);
             index++;

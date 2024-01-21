@@ -6,6 +6,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.InlinePortion;
 
 import java.io.PrintStream;
 import java.util.List;
@@ -27,27 +28,26 @@ public class MethodAsmBody extends AbstractMethodBody {
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-
+        code.prettyPrint(s, prefix, true);
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-
+        code.iter(f);
     }
 
     @Override
     public List<GPRegister> getRegisters() {
-        //TODO
         return null;
     }
 
     @Override
     public void codeGenMethod(DecacCompiler compiler) {
-        //TODO
+        compiler.add(new InlinePortion(code.getValue()));
     }
 
     @Override
     public void verifyClassBody(DecacCompiler compiler, EnvironmentExp env_exp, EnvironmentExp env_exp_params, ClassDefinition classe, AbstractIdentifier type) throws ContextualError {
-        //Nothing to do here...
+        code.verifyExpr(compiler, env_exp, classe);
     }
 }

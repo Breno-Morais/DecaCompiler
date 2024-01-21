@@ -60,14 +60,19 @@ public class InstanceOf extends AbstractOpExactCmp {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        codeGenInstanceOf(compiler, 0);
+        codeGenBool(compiler, 2, false);
     }
 
     @Override
     protected void codeGen(DecacCompiler compiler, int registerNumber) {
+        codeGenBool(compiler, registerNumber, false);
+    }
+
+    @Override
+    protected void codeGenBool(DecacCompiler compiler, int registerNumber, boolean not) {
         GPRegister register = Register.getR(registerNumber);
         // If its checking that it is an object, return true
-        if(getClassName().toString().equals("object"))
+        if(getClassName().toString().equals("Object"))
             compiler.addInstruction(new LOAD(1, register));
         else {
             Label instanceTrue = new Label("INSTANCE_true." + instanceCounter);
@@ -107,25 +112,21 @@ public class InstanceOf extends AbstractOpExactCmp {
 
             // Put the label of returning true
             compiler.addLabel(instanceTrue);
-            compiler.addInstruction(new LOAD(1, register));
+            compiler.addInstruction(new LOAD((!not) ? 1 : 0, register));
             compiler.addInstruction(new BRA(instanceEnd));
 
             // Put the label of returning false
             compiler.addLabel(instanceFalse);
-            compiler.addInstruction(new LOAD(0, register));
+            compiler.addInstruction(new LOAD((!not) ? 0 : 1, register));
 
             // Put the label of end
             compiler.addLabel(instanceEnd);
         }
     }
 
-    public void codeGenInstanceOf(DecacCompiler compiler, int registerNumber) {
-
-    }
-
     @Override
-    protected void codeGenBool(DecacCompiler compiler, int registerNumber, boolean not) {
-        // TODO
+    public void codeGenNot(DecacCompiler compiler, int registerNumber) {
+        codeGenBool(compiler, registerNumber, true);
     }
 
     private static int instanceCounter = 0;

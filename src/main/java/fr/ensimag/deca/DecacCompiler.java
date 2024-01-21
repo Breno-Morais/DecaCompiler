@@ -285,6 +285,8 @@ public class DecacCompiler {
     }
 
     public void append(DecacCompiler compiler) {
+        this.removeFromStack(2);
+        this.addToStack(compiler.getMaxStack());
         program.append(compiler.program);
     }
 }

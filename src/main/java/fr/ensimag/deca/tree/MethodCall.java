@@ -109,7 +109,6 @@ public class MethodCall extends AbstractExpr {
         // BSR to the table
         compiler.addInstruction(new BSR(new RegisterOffset(meth.getMethodDefinition().getIndex(), Register.R2)));
         compiler.addToStack(2);
-        compiler.removeFromStack(2);
 
         if(registerNumber > 2) {
             compiler.addInstruction(new POP(Register.R2));

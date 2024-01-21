@@ -5,6 +5,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Instruction;
+import fr.ensimag.ima.pseudocode.instructions.DIV;
 import fr.ensimag.ima.pseudocode.instructions.QUO;
 
 /**
@@ -22,9 +23,12 @@ public class Divide extends AbstractOpArith {
         return "/";
     }
 
+    // TODO: Fix Divide
     @Override
     public void addImaInstruction(DecacCompiler compiler, DVal value, GPRegister register) {
-        // TODO: Check if it's necessary no make the conversion here
-        compiler.addInstruction(new QUO(value, register));
+        if(getLeftOperand().getType().isFloat() || getRightOperand().getType().isFloat())
+            compiler.addInstruction(new DIV(value, register));
+        else
+            compiler.addInstruction(new QUO(value, register));
     }
 }

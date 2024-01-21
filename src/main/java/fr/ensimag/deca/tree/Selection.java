@@ -15,38 +15,39 @@ import org.apache.log4j.Logger;
 
 import java.io.PrintStream;
 
-public class Selection extends AbstractIdentifier {
+public class Selection extends AbstractLValue {
     private static final Logger LOG = Logger.getLogger(Identifier.class);
     private AbstractExpr obj;
     private AbstractIdentifier field;
-    private Symbol name;
+    private int index;
 
-    public Selection(AbstractExpr obj, AbstractIdentifier field, Symbol name) {
+    public Selection(AbstractExpr obj, AbstractIdentifier field) {
         this.obj = obj;
         this.field = field;
-        this.name = name;
     }
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
         LOG.debug("verifyExpr Selection : start");
         Type typeObj = obj.verifyExpr(compiler, localEnv, currentClass);
-        ExpDefinition test = currentClass.getMembers().get(field.getName());
-
-        //if(def.getVisibility() == Visibility.PROTECTED){
-            //vérifier que c'est une sous class et sous type je crois
-//            ClassType currentType = currentClass.getType();
-//            if (!fi
-        //}
-
-        setType(test.getType());
-        ExpDefinition defField = currentClass.getMembers().get(field.getName());
+        ClassDefinition classDefinition = compiler.environmentType.defOfType(typeObj.getName()).asClassDefinition(typeObj.toString() + " is not a class", this.getLocation());
+        obj.setType(classDefinition.getType());
+        FieldDefinition defField = currentClass.getMembers().get(field.getName()).asFieldDefinition(field + " is not a field", this.getLocation());
         field.setDefinition(defField);
+        setIndex(defField.getIndex());
+        setDefinition(defField);
+
+        if(defField.getVisibility() == Visibility.PROTECTED){
+            ClassType currentType = currentClass.getType();
+            if (currentType == null || !typeObj.isSubType(currentClass.getType())) {
+                throw new ContextualError(currentType + " is not a subclass of " + typeObj, getLocation());
+            }
+        } else if(defField.getVisibility() == Visibility.PUBLIC) {
+            return defField.getType();
+        }
+
         LOG.debug("verifyExpr Selection : end");
-        return test.getType();
-        //setTyep
-
-
+        return defField.getType();
     }
 
     @Override
@@ -68,75 +69,30 @@ public class Selection extends AbstractIdentifier {
     }
 
     @Override
-    public ClassDefinition getClassDefinition() {
-        return field.getClassDefinition();
-    }
-
-    @Override
-    public Definition getDefinition() {
-        return field.getDefinition();
-    }
-
-    @Override
-    public FieldDefinition getFieldDefinition() {
-        return field.getFieldDefinition();
-    }
-
-    @Override
-    public MethodDefinition getMethodDefinition() {
-        return field.getMethodDefinition();
-    }
-
-    @Override
-    public Symbol getName() {
-        return name;
-    }
-
-    @Override
-    public ExpDefinition getExpDefinition() {
-        return field.getExpDefinition();
-    }
-
-    @Override
-    public VariableDefinition getVariableDefinition() {
-        return field.getVariableDefinition();
-    }
-
-    @Override
-    public void setDefinition(Definition definition) {
-        field.setDefinition(definition);
-    }
-
-    @Override
-    public Type verifyType(DecacCompiler compiler) throws ContextualError {
-        throw new ContextualError("Not yet implemented", getLocation());
-    }
-
-    @Override
-    public DAddr getAddress() {
-        if(obj instanceof AbstractIdentifier && ((AbstractIdentifier) obj).getDefinition().isExpression())
-            return ((AbstractIdentifier) obj).getExpDefinition().getOperand();
-        else if(obj instanceof This) {
-            return new RegisterOffset(-2, Register.LB); // Big assumption here
-        } else throw new DecacInternalError("Cannot get address of a class or type");
-    }
-
-    @Override
     protected void codeGen(DecacCompiler compiler, int registerNumber) {
         GPRegister register = Register.getR(registerNumber);
 
-        // I'll assume that the obj can only be a This or a Identifier
-        if(obj instanceof This) {
-            RegisterOffset implicitThis = new RegisterOffset(-2, Register.LB);
-            compiler.addInstruction(new LOAD(implicitThis, register));
-        }
-        else if(obj instanceof AbstractIdentifier) {
-            compiler.addInstruction(new LOAD(((AbstractIdentifier) obj).getAddress(), register));
-        } else throw new DecacInternalError("Selection of impossible type");
+        getObj().codeGen(compiler, registerNumber);
 
         compiler.addInstruction(new CMP(new NullOperand(), register));
         compiler.addInstruction(new BEQ(new Label("dereferencement_null")));
 
-        compiler.addInstruction(new LOAD(new RegisterOffset(getFieldDefinition().getIndex() , register), register));
+        //compiler.addInstruction(new LOAD(new RegisterOffset(getIndex() , register), register));
+    }
+
+    public AbstractExpr getObj() {
+        return obj;
+    }
+
+    public AbstractIdentifier getField() {
+        return field;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 }

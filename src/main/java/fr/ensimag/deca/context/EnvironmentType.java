@@ -39,7 +39,7 @@ public class EnvironmentType {
         STRING = new StringType(stringSymb);
         // not added to envTypes, it's not visible for the user.
 
-        Symbol objectSymb = compiler.createSymbol("object");
+        Symbol objectSymb = compiler.createSymbol("Object");
         OBJECT = new ClassType(objectSymb, Location.BUILTIN, null);
         envTypes.put(objectSymb, OBJECT.getDefinition());
 

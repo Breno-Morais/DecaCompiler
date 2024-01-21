@@ -16,7 +16,7 @@
     }
 
 
-    while (counter < 5 || counter % 2 == 0) {
+    while (counter < 5 || counter % 5 == 0) {
         println("Current counter: ", counter);
 
         if (counter % 3 == 0) {
