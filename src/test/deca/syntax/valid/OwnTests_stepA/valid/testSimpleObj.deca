@@ -15,8 +15,5 @@ class B extends A {
 }
 
 {
-    int x = 10;
-
     A a = new A();
-    println(a.x);
 }

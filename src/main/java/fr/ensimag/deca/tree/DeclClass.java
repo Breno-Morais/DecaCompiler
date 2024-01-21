@@ -65,12 +65,6 @@ public class DeclClass extends AbstractDeclClass {
         ClassDefinition superClassDefinition = (ClassDefinition) compiler.environmentType.defOfType(superclass.getName());
 
         EnvironmentType env_types = compiler.environmentType;
-//        TypeDefinition type_def = compiler.environmentType.get(superclass.getName());
-//
-//        if(!superclass.getName().toString().equals("Object") && type_def==null){  //!superclass.getClassDefinition().isClass()
-//            throw new ContextualError("superclass is not a Class in DeclClass", getLocation());
-//        }
-
 
         ClassType classType = new ClassType(name.getName(), getLocation(), superClassDefinition);
         try{
@@ -81,13 +75,6 @@ public class DeclClass extends AbstractDeclClass {
             throw new ContextualError("Error, Class already declared in DeclClass", this.getLocation());
         }
 
-//        if(superclass.getName().toString().equals("Object")){
-//            superclass.setDefinition(classType.getDefinition());
-//            superclass.setType(compiler.environmentType.defOfType(superclass.getName()).getType());
-//        }else{
-//            superclass.setDefinition(env_types.get(superclass.getName()));
-//            superclass.setType(compiler.environmentType.defOfType(superclass.getName()).getType());
-//        }
         superclass.setDefinition(compiler.environmentType.defOfType(superclass.getName()));
         superclass.setType(compiler.environmentType.defOfType(superclass.getName()).getType());
 
@@ -105,7 +92,6 @@ public class DeclClass extends AbstractDeclClass {
                 ((LinkedList) listMethod.getModifiableList()).addFirst(methodSuper);
             }
         }
-
         LOG.debug("verifyClass DeclClass: end");
     }
 
