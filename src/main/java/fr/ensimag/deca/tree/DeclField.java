@@ -21,6 +21,7 @@ public class DeclField extends AbstractDeclField {
         this.field = field;
         //field.setDefinition(new FieldDefinition());
         this.initialization = initialization;
+        setVisibility(getStatusVisibility());
     }
 
     public DeclField(DeclField otherField) {
@@ -29,6 +30,7 @@ public class DeclField extends AbstractDeclField {
         this.field = new Identifier((Identifier) otherField.getField());
         this.initialization = otherField.getInitialization();
         setLocation(otherField.getLocation());
+        setVisibility(getStatusVisibility());
     }
 
     /**
