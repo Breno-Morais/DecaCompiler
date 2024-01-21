@@ -75,18 +75,17 @@ public class MethodBody extends AbstractMethodBody {
 
         if(insts.getList().get(insts.size() - 1) instanceof Return) {
             possibleReturn = (Return) insts.getList().get(insts.size() - 1);
-            insts.getModifiableList().remove(insts.size() - 1);
         }
 
+        // Return label
+        Label endMethodLabel = new Label("fin." + getDeclMethod().getClassDefinition().getType() + "." + getDeclMethod().getName());
+
+        insts.setReturnLabel(endMethodLabel);
         insts.codeGenListInst(compiler);
 
-        // Return logic
-        Label endMethodLabel = new Label("fin." + getDeclMethod().getClassDefinition().getType() + "." + getDeclMethod().getName());
+        // If there is no return, because of void return (Should be check in Step B), forces a return
         if(possibleReturn == null) {
             compiler.addInstruction(new BRA(endMethodLabel));
-        } else {
-            possibleReturn.setEndMethod(endMethodLabel);
-            possibleReturn.codeGenInst(compiler);
         }
 
         compiler.addInstruction(new WSTR("Erreur : sortie de la methode sans return"));

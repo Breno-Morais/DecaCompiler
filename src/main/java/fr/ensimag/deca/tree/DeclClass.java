@@ -59,7 +59,7 @@ public class DeclClass extends AbstractDeclClass {
     private static EnvironmentExp env_exp = new EnvironmentExp(null);
 
     @Override
-    protected void verifyClass(DecacCompiler compiler, ListDeclField listFieldsSuper) throws ContextualError {
+    protected void verifyClass(DecacCompiler compiler, DeclClass declSuper) throws ContextualError {
         //verifier le nom des classes et la hiérarchie de classes
         LOG.debug("verifyClass DeclClass: start");
         ClassDefinition superClassDefinition = (ClassDefinition) compiler.environmentType.defOfType(superclass.getName());
@@ -91,11 +91,20 @@ public class DeclClass extends AbstractDeclClass {
         superclass.setDefinition(compiler.environmentType.defOfType(superclass.getName()));
         superclass.setType(compiler.environmentType.defOfType(superclass.getName()).getType());
 
-        if(listFieldsSuper != null)
+        if(declSuper != null) {
+            ListDeclField listFieldsSuper = declSuper.getListFields();
+            ListDeclMethod listMethodSuper = declSuper.listMethod;
+
             for (int i = listFieldsSuper.getList().size() - 1; i >= 0; i--) {
                 DeclField fieldSuper = new DeclField((DeclField) listFieldsSuper.getList().get(i));
                 ((LinkedList) listField.getModifiableList()).addFirst(fieldSuper);
             }
+
+            for (int i = listMethodSuper.getList().size() - 1; i >= 0; i--) {
+                DeclMethod methodSuper = (DeclMethod) listMethodSuper.getList().get(i);
+                ((LinkedList) listMethod.getModifiableList()).addFirst(methodSuper);
+            }
+        }
 
         LOG.debug("verifyClass DeclClass: end");
     }

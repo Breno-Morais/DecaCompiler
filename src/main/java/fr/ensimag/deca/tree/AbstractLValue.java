@@ -35,4 +35,5 @@ public abstract class AbstractLValue extends AbstractExpr {
         return definition;
     }
 
+    public abstract void codeGenLValue(DecacCompiler compiler, int registerNumber);
 }

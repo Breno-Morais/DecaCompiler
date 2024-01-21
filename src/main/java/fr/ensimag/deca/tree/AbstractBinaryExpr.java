@@ -80,6 +80,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
 
     @Override
     protected void codeGen(DecacCompiler compiler, int registerNumber) {
+        compiler.addComment("   " + getOperatorName());
         GPRegister[][] allRegisters = Register.getUsableRegisters(2, registerNumber);
         pushRegisters(compiler, allRegisters[0]);
 

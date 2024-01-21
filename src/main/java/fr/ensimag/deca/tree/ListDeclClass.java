@@ -42,8 +42,8 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
     public void verifyListClass(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verifyListClass ListDeclClass : start");
         for (AbstractDeclClass c: getList()) {
-            ListDeclField listDeclField = (c.getSuperclass().toString().equals("Object")) ? null : get(c.getSuperclass()).getListFields();
-            c.verifyClass(compiler, listDeclField);
+            DeclClass declSuper = (c.getSuperclass().toString().equals("Object")) ? null : (DeclClass) get(c.getSuperclass());
+            c.verifyClass(compiler, declSuper);
         }
         LOG.debug("verifyListClass ListDeclClass : end");
     }

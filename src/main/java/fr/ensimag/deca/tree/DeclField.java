@@ -28,6 +28,7 @@ public class DeclField extends AbstractDeclField {
         this.type = otherField.getType();
         this.field = new Identifier((Identifier) otherField.getField());
         this.initialization = otherField.getInitialization();
+        setLocation(otherField.getLocation());
     }
 
     /**
@@ -45,7 +46,6 @@ public class DeclField extends AbstractDeclField {
         }
         Visibility visib = getStatusVisibility();
 
-
         classe.setNumberOfFields(superClass.getNumberOfFields());
         FieldDefinition fieldDefinition = new FieldDefinition(type_def, getLocation(), visib, classe, index);
         try{
@@ -55,10 +55,11 @@ public class DeclField extends AbstractDeclField {
             throw new ContextualError("Error, field already declared in DeclField", this.getLocation());
         }
 
+        /*
         FieldDefinition superFieldDefinition = (FieldDefinition) superClass.getMembers().get(field.getName());
         if(superFieldDefinition != null && !superFieldDefinition.equals(fieldDefinition)){
             throw new ContextualError("Field definition not compatible with the superClass in DeclField", getLocation());
-        }
+        } */
 
         field.setType(type_def);
         field.setDefinition(fieldDefinition);

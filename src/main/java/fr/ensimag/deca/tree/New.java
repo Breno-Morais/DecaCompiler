@@ -51,6 +51,7 @@ public class New extends AbstractUnaryExpr {
 
     @Override
     protected void codeGen(DecacCompiler compiler, int registerNumber) {
+        compiler.addComment("   " + getOperatorName());
         int classSize = ((Identifier) getOperand()).getClassDefinition().getNumberOfFields() + 1;
         addImaInstruction(compiler, new ImmediateInteger(classSize), Register.getR(registerNumber));
     }

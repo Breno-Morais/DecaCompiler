@@ -70,14 +70,19 @@ public class Selection extends AbstractLValue {
 
     @Override
     protected void codeGen(DecacCompiler compiler, int registerNumber) {
+        codeGenLValue(compiler, registerNumber);
+        GPRegister register = Register.getR(registerNumber);
+        compiler.addInstruction(new LOAD(new RegisterOffset(getIndex() , register), register));
+    }
+
+    @Override
+    public void codeGenLValue(DecacCompiler compiler, int registerNumber) {
         GPRegister register = Register.getR(registerNumber);
 
         getObj().codeGen(compiler, registerNumber);
 
         compiler.addInstruction(new CMP(new NullOperand(), register));
         compiler.addInstruction(new BEQ(new Label("dereferencement_null")));
-
-        //compiler.addInstruction(new LOAD(new RegisterOffset(getIndex() , register), register));
     }
 
     public AbstractExpr getObj() {

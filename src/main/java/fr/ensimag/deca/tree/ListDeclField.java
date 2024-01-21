@@ -36,7 +36,7 @@ public class ListDeclField extends TreeList<AbstractDeclField>{
      */
     public void verifyListClassMembers(DecacCompiler compiler, ClassDefinition superClass, ClassDefinition classe) throws ContextualError {
         LOG.debug("verifyListClassMembers ListDeclField: start");
-        int index = ((superClass.getType().getName().getName().equals("Object")) ? 0 : superClass.getNumberOfFields());;
+        int index = 0; //((superClass.getType().getName().getName().equals("Object")) ? 0 : superClass.getNumberOfFields());;
         for (AbstractDeclField c : getList()){   //TODO il y le calcul de (env_expr = env_expr + env_exp) à faire
             c.verifyClassMembers(compiler, superClass, classe, index);
             index++;
@@ -59,7 +59,7 @@ public class ListDeclField extends TreeList<AbstractDeclField>{
         List<GPRegister> regsUsed =  new LinkedList<GPRegister>();
         for(AbstractDeclField declVarAbs : this.getList()) {
             if(declVarAbs.getInitialization() instanceof Initialization) {
-                regsUsed.addAll(declVarAbs.getInitialization().getExpression().getRegisters(2));
+                regsUsed.addAll(declVarAbs.getInitialization().getExpression().getRegisters(1));
 
                 // Don't know if is faster doing only once with an enormous list
                 regsUsed = regsUsed.stream().distinct().collect(Collectors.toList());
@@ -75,7 +75,6 @@ public class ListDeclField extends TreeList<AbstractDeclField>{
         }
 
         compiler.addComment("Initialisation des registres");
-        // I'm loading "this" in R1 before because I belive nothing else modifies it except the read, may be changed later
         compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
 
         for(AbstractDeclField declVarAbs : this.getList()) {

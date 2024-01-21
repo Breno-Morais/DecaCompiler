@@ -154,7 +154,14 @@ public class Identifier extends AbstractIdentifier {
     }
 
     public Identifier(Identifier identifier) {
-        // TODO: Create a deep copy
+        setDefinition(identifier.getDefinition());
+        name = identifier.name;
+        if(identifier.getDefinition() != null) {
+            if (identifier.getDefinition().isExpression())
+                setAddress(identifier.getAddress());
+            setType(getType());
+        }
+        setLocation(identifier.getLocation());
     }
 
     @Override
@@ -237,5 +244,10 @@ public class Identifier extends AbstractIdentifier {
         } else {
             compiler.addInstruction(new LOAD(getAddress(), Register.getR(registerNumber)));
         }
+    }
+
+    @Override
+    public void codeGenLValue(DecacCompiler compiler, int registerNumber) {
+        codeGen(compiler, registerNumber);
     }
 }

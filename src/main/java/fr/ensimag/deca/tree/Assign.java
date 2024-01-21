@@ -71,7 +71,7 @@ public class Assign extends AbstractBinaryExpr {
             if(currentClass != null && getLeftOperand() instanceof AbstractIdentifier) { // TODO: Add case where the assign is in a class in a different class than the obj in Selection
                 compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R2));
             } else {
-                getLeftOperand().codeGen(compiler, 2);
+                getLeftOperand().codeGenLValue(compiler, 2);
             }
 
             compiler.addInstruction(new STORE(Register.R1, new RegisterOffset(fieldIndex, Register.R2)));

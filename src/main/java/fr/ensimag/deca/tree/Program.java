@@ -92,7 +92,7 @@ public class Program extends AbstractProgram {
         }
 
         // Add the Method table and the variable to the currentStack
-        compiler.addToStack(getIndexGB()  - 1);
+        compiler.addToStack(getIndexGB()  - 2);
         compiler.addToStack(main.getNumGlobalVariables());
 
         // Create Main Program
@@ -107,7 +107,7 @@ public class Program extends AbstractProgram {
         getClasses().addClassesMethods(compiler);
 
         // Add header test
-        compiler.addFirst(new ADDSP(getIndexGB() + main.getNumGlobalVariables() - 2));
+        compiler.addFirst(new ADDSP(getIndexGB() + main.getNumGlobalVariables() - 3));
         compiler.addFirst(new BOV(new Label("pile_pleine")));
         compiler.addFirst(new TSTO(compiler.getMaxStack()));
 

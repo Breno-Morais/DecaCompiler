@@ -109,7 +109,6 @@ public class DeclMethod extends AbstractDeclMethod {
     @Override
     public void codeGenMethod(DecacCompiler compiler, String className) {
         DecacCompiler blockCompiler = new DecacCompiler(compiler.getCompilerOptions(), compiler.getSource());
-
         // Before everything, it defines the address of the parameters
         for (int i = 0; i < parameters.size(); i++) {
             DAddr addr = new RegisterOffset(-3 - i, Register.LB);

@@ -75,6 +75,7 @@ public class MethodCall extends AbstractExpr {
 
     @Override
     protected void codeGen(DecacCompiler compiler, int registerNumber) {
+        compiler.addComment("  MethodCall " + obj.getType() + "." + meth);
         GPRegister register = Register.R2;
         if(registerNumber > 2) {
             compiler.addInstruction(new PUSH(Register.R2));

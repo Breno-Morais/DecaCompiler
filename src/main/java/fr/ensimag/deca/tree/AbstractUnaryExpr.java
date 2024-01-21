@@ -57,6 +57,7 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
 
     @Override
     protected void codeGen(DecacCompiler compiler, int registerNumber) {
+        compiler.addComment("   " + getOperatorName());
         getOperand().codeGen(compiler, registerNumber);
         addImaInstruction(compiler, Register.getR(registerNumber), Register.getR(registerNumber));
     }
