@@ -1,21 +1,25 @@
 // Description:
-//    Programme minimaliste utilisant une affectation et println.
+//    Test the heritage of fields
 //
 // Resultats:
-//    1
+//    b.x = 1
+//    b.y = 2
 //
 // Historique:
 //    cree le 22/12/2023
 
 class A {
-	int x;
+	int x = 1;
 }
 
 class B extends A {
-	protected int y = 2,z;
+	int y = 2;
 }
 
 {
     A a = new A();
     B b = new B();
+    
+    println("b.x = ", b.x);
+    println("b.y = ", b.y);
 }
