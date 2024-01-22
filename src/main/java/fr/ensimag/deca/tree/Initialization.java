@@ -37,10 +37,10 @@ public class Initialization extends AbstractInitialization {
             throws ContextualError {
         LOG.debug("verifyInitialization Initialization : start");
         Type exprType = expression.verifyExpr(compiler, localEnv, currentClass);
-        if(!exprType.sameType(t)){
-            throw new ContextualError("not the Type expected in Initialization", getLocation());
-        }
-        this.expression.verifyRValue(compiler, localEnv, currentClass, t);
+//        if(!exprType.sameType(t)){
+//            throw new ContextualError("not the Type expected in Initialization", getLocation());
+//        }
+        this.expression = this.expression.verifyRValue(compiler, localEnv, currentClass, t);
         LOG.debug("verifyInitialization Initialization : end");
         //TODO mettre des setDefinition
     }

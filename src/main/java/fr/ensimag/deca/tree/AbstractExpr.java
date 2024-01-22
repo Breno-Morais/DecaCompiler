@@ -93,7 +93,6 @@ public abstract class AbstractExpr extends AbstractInst {
 
         Type type = this.verifyExpr(compiler, localEnv, currentClass);
 
-        // TODO: UTILISER ISSUBCLASS QUAND ON FERA DE L'OBJET
         if (type.sameType(expectedType)){
             LOG.debug("verifyRValue AbstractExpr : end");
             return this;

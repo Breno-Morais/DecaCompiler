@@ -41,6 +41,7 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
             }
             return compiler.environmentType.FLOAT;
         }
+
         return leftType;
     }
 
