@@ -1,0 +1,25 @@
+//appel d'une méthode override
+class A{
+    int x;
+    void setX(int i){
+        this.x = i;
+    }
+    int getX(){
+        return this.x;
+    }
+}
+
+class B{
+    int y = 2;
+    int getX(){
+        return this.y;
+    }
+}
+
+{
+    A a = new A();
+    B b = new B();
+    a.setX(3);
+    println("a.getX() = ", a.getX());
+    println("b.getX() = ", b.getX());
+}
