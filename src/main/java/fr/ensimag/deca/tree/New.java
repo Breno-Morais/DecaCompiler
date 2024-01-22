@@ -31,9 +31,12 @@ public class New extends AbstractUnaryExpr {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
                            ClassDefinition currentClass) throws ContextualError {
         LOG.debug("verifyExpr New : start");
-        SymbolTable jsp = new SymbolTable();
-        SymbolTable.Symbol jsp2 = jsp.create(this.getOperand().toString());
-        TypeDefinition typDef = compiler.environmentType.get(jsp2);
+        SymbolTable symbolTable = new SymbolTable();
+        SymbolTable.Symbol symbol = symbolTable.create(this.getOperand().toString());
+        TypeDefinition typDef = compiler.environmentType.get(symbol);
+        if(typDef == null){
+            throw new ContextualError("Error in the declaration of new " + symbol + "() in New", getLocation());
+        }
         this.setType(typDef.getType());
 //        Identifier test = new Identifier(this.getType().getName());
 //        test.setType(test.verifyType(compiler));
@@ -41,7 +44,6 @@ public class New extends AbstractUnaryExpr {
         operand1.verifyType(compiler);
         LOG.debug("verifyExpr New : end");
         return getType();
-
     }
 
     @Override
