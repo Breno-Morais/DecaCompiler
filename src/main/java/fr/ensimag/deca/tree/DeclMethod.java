@@ -8,9 +8,7 @@ import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.log4j.Logger;
 
 import java.io.PrintStream;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class DeclMethod extends AbstractDeclMethod {
     private static final Logger LOG = Logger.getLogger(ListDeclClass.class);
@@ -20,14 +18,14 @@ public class DeclMethod extends AbstractDeclMethod {
     private ListDeclParam parameters;
     private AbstractMethodBody methodBody;
 
-    private EnvironmentExp env_exp = new EnvironmentExp(null);
-
     public DeclMethod(AbstractIdentifier type, AbstractIdentifier name,
                       ListDeclParam parameters, AbstractMethodBody methodBody) {
         this.type = type;
         this.name = name;
         this.parameters = parameters;
         this.methodBody = methodBody;
+        if(methodBody instanceof MethodBody)
+            ((MethodBody) methodBody).setMethodName(name);
 
         this.methodBody.setDeclMethod(this);
     }

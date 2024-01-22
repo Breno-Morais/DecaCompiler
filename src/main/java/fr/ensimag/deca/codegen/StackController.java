@@ -2,6 +2,9 @@ package fr.ensimag.deca.codegen;
 
 import fr.ensimag.deca.DecacCompiler;
 
+import java.util.LinkedList;
+import java.util.List;
+
 // TODO: Need to take into account the stack of the children, can't be in the compiler or maybe need to be resolved in the end
 public class StackController {
     // Stack of the father when the method was called
@@ -12,8 +15,6 @@ public class StackController {
 
     // Counter of stack of that moment of the code
     private int currentStack = 0;
-
-    private int childrenMax = 0;
 
     public StackController(int superStack) {
         superStackAtCall = superStack;
@@ -37,8 +38,6 @@ public class StackController {
 
     public void append(DecacCompiler compiler) {
         this.removeFromStack(2);
-        if(childrenMax < compiler.getMaxStack())
-            this.childrenMax = compiler.getMaxStack();
     }
 
     public int getStack() {

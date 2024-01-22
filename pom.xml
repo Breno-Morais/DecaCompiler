@@ -256,6 +256,7 @@
                     <execution>
                         <id>basic-gencode</id>
                         <configuration>
+                            <executable>/bin/bash</executable>
                             <executable>./src/test/script/basic-gencode.sh</executable>
                         </configuration>
                         <phase>test</phase>

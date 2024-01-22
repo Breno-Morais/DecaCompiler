@@ -1,5 +1,31 @@
 //Test de tous les opérateurs de comparaison (doit renvoyer un booléen) avec des INT
 //
+// Resultats:
+//    inf ou egal
+//    true
+//    true
+//    false
+//    inf str
+//    true
+//    false
+//    false
+//    égalit
+//    false
+//    true
+//    pas egal
+//    false
+//    true
+//    supp ou egal
+//    true
+//    true
+//    false
+//    supp str
+//    true
+//    false
+//    false
+//
+// Historique:
+//    cree le 01/01/2024
 
 {
     //inférieur ou égal

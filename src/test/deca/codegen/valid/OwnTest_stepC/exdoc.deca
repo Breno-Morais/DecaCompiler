@@ -1,3 +1,13 @@
+// test exDoc
+//
+// Resultats:
+//    a.getX() = 1
+//    b.getX() = 2
+//    b.getY() = 4
+//
+// Historique:
+//    cree le 01/01/2024
+
 class A {
    protected int x ;
    int getX() {
