@@ -66,6 +66,7 @@ for fichier_source in "$repertoire_test"/*.deca; do
             echo "Succès attendu de test_codeGen sur $fichier_source"
         else
             echo "Echec inattendu de test_codeGen sur $fichier_source"
+            exit 1
         fi
 
     done
