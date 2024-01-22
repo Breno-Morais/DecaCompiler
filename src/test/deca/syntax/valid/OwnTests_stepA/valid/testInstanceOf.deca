@@ -57,13 +57,13 @@ class C {
        	println("b is not instance of A");
     }
 
-    if(!!(b instanceof object)) {
+    if(!!(b instanceof Object)) {
     	println("b is instance of Object");
     } else {
        	println("b is not instance of Object");
     }
     
-    if(c instanceof object) {
+    if(c instanceof Object) {
     	println("c is instance of Object");
     } else {
        	println("c is not instance of Object");
