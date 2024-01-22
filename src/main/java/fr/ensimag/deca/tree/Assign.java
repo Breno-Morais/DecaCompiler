@@ -54,11 +54,19 @@ public class Assign extends AbstractBinaryExpr {
     }
 
     @Override
-    protected void codeGenInst(DecacCompiler compiler) {
+    protected void codeGen(DecacCompiler compiler, int registerNumber) {
+        compiler.addComment("Instruction " + getOperatorName() + " ligne " + getLocation());
+        GPRegister[][] allRegisters = Register.getUsableRegisters(2, registerNumber);
+        pushRegisters(compiler, allRegisters[0]);
+
+        // What a horrible code
+        GPRegister resultReg= (allRegisters[1][0].getNumber() == registerNumber) ? allRegisters[1][0] : allRegisters[1][1];
+        GPRegister processReg = (allRegisters[1][1].getNumber() == registerNumber) ? allRegisters[1][0] : allRegisters[1][1];
+
         AbstractLValue leftOperandId = (AbstractLValue) getLeftOperand();
         DAddr leftAddress = leftOperandId.getAddress();
 
-        getRightOperand().codeGen(compiler, 1);
+        getRightOperand().codeGen(compiler, processReg.getNumber());
         if(getLeftOperand().getDefinition().isField()) {
             int fieldIndex;
 
@@ -69,16 +77,21 @@ public class Assign extends AbstractBinaryExpr {
 
             // Check if it is in the main or in a method
             if(currentClass != null && getLeftOperand() instanceof AbstractIdentifier) { // TODO: Add case where the assign is in a class in a different class than the obj in Selection
-                compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R2));
+                compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), resultReg));
             } else {
-                getLeftOperand().codeGenLValue(compiler, 2);
+                getLeftOperand().codeGenLValue(compiler, resultReg.getNumber());
             }
 
-            compiler.addInstruction(new STORE(Register.R1, new RegisterOffset(fieldIndex, Register.R2)));
+            compiler.addInstruction(new STORE(processReg, new RegisterOffset(fieldIndex, resultReg)));
         } else {
-            getRightOperand().codeGen(compiler, 2);
-            compiler.addInstruction(new STORE(Register.R2, leftAddress));
+            getRightOperand().codeGen(compiler, resultReg.getNumber());
+            compiler.addInstruction(new STORE(resultReg, leftAddress));
         }
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        codeGen(compiler, 2);
     }
 
     public void decompile(IndentPrintStream s) {

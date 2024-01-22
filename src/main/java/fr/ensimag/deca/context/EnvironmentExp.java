@@ -1,5 +1,7 @@
 package fr.ensimag.deca.context;
 
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.StackController;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 
 import java.util.HashMap;

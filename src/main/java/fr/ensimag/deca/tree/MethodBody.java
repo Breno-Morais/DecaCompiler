@@ -7,7 +7,6 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.ERROR;
 import fr.ensimag.ima.pseudocode.instructions.WNL;
@@ -19,6 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class MethodBody extends AbstractMethodBody {
+    private AbstractIdentifier methodName;
     private ListDeclVar declVariables;
     private ListInst insts;
 
@@ -106,6 +106,12 @@ public class MethodBody extends AbstractMethodBody {
             insts.verifyListInst(compiler, env_exp_params, classe, type.getType());
         } else {
             throw new ContextualError("Liste des declarations des instructionx null", getLocation());
+        }
+
+        // A method should have a return if they are not of void type
+        if (!getDeclMethod().getName().getMethodDefinition().getSignature().getReturnType().isVoid() &&
+                !(insts.getList().get(insts.size() - 1) instanceof Return)){
+            throw new ContextualError("Method without Return", getLocation());
         }
     }
 }

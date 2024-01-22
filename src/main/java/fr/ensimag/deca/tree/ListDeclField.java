@@ -56,7 +56,7 @@ public class ListDeclField extends TreeList<AbstractDeclField>{
 
     public void codeGenListField(DecacCompiler compiler) {
         // Get all the registers used
-        List<GPRegister> regsUsed =  new LinkedList<GPRegister>();
+        List<GPRegister> regsUsed =  new LinkedList<>();
         for(AbstractDeclField declVarAbs : this.getList()) {
             if(declVarAbs.getInitialization() instanceof Initialization) {
                 regsUsed.addAll(declVarAbs.getInitialization().getExpression().getRegisters(1));
