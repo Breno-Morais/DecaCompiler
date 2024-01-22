@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 import java.util.Arrays;
@@ -80,7 +81,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
 
     @Override
     protected void codeGen(DecacCompiler compiler, int registerNumber) {
-        compiler.addComment("   " + getOperatorName());
+        compiler.addComment("Instruction " + getOperatorName() + " ligne " + getLocation());
         GPRegister[][] allRegisters = Register.getUsableRegisters(2, registerNumber);
         pushRegisters(compiler, allRegisters[0]);
 
@@ -110,7 +111,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         codeGen(compiler, 2);
     }
 
-    private void pushRegisters(DecacCompiler compiler, GPRegister[] registers) {
+    protected void pushRegisters(DecacCompiler compiler, GPRegister[] registers) {
         for (GPRegister register : registers) {
             if(register == null)
                 break;
@@ -119,7 +120,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         }
     }
 
-    private void popRegisters(DecacCompiler compiler, GPRegister[] registers) {
+    protected void popRegisters(DecacCompiler compiler, GPRegister[] registers) {
         for (GPRegister register : registers) {
             if(register == null)
                 break;

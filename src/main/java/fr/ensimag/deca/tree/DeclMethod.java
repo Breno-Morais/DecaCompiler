@@ -20,6 +20,8 @@ public class DeclMethod extends AbstractDeclMethod {
     private ListDeclParam parameters;
     private AbstractMethodBody methodBody;
 
+    private EnvironmentExp env_exp = new EnvironmentExp(null);
+
     public DeclMethod(AbstractIdentifier type, AbstractIdentifier name,
                       ListDeclParam parameters, AbstractMethodBody methodBody) {
         this.type = type;
@@ -109,6 +111,8 @@ public class DeclMethod extends AbstractDeclMethod {
     @Override
     public void codeGenMethod(DecacCompiler compiler, String className) {
         DecacCompiler blockCompiler = new DecacCompiler(compiler.getCompilerOptions(), compiler.getSource());
+        blockCompiler.initStackController(compiler.getStack());
+
         // Before everything, it defines the address of the parameters
         for (int i = 0; i < parameters.size(); i++) {
             DAddr addr = new RegisterOffset(-3 - i, Register.LB);
@@ -145,7 +149,6 @@ public class DeclMethod extends AbstractDeclMethod {
 
         blockCompiler.addInstruction(new RTS());
 
-        blockCompiler.addInstruction(new ADDSP(parameters.size())); // TODO: Put local variables instead
         blockCompiler.addFirst(new BOV(new Label("pile_pleine")));
         blockCompiler.addFirst(new TSTO(blockCompiler.getMaxStack()));
 

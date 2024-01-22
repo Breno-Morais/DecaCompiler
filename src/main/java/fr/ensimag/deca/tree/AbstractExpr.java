@@ -211,4 +211,7 @@ public abstract class AbstractExpr extends AbstractInst {
     public void addImaInstruction(DecacCompiler compiler, DVal value, GPRegister register) {
 
     }
+
+    /* The division inside expressions should be floats, */
+    private boolean finalDivide = true;
 }

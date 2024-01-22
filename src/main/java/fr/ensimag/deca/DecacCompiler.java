@@ -1,5 +1,6 @@
 package fr.ensimag.deca;
 
+import fr.ensimag.deca.codegen.StackController;
 import fr.ensimag.deca.context.EnvironmentType;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Arrays;
 
+import fr.ensimag.ima.pseudocode.instructions.BOV;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.log4j.Logger;
@@ -53,6 +55,7 @@ public class DecacCompiler {
         super();
         this.compilerOptions = compilerOptions;
         this.source = source;
+        this.stackController = new StackController(0);
     }
 
     /**
@@ -108,6 +111,11 @@ public class DecacCompiler {
      */
     public void addInstruction(Instruction instruction, String comment) {
         program.addInstruction(instruction, comment);
+    }
+
+    public void addErrorCheck(Label errorLabel) {
+        if(!compilerOptions.getNoCheck())
+            program.addInstruction(new BOV(errorLabel));
     }
 
     /**
@@ -264,29 +272,31 @@ public class DecacCompiler {
         return parser.parseProgramAndManageErrors(err);
     }
 
-    // Highest occupation of the stack at one point
-    private int maxStack = 0;
+    private StackController stackController;
 
-    // Counter of stack of that moment of the code
-    private int currentStack = 0;
+    public void initStackController(int stack) {
+        stackController = new StackController(stack);
+    }
 
     public void addToStack(int i) {
-        currentStack += i;
-        if(maxStack < currentStack)
-            maxStack = currentStack;
+        stackController.addToStack(i);
     }
 
     public void removeFromStack(int i) {
-        currentStack -= i;
+        stackController.removeFromStack(i);
     }
 
     public int getMaxStack() {
-        return maxStack;
+        return stackController.getMaxStack();
     }
 
     public void append(DecacCompiler compiler) {
-        this.removeFromStack(2);
-        this.addToStack(compiler.getMaxStack());
+        stackController.append(compiler);
         program.append(compiler.program);
     }
+
+    public int getStack() {
+        return stackController.getStack();
+    }
+
 }

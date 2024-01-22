@@ -92,8 +92,7 @@ public class Program extends AbstractProgram {
         }
 
         // Add the Method table and the variable to the currentStack
-        compiler.addToStack(getIndexGB()  - 2);
-        compiler.addToStack(main.getNumGlobalVariables());
+        compiler.addToStack(getIndexGB() - 2 + main.getNumGlobalVariables());
 
         // Create Main Program
         compiler.addComment("--------------------------------------------------");
@@ -107,9 +106,11 @@ public class Program extends AbstractProgram {
         getClasses().addClassesMethods(compiler);
 
         // Add header test
-        compiler.addFirst(new ADDSP(getIndexGB() + main.getNumGlobalVariables() - 3));
-        compiler.addFirst(new BOV(new Label("pile_pleine")));
-        compiler.addFirst(new TSTO(compiler.getMaxStack()));
+        compiler.addFirst(new ADDSP(getIndexGB() + main.getNumGlobalVariables() - 2));
+        if(!compiler.getCompilerOptions().getNoCheck()) {
+            compiler.addFirst(new BOV(new Label("pile_pleine")));
+            compiler.addFirst(new TSTO(compiler.getMaxStack()));
+        }
 
         addCompleteErrorHandles(compiler);
     }
@@ -138,32 +139,18 @@ public class Program extends AbstractProgram {
 
         compiler.addComment("---------- Code de la methode equals dans la classe Object");
         compiler.addLabel(new Label("code.Object.equals"));
-        compiler.addInstruction(new TSTO(new ImmediateInteger(1)));
-        compiler.addInstruction(new BOV(new Label("pile_pleine")));
-
-        compiler.addComment("Sauvegarde des registres");
-        compiler.addInstruction(new PUSH(Register.R2));
-
-        Label objEnd = new Label("fin.Object.equals");
-        Label objEqual = new Label("equal.Object.equals");
+        if(!compiler.getCompilerOptions().getNoCheck()) {
+            compiler.addInstruction(new TSTO(new ImmediateInteger(1)));
+            compiler.addInstruction(new BOV(new Label("pile_pleine")));
+        }
 
         RegisterOffset thisParam = new RegisterOffset(-2, Register.LB);
         RegisterOffset firstParam = new RegisterOffset(-3, Register.LB);
 
-        compiler.addInstruction(new LOAD(thisParam, Register.R2));
-        compiler.addInstruction(new CMP(firstParam,Register.R2));
-        compiler.addInstruction(new BEQ(objEqual));
+        compiler.addInstruction(new LOAD(thisParam, Register.R0));
+        compiler.addInstruction(new CMP(firstParam,Register.R0));
+        compiler.addInstruction(new SEQ(Register.R0));
 
-        compiler.addInstruction(new LOAD(new ImmediateInteger(0), Register.R0));
-        compiler.addInstruction(new BRA(objEnd));
-
-        compiler.addLabel(objEqual);
-        compiler.addInstruction(new LOAD(new ImmediateInteger(1), Register.R0));
-
-        compiler.addLabel(objEnd);
-        compiler.addComment("Restauration des registres");
-        compiler.addInstruction(new POP(Register.R2));
-        compiler.removeFromStack(1);
         compiler.addInstruction(new RTS());
     }
 
@@ -175,11 +162,19 @@ public class Program extends AbstractProgram {
         indexGB++;
     }
 
+    public static void decrementIndexGB() {
+        indexGB--;
+    }
+
     private void addCompleteErrorHandles(DecacCompiler compiler) {
-        addErrorHandle(compiler, "Erreur: pile pleine", new Label("pile_pleine"));
-        addErrorHandle(compiler, "Erreur: dereferencement de null", new Label("dereferencement_null"));
+        if(compiler.getCompilerOptions().getNoCheck())
+            return;
+        addErrorHandle(compiler, "Erreur: Pile pleine", new Label("pile_pleine"));
+        addErrorHandle(compiler, "Erreur: Dereferencement de null", new Label("dereferencement_null"));
         addErrorHandle(compiler, "Erreur: Input/Output error", new Label("io_error"));
-        addErrorHandle(compiler, "Erreur: tas plein", new Label("tas_plein"));
+        addErrorHandle(compiler, "Erreur: Tas plein", new Label("tas_plein"));
+        addErrorHandle(compiler, "Erreur: Division par zero", new Label("division_par_zero"));
+        addErrorHandle(compiler, "Erreur: Résultat n’est pas codable sur un flottant", new Label("float_imprecis"));
     }
 
     private void addErrorHandle(DecacCompiler compiler, String message, Label label) {

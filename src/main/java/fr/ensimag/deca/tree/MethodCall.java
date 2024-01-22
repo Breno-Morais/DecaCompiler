@@ -75,7 +75,7 @@ public class MethodCall extends AbstractExpr {
 
     @Override
     protected void codeGen(DecacCompiler compiler, int registerNumber) {
-        compiler.addComment("  MethodCall " + obj.getType() + "." + meth);
+        compiler.addComment("Appel de methode " + obj.getType() + "." + meth + " ligne " + getLocation());
         GPRegister register = Register.R2;
         if(registerNumber > 2) {
             compiler.addInstruction(new PUSH(Register.R2));
@@ -110,6 +110,7 @@ public class MethodCall extends AbstractExpr {
         // BSR to the table
         compiler.addInstruction(new BSR(new RegisterOffset(meth.getMethodDefinition().getIndex(), Register.R2)));
         compiler.addToStack(2);
+        compiler.removeFromStack(2);
 
         if(registerNumber > 2) {
             compiler.addInstruction(new POP(Register.R2));

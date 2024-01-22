@@ -191,6 +191,7 @@ public class DeclClass extends AbstractDeclClass {
 
     private void addInit(DecacCompiler compiler) {
         DecacCompiler blockCompiler = new DecacCompiler(compiler.getCompilerOptions(), compiler.getSource());
+        blockCompiler.initStackController(compiler.getStack());
 
         compiler.addComment("---------- Initialisation des champs de " + getName());
         compiler.addLabel(new Label("init." + getName()));
@@ -198,6 +199,7 @@ public class DeclClass extends AbstractDeclClass {
         if(!getSuperclass().toString().equals("Object")) {
             blockCompiler.addInstruction(new BSR(new Label("init." + getSuperclass())));
             blockCompiler.addToStack(2);
+            compiler.removeFromStack(2);
         }
 
         listField.codeGenListField(blockCompiler);
