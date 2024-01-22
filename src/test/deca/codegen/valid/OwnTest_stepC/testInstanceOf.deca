@@ -2,14 +2,14 @@
 //    Programme minimaliste utilisant une affectation et println.
 //
 // Resultats:
-//    print "a is instance of A"
-//    print "a is not instance of C"
-//    print "a is not instance of B"
-//    print "b is instance of B"
-//    print "b is instance of A"
-//    print "b is instance of Object"
-//    print "c is instance of Object"
-//    print "c is not instance of A"
+//    a is instance of A
+//    a is not instance of C
+//    a is not instance of B
+//    b is instance of B
+//    b is instance of A
+//    b is instance of Object
+//    c is instance of Object
+//    c is not instance of A
 //
 // Historique:
 //    cree le 22/12/2023
@@ -57,13 +57,13 @@ class C {
        	println("b is not instance of A");
     }
 
-    if(!!(b instanceof object)) {
+    if(!!(b instanceof Object)) {
     	println("b is instance of Object");
     } else {
        	println("b is not instance of Object");
     }
     
-    if(c instanceof object) {
+    if(c instanceof Object) {
     	println("c is instance of Object");
     } else {
        	println("c is not instance of Object");

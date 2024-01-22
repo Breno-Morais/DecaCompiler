@@ -2,7 +2,7 @@
 //    Programme minimaliste utilisant une affectation et println.
 //
 // Resultats:
-//    1
+//    a.getX() = 1
 //
 // Historique:
 //    cree le 22/12/2023
