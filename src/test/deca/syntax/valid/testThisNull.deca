@@ -8,7 +8,5 @@
 //    cree le 22/12/2023
 
 {    
-	float i = null, j = 5.5;
-
-    return 0;
+	float i = null;
 }
