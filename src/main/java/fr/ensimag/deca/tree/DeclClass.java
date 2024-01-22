@@ -88,14 +88,12 @@ public class DeclClass extends AbstractDeclClass {
 
             for (int i = listFieldsSuper.getList().size() - 1; i >= 0; i--) {
                 DeclField fieldSuper = new DeclField((DeclField) listFieldsSuper.getList().get(i));
-//                ((LinkedList) listField.getModifiableList()).addFirst(fieldSuper);
-                ((LinkedList<AbstractDeclField>) listField.getModifiableList()).addFirst(fieldSuper);
+                ((LinkedList) listField.getModifiableList()).addFirst(fieldSuper);
             }
 
             for (int i = listMethodSuper.getList().size() - 1; i >= 0; i--) {
                 DeclMethod methodSuper = (DeclMethod) listMethodSuper.getList().get(i);
-//                ((LinkedList) listMethod.getModifiableList()).addFirst(methodSuper);
-                ((LinkedList<AbstractDeclMethod>) listMethod.getModifiableList()).addFirst(methodSuper);
+                ((LinkedList) listMethod.getModifiableList()).addFirst(methodSuper);
             }
         }
         LOG.debug("verifyClass DeclClass: end");

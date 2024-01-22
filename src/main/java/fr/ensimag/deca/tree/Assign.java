@@ -63,7 +63,7 @@ public class Assign extends AbstractBinaryExpr {
         GPRegister resultReg= (allRegisters[1][0].getNumber() == registerNumber) ? allRegisters[1][0] : allRegisters[1][1];
         GPRegister processReg = (allRegisters[1][1].getNumber() == registerNumber) ? allRegisters[1][0] : allRegisters[1][1];
 
-        AbstractLValue leftOperandId = getLeftOperand();
+        AbstractLValue leftOperandId = (AbstractLValue) getLeftOperand();
         DAddr leftAddress = leftOperandId.getAddress();
 
         getRightOperand().codeGen(compiler, processReg.getNumber());

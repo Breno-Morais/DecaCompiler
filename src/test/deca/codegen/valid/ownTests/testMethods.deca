@@ -12,7 +12,7 @@ class A {
 	int getX() {
 		return x ;
 	}
-	void setX(int x) {
+	void setX(int x, B b) {
 		this.x = x ;
 	}
 }
