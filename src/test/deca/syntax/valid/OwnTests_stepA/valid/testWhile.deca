@@ -13,6 +13,6 @@
 	while(x < 10)
 	{
 		println("OLA");
-		i = i + 1;
+		x = x + 1;
 	}
 }
