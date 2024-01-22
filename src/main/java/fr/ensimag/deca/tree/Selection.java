@@ -32,7 +32,16 @@ public class Selection extends AbstractLValue {
         Type typeObj = obj.verifyExpr(compiler, localEnv, currentClass);
         ClassDefinition classDefinition = compiler.environmentType.defOfType(typeObj.getName()).asClassDefinition(typeObj.toString() + " is not a class", this.getLocation());
         obj.setType(classDefinition.getType());
-        FieldDefinition defField = currentClass.getMembers().get(field.getName()).asFieldDefinition(field + " is not a field", this.getLocation());
+
+        FieldDefinition defField;
+        if (obj instanceof This) {
+            defField = currentClass.getMembers().get(field.getName()).asFieldDefinition(field + " is not a field", this.getLocation());
+        } else if(obj instanceof Identifier || obj instanceof Selection) {
+            ClassDefinition classDef = obj.getType().asClassType(obj + " is not an object to select from", getLocation()).getDefinition();
+            defField = classDef.getMembers().get(field.getName()).asFieldDefinition(field + " is not a field", this.getLocation());
+        } else
+            throw new ContextualError("Selection of non-object", getLocation());
+
         field.setDefinition(defField);
         setIndex(defField.getIndex());
         setDefinition(defField);
@@ -99,5 +108,10 @@ public class Selection extends AbstractLValue {
 
     public void setIndex(int index) {
         this.index = index;
+    }
+
+    @Override
+    public Type getType() {
+        return field.getType();
     }
 }
