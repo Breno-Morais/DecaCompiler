@@ -23,6 +23,7 @@ def find_expected_tokens_comment(source_code):
 
     return '\n'.join(expected_tokens_lines)
 
+
 def parse_expected_tokens(tokens_block):
     # Utiliser un ensemble pour stocker les débuts de lignes des tokens attendus
     expected_tokens_set = set(token.strip() for token in tokens_block.split(','))
