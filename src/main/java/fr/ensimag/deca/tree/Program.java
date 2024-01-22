@@ -67,7 +67,7 @@ public class Program extends AbstractProgram {
         for(AbstractDeclClass declClass : getClasses().getList()) {
             compiler.addComment("Construction de la table des methodes de " + declClass.getName());
             // Inherent the classes of the superclass
-            getClasses().updateMethodNames(declClass); // TODO: Check the order
+            getClasses().updateMethodNames(declClass);
             // Update the address of the method table of the class so the children can access it
             methodTableOffsetMap.put(declClass.getName().toString(), getIndexGB());
 
@@ -169,7 +169,7 @@ public class Program extends AbstractProgram {
     private void addCompleteErrorHandles(DecacCompiler compiler) {
         if(compiler.getCompilerOptions().getNoCheck())
             return;
-        addErrorHandle(compiler, "Erreur: Pile pleine", new Label("pile_pleine"));
+        addErrorHandle(compiler, "Erreur: Pile pleine ", new Label("pile_pleine"));
         addErrorHandle(compiler, "Erreur: Dereferencement de null", new Label("dereferencement_null"));
         addErrorHandle(compiler, "Erreur: Input/Output error", new Label("io_error"));
         addErrorHandle(compiler, "Erreur: Tas plein", new Label("tas_plein"));

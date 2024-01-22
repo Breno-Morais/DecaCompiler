@@ -43,6 +43,7 @@ public class ConvFloat extends AbstractUnaryExpr {
 
     @Override
     public void decompile(IndentPrintStream s) {
+        s.print(getOperatorName());
         getOperand().decompile(s);
     }
 

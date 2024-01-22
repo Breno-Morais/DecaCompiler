@@ -2,6 +2,7 @@ package fr.ensimag.deca.context;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tree.AbstractExpr;
+import fr.ensimag.deca.tree.ConvFloat;
 import fr.ensimag.deca.tree.ListDeclClass;
 import fr.ensimag.deca.tree.Location;
 import org.apache.log4j.Logger;
@@ -43,7 +44,9 @@ public class Signature {
         for (int i = 0; i < args.size(); i++){
             Type exceptType = args.get(i);
             Type actuType = parameters.get(i).verifyExpr(compiler, localEnv, currentClass);
-            if (!actuType.sameType(exceptType)){
+            if(exceptType.isFloat() && actuType.isInt())
+                parameters.set(i, new ConvFloat(parameters.get(i)));
+            else if (!actuType.sameType(exceptType)){
                 throw new ContextualError("Incompatible Type in Signature", location);
             }
         }

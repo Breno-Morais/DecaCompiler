@@ -17,7 +17,11 @@ public class MethodCall extends AbstractExpr {
     private ListExpr param;
 
     public MethodCall(AbstractExpr obj, AbstractIdentifier meth, ListExpr param) {
-        this.obj = obj;
+        if(obj == null)
+            this.obj = new This(true);
+        else
+            this.obj = obj;
+
         this.meth = meth;
         this.param = param;
     }
@@ -65,7 +69,7 @@ public class MethodCall extends AbstractExpr {
 
         //Vérifie les paramètres de la méthode
         Signature signature = methodDefOk.getSignature();
-        signature.verifyParameters(compiler, this.param.getList(), getLocation(), localEnv, currentClass);
+        signature.verifyParameters(compiler, this.param.getModifiableList(), getLocation(), localEnv, currentClass);
 
         //SetType
         Type returnType = signature.getReturnType();

@@ -83,11 +83,10 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
             }
         } else {
             AbstractDeclClass superClass = getClassDecl(declClass.getSuperclass());
-
             for (int i = superClass.getMethodNames().size() - 1; i >= 0; i--) {
                 MethodName superMethod = superClass.getMethodNames().get(i);
                 boolean exists = methodNames.stream()
-                        .anyMatch(childMethod -> childMethod.getName().equals(superMethod.getName()));
+                        .anyMatch(childMethod -> childMethod.equals(superMethod));
 
                 if (!exists) {
                     methodNames.addFirst(superMethod);
