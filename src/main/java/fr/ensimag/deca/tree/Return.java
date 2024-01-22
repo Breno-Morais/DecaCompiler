@@ -25,11 +25,12 @@ public class Return extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
                               ClassDefinition currentClass, Type returnType) throws ContextualError {
         LOG.debug("verifyInst Return : start");
-        //TODO a refaire pour le object (pas dans sans-object)
+
+        /* Should be a run time error for some reason
         //verifier que return != void
         if(returnType.isVoid()){
             throw new ContextualError("return type is VOID in Return", getLocation());
-        }
+        } */
 
         expression.verifyRValue(compiler, localEnv, currentClass, returnType);
         LOG.debug("verifyInst Return : end");
@@ -60,5 +61,9 @@ public class Return extends AbstractInst {
 
     public void setEndMethod(Label endMethod) {
         this.endMethod = endMethod;
+    }
+
+    public Label getEndMethod() {
+        return endMethod;
     }
 }

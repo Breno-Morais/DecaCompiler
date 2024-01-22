@@ -2,11 +2,19 @@
 //    Programme minimaliste utilisant une affectation et println.
 //
 // Resultats:
-//    0
+//    20
 //
 // Historique:
 //    cree le 22/12/2023
 
+class A {
+	int getAge() {
+		return 20;
+	}
+}
+
 {    
-    return 0;
+	A a = new A();
+	
+    println(a.getAge());
 }
