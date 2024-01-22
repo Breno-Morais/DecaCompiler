@@ -78,21 +78,24 @@ public class DeclClass extends AbstractDeclClass {
         if(compiler.environmentType.get(superclass.getName()) == null){
             throw new ContextualError("superClass is not a valid Class in DeclClass", getLocation());
         }
-        superclass.setDefinition(compiler.environmentType.defOfType(superclass.getName()));
+        superclass.setDefinition(superClassDefinition);
         superclass.setType(compiler.environmentType.defOfType(superclass.getName()).getType());
 
         if(declSuper != null) {
             ListDeclField listFieldsSuper = declSuper.getListFields();
             ListDeclMethod listMethodSuper = declSuper.listMethod;
+            name.getClassDefinition().setNumberOfFields(superClassDefinition.getNumberOfFields());
 
             for (int i = listFieldsSuper.getList().size() - 1; i >= 0; i--) {
                 DeclField fieldSuper = new DeclField((DeclField) listFieldsSuper.getList().get(i));
-                ((LinkedList) listField.getModifiableList()).addFirst(fieldSuper);
+//                ((LinkedList) listField.getModifiableList()).addFirst(fieldSuper);
+                ((LinkedList<AbstractDeclField>) listField.getModifiableList()).addFirst(fieldSuper);
             }
 
             for (int i = listMethodSuper.getList().size() - 1; i >= 0; i--) {
                 DeclMethod methodSuper = (DeclMethod) listMethodSuper.getList().get(i);
-                ((LinkedList) listMethod.getModifiableList()).addFirst(methodSuper);
+//                ((LinkedList) listMethod.getModifiableList()).addFirst(methodSuper);
+                ((LinkedList<AbstractDeclMethod>) listMethod.getModifiableList()).addFirst(methodSuper);
             }
         }
         LOG.debug("verifyClass DeclClass: end");

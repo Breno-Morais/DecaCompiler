@@ -15,7 +15,6 @@ import fr.ensimag.ima.pseudocode.DVal;
 
 public abstract class Type {
 
-
     /**
      * True if this and otherType represent the same type (in the case of
      * classes, this means they represent the same class).
@@ -84,6 +83,7 @@ public abstract class Type {
     public abstract DVal getDefaultValue();
 
     public boolean isSubType(Type superType) {
+
         return true;
     }
 }

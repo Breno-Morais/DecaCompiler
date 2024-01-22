@@ -48,7 +48,6 @@ public class DeclField extends AbstractDeclField {
         }
         Visibility visib = getStatusVisibility();
 
-        classe.setNumberOfFields(superClass.getNumberOfFields());
         FieldDefinition fieldDefinition = new FieldDefinition(type_def, getLocation(), visib, classe, index);
         try{
             classe.getMembers().declare(field.getName(), fieldDefinition);

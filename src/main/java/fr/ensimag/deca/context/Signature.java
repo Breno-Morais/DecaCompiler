@@ -2,7 +2,9 @@ package fr.ensimag.deca.context;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tree.AbstractExpr;
+import fr.ensimag.deca.tree.ListDeclClass;
 import fr.ensimag.deca.tree.Location;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.Locale;
  * @date 01/01/2024
  */
 public class Signature {
+    private static final Logger LOG = Logger.getLogger(ListDeclClass.class);
     List<Type> args = new ArrayList<Type>();
     private Type returnType;
 
@@ -32,6 +35,8 @@ public class Signature {
 
     public void verifyParameters(DecacCompiler compiler, List<AbstractExpr> parameters, Location location, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError{
         //Vérifie qu'on a le même nombre d'arg
+        LOG.debug("parameters.size() = " + parameters.size());
+        LOG.debug("args.size() = " + args.size());
         if (parameters.size() != args.size()){
             throw new ContextualError("Wrong number of arguments in Signature", location);
         }
