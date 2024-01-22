@@ -35,7 +35,6 @@ class B extends A {
    a.setX(1) ;
    b.setX(a.getX() + 1);
    b.setY(a.getX() + 3);
-   
    println("a.getX() = ", a.getX()) ;
    println("b.getX() = ", b.getX()) ;
    println("b.getY() = ", b.getY()) ;
