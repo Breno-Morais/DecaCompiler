@@ -78,7 +78,7 @@ public class MethodCall extends AbstractExpr {
     }
 
     @Override
-    protected void codeGen(DecacCompiler compiler, int registerNumber) {
+    protected void codeGen(DecacCompiler compiler, int registerNumber){
         compiler.addComment("Appel de methode " + obj.getType() + "." + meth + " ligne " + getLocation());
         GPRegister register = Register.R2;
         if(registerNumber > 2) {
@@ -95,6 +95,9 @@ public class MethodCall extends AbstractExpr {
         if(obj instanceof Identifier) { // Add selection later if possible
             DAddr objAddr = ((Identifier) obj).getExpDefinition().getOperand();
             compiler.addInstruction(new LOAD(objAddr, Register.R2));
+            compiler.addInstruction(new STORE(Register.R2, new RegisterOffset(0, Register.SP)));
+        } else if(obj instanceof This || obj instanceof Selection) {
+            obj.codeGen(compiler, 2);
             compiler.addInstruction(new STORE(Register.R2, new RegisterOffset(0, Register.SP)));
         }
 

@@ -71,13 +71,17 @@ public class MethodBody extends AbstractMethodBody {
 
     @Override
     public void codeGenMethod(DecacCompiler compiler) {
-        Return possibleReturn = null;
-
         // Return label
         Label endMethodLabel = new Label("fin." + getDeclMethod().getClassDefinition().getType() + "." + getDeclMethod().getName());
 
         insts.setReturnLabel(endMethodLabel);
         insts.codeGenListInst(compiler);
+
+        // If there is no return, because of void return (Should be check in Step B), forces a return
+        if(methodName.getMethodDefinition().getSignature().getReturnType().isVoid()) {
+            compiler.addInstruction(new BRA(endMethodLabel));
+        }
+
 
         compiler.addInstruction(new WSTR("Erreur : sortie de la methode sans return"));
         compiler.addInstruction(new WNL());
@@ -99,5 +103,13 @@ public class MethodBody extends AbstractMethodBody {
             throw new ContextualError("Liste des declarations des instructionx null", getLocation());
         }
 
+    }
+
+    public AbstractIdentifier getMethodName() {
+        return methodName;
+    }
+
+    public void setMethodName(AbstractIdentifier methodName) {
+        this.methodName = methodName;
     }
 }
