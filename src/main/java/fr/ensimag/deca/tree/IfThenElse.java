@@ -29,7 +29,7 @@ public class IfThenElse extends AbstractInst {
     private final AbstractExpr condition; 
     private final ListInst thenBranch;
     private ListInst elseBranch;
-
+    private Label returnLabel = null;
     private static int countIfLabels = 0;
 
     public IfThenElse(AbstractExpr condition, ListInst thenBranch, ListInst elseBranch) {
@@ -72,6 +72,12 @@ public class IfThenElse extends AbstractInst {
         compiler.addInstruction(new CMP(0, Register.R0));
         compiler.addInstruction(new BNE(ifLabel));
         compiler.addInstruction(new BRA(elseLabel));
+
+        // If the if is in a method set the return label to get out of the method
+        if(returnLabel != null) {
+            thenBranch.setReturnLabel(returnLabel);
+            elseBranch.setReturnLabel(returnLabel);
+        }
 
         // Create if branch
         compiler.addLabel(ifLabel);
@@ -118,5 +124,14 @@ public class IfThenElse extends AbstractInst {
         condition.prettyPrint(s, prefix, false);
         thenBranch.prettyPrint(s, prefix, false);
         elseBranch.prettyPrint(s, prefix, true);
+    }
+
+
+    public Label getReturnLabel() {
+        return returnLabel;
+    }
+
+    public void setReturnLabel(Label returnLabel) {
+        this.returnLabel = returnLabel;
     }
 }

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+#! /bin/sh
+=======
 #! /bin/bash
+>>>>>>> 94242417dce1eb11b57109370be428fef0a56735
 
 # Auteur : gl25
 # Version initiale : 01/01/2024
@@ -34,6 +38,7 @@ for fichier_source in "$repertoire_test"/*.deca; do
 
     # Extraire la valeur attendue à partir des commentaires en appelant le script python
     attendu=$(python3 testCodeGen.py "$fichier_source") || exit 1
+
     if [ -z "$attendu" ]; then
         echo "Aucune valeur attendue trouvée pour $fichier_source."
         exit 1
