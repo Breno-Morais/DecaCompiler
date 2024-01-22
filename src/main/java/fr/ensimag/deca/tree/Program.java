@@ -67,7 +67,7 @@ public class Program extends AbstractProgram {
         for(AbstractDeclClass declClass : getClasses().getList()) {
             compiler.addComment("Construction de la table des methodes de " + declClass.getName());
             // Inherent the classes of the superclass
-            getClasses().updateMethodNames(declClass); // TODO: Check the order
+            getClasses().updateMethodNames(declClass);
             // Update the address of the method table of the class so the children can access it
             methodTableOffsetMap.put(declClass.getName().toString(), getIndexGB());
 
