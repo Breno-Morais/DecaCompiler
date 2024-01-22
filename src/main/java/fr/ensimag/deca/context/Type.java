@@ -81,7 +81,7 @@ public abstract class Type {
         throw new ContextualError(errorMessage, l);
     }
 
-    public abstract DVal getDefaultValue(); // TODO: Review every default initialization value
+    public abstract DVal getDefaultValue();
 
     public boolean isSubType(Type superType) {
         return true;

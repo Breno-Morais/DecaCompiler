@@ -27,7 +27,7 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod>{
         int index = ((superClass.getType().getName().getName().equals("Object")) ? 2 : superClass.getNumberOfMethods());
         for (AbstractDeclMethod c : getList()){
             c.verifyClassMembers(compiler, superClass, classe, index);
-            classe.setNumberOfFields(classe.getNumberOfFields() + 1);
+            classe.setNumberOfMethods(classe.getNumberOfMethods() + 1);
             index++;
         }
         LOG.debug("verifyListClassMembers ListDeclMethod: end");

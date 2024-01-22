@@ -20,7 +20,7 @@ public abstract class AbstractReadExpr extends AbstractExpr {
     @Override
     protected void codeGen(DecacCompiler compiler, int registerNumber) {
         compiler.addInstruction(getReadInstruction());
-        compiler.addInstruction(new BOV(new Label("io_error")));
+        compiler.addErrorCheck(new Label("io_error"));
         if(registerNumber != 1)
             compiler.addInstruction(new LOAD(Register.R1, Register.getR(registerNumber)));
     }

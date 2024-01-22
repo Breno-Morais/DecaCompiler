@@ -3,6 +3,7 @@ package fr.ensimag.deca;
 import java.io.File;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class CompilerOptions {
     }
     public boolean getParse() { return parse;}
     public boolean getVerification() { return verification;}
+    public boolean getNoCheck() { return noCheck;}
     
     public List<File> getSourceFiles() {
         return Collections.unmodifiableList(sourceFiles);
@@ -47,6 +49,7 @@ public class CompilerOptions {
     private boolean printBanner = false;
     private boolean parse = false;
     private boolean verification = false;
+    private boolean noCheck = false;
     private List<File> sourceFiles = new ArrayList<File>();
     private int registerX;
 
@@ -99,10 +102,12 @@ public class CompilerOptions {
                     verification = true;
                     break;
                 case "-n":
-                    // TODO
+                    noCheck = true;
                     break;
-                case "-r":
-                    int x = Integer.parseInt(args[i+1]);
+                case "-r": // TODO: It isn't recognized in the terminal
+                    i++;
+                    j = i;
+                    int x = Integer.parseInt(args[i]);
                     if(x < 4 || x > 16)
                         throw new CLIException("The number of register can't be less than 4 or greater than 16");
 

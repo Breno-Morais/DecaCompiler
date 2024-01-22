@@ -51,7 +51,7 @@ public class New extends AbstractUnaryExpr {
 
     @Override
     protected void codeGen(DecacCompiler compiler, int registerNumber) {
-        compiler.addComment("   " + getOperatorName());
+        compiler.addComment("Instruction " + getOperatorName() + " ligne " + getLocation());
         int classSize = ((Identifier) getOperand()).getClassDefinition().getNumberOfFields() + 1;
         addImaInstruction(compiler, new ImmediateInteger(classSize), Register.getR(registerNumber));
     }
@@ -59,7 +59,7 @@ public class New extends AbstractUnaryExpr {
     @Override
     public void addImaInstruction(DecacCompiler compiler, DVal value, GPRegister register) {
         compiler.addInstruction(new NEW(value, register));
-        compiler.addInstruction(new BOV(new Label("tas_plein")));
+        compiler.addErrorCheck(new Label("tas_plein"));
 
         Identifier ident = (Identifier) getOperand();
         DAddr methodTableAddr = ident.getClassDefinition().getMethodTableAddress();
@@ -71,6 +71,7 @@ public class New extends AbstractUnaryExpr {
 
         compiler.addInstruction(new BSR(new Label("init." + ident)));
         compiler.addToStack(2);
+        compiler.removeFromStack(2);
 
         compiler.addInstruction(new POP(register));
         compiler.removeFromStack(1);

@@ -29,6 +29,6 @@ public class VoidType extends Type {
 
     @Override
     public DVal getDefaultValue() {
-        return new ImmediateInteger(0);
-    } // TODO: Don't know the default value
+        throw new RuntimeException("Void doesn't have a default value");
+    }
 }
