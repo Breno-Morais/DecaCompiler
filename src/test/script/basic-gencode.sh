@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-#! /bin/sh
-=======
 #! /bin/bash
->>>>>>> 94242417dce1eb11b57109370be428fef0a56735
 
 # Auteur : gl25
 # Version initiale : 01/01/2024
@@ -38,7 +34,7 @@ for fichier_source in "$repertoire_test"/*.deca; do
 
     # Extraire la valeur attendue à partir des commentaires en appelant le script python
     attendu=$(python3 testCodeGen.py "$fichier_source") || exit 1
-
+    declare -a attendu
     if [ -z "$attendu" ]; then
         echo "Aucune valeur attendue trouvée pour $fichier_source."
         exit 1
@@ -53,10 +49,8 @@ for fichier_source in "$repertoire_test"/*.deca; do
 
         # Boucle pour concaténer les éléments du tableau
         for petitelement in $element; do
-          # Vérifier si petitelement commence par [ ou '
-          # Vérifier si petitelement commence ou finit par [ ou '
+          # On extrait les caractères inutiles
           if [[ "$petitelement" == "['"* || "$petitelement" == "'"* || "$petitelement" == *"']" || "$petitelement" == *"'," ]]; then
-              # Exclure ces caractères lors de la concaténation
               petitelement="${petitelement//[\'\[\],]/}"
           fi
           elements_string="${elements_string} ${petitelement}"
