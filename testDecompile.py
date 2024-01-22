@@ -27,8 +27,6 @@ def run_test(input_file):
         sys.exit(1)
 
 if __name__ == "__main__":
-
-    # Si des arguments en ligne de commande sont fournis, utilisez-les comme noms de tests à exécuter
     if len(sys.argv) < 2:
         print("Utilisation: python3 nom_du_script.py")
         sys.exit(1)
