@@ -75,6 +75,9 @@ public class DeclClass extends AbstractDeclClass {
             throw new ContextualError("Error, Class already declared in DeclClass", this.getLocation());
         }
 
+        if(compiler.environmentType.get(superclass.getName()) == null){
+            throw new ContextualError("superClass is not a valid Class in DeclClass", getLocation());
+        }
         superclass.setDefinition(compiler.environmentType.defOfType(superclass.getName()));
         superclass.setType(compiler.environmentType.defOfType(superclass.getName()).getType());
 
@@ -100,7 +103,7 @@ public class DeclClass extends AbstractDeclClass {
             throws ContextualError {
         LOG.debug("verifyClassMembers DeclClass: start");
         EnvironmentType env_types = compiler.environmentType;   //on récupère l'environnement des types
-        //TODO rajouter toutes les verif : condition et affectation dans le poly
+
         listField.verifyListClassMembers(compiler, superclass.getClassDefinition(), name.getClassDefinition());
         listMethod.verifyListClassMembers(compiler, superclass.getClassDefinition(), name.getClassDefinition());
 
