@@ -27,7 +27,7 @@ public class ConvFloat extends AbstractUnaryExpr {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
         LOG.debug("verifyExpr ConvFloat : start");
-        getOperand().verifyExpr(compiler, localEnv, currentClass);
+//        getOperand().verifyExpr(compiler, localEnv, currentClass);
         //TODO : avec le if ça ne marche pas
 //        if(type.isInt() || type.isFloat())
 //            throw new ContextualError("a Arith type was expected in ConvFloat", getLocation());
