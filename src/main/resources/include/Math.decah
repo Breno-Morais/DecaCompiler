@@ -15,7 +15,10 @@ class Math {
         println("atan(f) not yet implemented");
     }
     float ulp(float f) {
-        println("ulp(f) not yet implemented");
+        int exposant = _getExposant(f);
+        exposant = exposant - 150;
+        float ulp = _power(2, exposant);
+        return ulp;
     }
 
     float _power(float indice, int exposant){
@@ -43,7 +46,52 @@ class Math {
         return produit;
     }
 
+    int _factorial(int factor){
+        int compteur = factor;
+        int produit = factor;
+        while(compteur > 1){
+            compteur = compteur - 1;
+            produit = produit * compteur;
+        }
+        return produit;
+    }
 
+    float _absVal(float f){
+        if(f < 0){
+            return -f;
+        }
+        else{
+            return f;
+        }
+    }
+
+    int _getExposant(float f){
+        //On réalise une méthode de recherche dichotomique pour obtenir l'exposant du flottant dans sa représentation IEEE754.
+        int left = 0;
+        int right = 255;
+        while(left < right){
+            int mid = left + ((right - left) / 2);
+            float valeurSup = _power(2.0, (mid - 126));
+            float valeurInf = _power(2.0, (mid - 127));
+            if((valeurInf <= _absVal(f)) && (_absVal(f) < valeurSup)){
+                return mid;
+                }
+            if(_absVal(f) < valeurInf){
+                right = mid;
+                }
+            if(_absVal(f) > valeurSup){
+                left = mid;
+                }
+            if(_absVal(f) == valeurSup){
+                mid = mid + 1;
+                return mid;
+                }
+            }
+        if((left == right) && (right == 0)){
+            return 0;
+        }
+        return -1;
+    }
 }
 
 
