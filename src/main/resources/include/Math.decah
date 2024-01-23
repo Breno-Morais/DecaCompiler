@@ -16,8 +16,8 @@ class Math {
     }
     float ulp(float f) {
         int exposant = _getExposant(f);
-        exposant = exposant - 150;
         float ulp = _power(2, exposant);
+        exposant = exposant - 150;
         return ulp;
     }
 
@@ -69,10 +69,13 @@ class Math {
         //On réalise une méthode de recherche dichotomique pour obtenir l'exposant du flottant dans sa représentation IEEE754.
         int left = 0;
         int right = 255;
+        int mid;
+        float valeurSup;
+        float valeurInf;
         while(left < right){
-            int mid = left + ((right - left) / 2);
-            float valeurSup = _power(2.0, (mid - 126));
-            float valeurInf = _power(2.0, (mid - 127));
+            mid = left + ((right - left) / 2);
+            valeurSup = _power(2.0, (mid - 126));
+            valeurInf = _power(2.0, (mid - 127));
             if((valeurInf <= _absVal(f)) && (_absVal(f) < valeurSup)){
                 return mid;
                 }
