@@ -26,9 +26,9 @@ import org.apache.log4j.Logger;
 public class While extends AbstractInst {
     private static int whileCount = 0;
     private static final Logger LOG = Logger.getLogger(Identifier.class);
-
     private AbstractExpr condition;
     private ListInst body;
+    private Label returnLabel = null;
 
     public AbstractExpr getCondition() {
         return condition;
@@ -52,6 +52,7 @@ public class While extends AbstractInst {
         Label condLabel = new Label("E_Cond." + whileCount);
         whileCount++;
 
+        body.setReturnLabel(getReturnLabel());
         compiler.addInstruction(new BRA(condLabel));
 
         compiler.addLabel(startCodeLabel);
@@ -98,5 +99,13 @@ public class While extends AbstractInst {
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         condition.prettyPrint(s, prefix, false);
         body.prettyPrint(s, prefix, true);
+    }
+
+    public Label getReturnLabel() {
+        return returnLabel;
+    }
+
+    public void setReturnLabel(Label returnLabel) {
+        this.returnLabel = returnLabel;
     }
 }

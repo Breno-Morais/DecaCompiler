@@ -40,8 +40,11 @@ public class Signature {
         for (int i = 0; i < args.size(); i++){
             Type exceptType = args.get(i);
             Type actuType = parameters.get(i).verifyExpr(compiler, localEnv, currentClass);
-            if(exceptType.isFloat() && actuType.isInt())
-                parameters.set(i, new ConvFloat(parameters.get(i)));
+            if(exceptType.isFloat() && actuType.isInt()) {
+                ConvFloat cast = new ConvFloat(parameters.get(i));
+                cast.verifyExpr(compiler, localEnv, currentClass);
+                parameters.set(i, cast);
+            }
             else if (!actuType.sameType(exceptType)){
                 throw new ContextualError("Incompatible Type in Signature", location);
             }

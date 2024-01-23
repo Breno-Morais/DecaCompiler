@@ -53,10 +53,12 @@ public class MethodBody extends AbstractMethodBody {
         List<GPRegister> regsUsed = new LinkedList<>();
 
         for(AbstractDeclVar declVar : declVariables.getList()) {
-            regsUsed.addAll(declVar.getInitialization().getExpression().getRegisters(2));
+            if (declVar.getInitialization().getExpression() != null) {
+                regsUsed.addAll(declVar.getInitialization().getExpression().getRegisters(2));
 
-            // Don't know if is faster doing only once with an enormous list
-            regsUsed = regsUsed.stream().distinct().collect(Collectors.toList());
+                // Don't know if is faster doing only once with an enormous list
+                regsUsed = regsUsed.stream().distinct().collect(Collectors.toList());
+            }
         }
 
         for(AbstractInst inst : insts.getList()) {
@@ -73,6 +75,8 @@ public class MethodBody extends AbstractMethodBody {
     public void codeGenMethod(DecacCompiler compiler) {
         // Return label
         Label endMethodLabel = new Label("fin." + getDeclMethod().getClassDefinition().getType() + "." + getDeclMethod().getName());
+
+        declVariables.codeGenListVariables(compiler);
 
         insts.setReturnLabel(endMethodLabel);
         insts.codeGenListInst(compiler);

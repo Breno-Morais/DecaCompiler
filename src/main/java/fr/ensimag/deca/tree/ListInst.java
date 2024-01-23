@@ -40,6 +40,8 @@ public class ListInst extends TreeList<AbstractInst> {
                 ((IfThenElse) i).setReturnLabel(getReturnLabel());
             } else if(i instanceof Return) {
                 ((Return) i).setEndMethod(getReturnLabel());
+            } else if(i instanceof While) {
+                ((While) i).setReturnLabel(getReturnLabel());
             }
 
             i.codeGenInst(compiler);
