@@ -19,20 +19,22 @@ class Math {
     }
 
     float _power(float indice, int exposant){
+        int compteur;
+        float produit;
         if(exposant == 0){
             return 1.0;
         }
         if(exposant > 0){
-            int compteur = 1;
-            float produit = indice;
+            compteur = 1;
+            produit = indice;
             while(compteur < exposant){
                 produit = produit * indice;
                 compteur = compteur + 1;
             }
         }
         else{
-            int compteur = -1;
-            float produit = 1 / indice;
+            compteur = -1;
+            produit = 1 / indice;
             while(compteur > exposant){
                 produit = produit / indice;
                 compteur = compteur - 1;
