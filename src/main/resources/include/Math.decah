@@ -17,6 +17,31 @@ class Math {
     float ulp(float f) {
         println("ulp(f) not yet implemented");
     }
+
+    float _power(float indice, int exposant){
+        if(exposant == 0){
+            return 1.0;
+        }
+        if(exposant > 0){
+            int compteur = 1;
+            float produit = indice;
+            while(compteur < exposant){
+                produit = produit * indice;
+                compteur = compteur + 1;
+            }
+        }
+        else{
+            int compteur = -1;
+            float produit = 1 / indice;
+            while(compteur > exposant){
+                produit = produit / indice;
+                compteur = compteur - 1;
+            }
+        }
+        return produit;
+    }
+
+
 }
 
 
