@@ -2,21 +2,78 @@
 // Library for class Math of Deca, coded in Deca
 
 class Math {
-    float sin(float f) {
-        float somme = 0.0;
-        float terme = 1.0;
-        int compteur = 5;
-        int exposant = (2 * compteur) + 1;
-        while(compteur >= 0){
-            exposant = (2 * compteur) + 1;
-            terme = (_power(f, exposant)) / _factorial((2 * compteur));
-            compteur = compteur - 1;
+    float sin(float f){
+        float newF = 1.0;
+        //On vérifie si on est entre 0 et 1 :
+        if ((f <= 1.0) && (f >= 0.0)){
+            return _falseSinus(f);
+            }
+        //On vérifie si on est entre [1, Pi/2] :
+        if ((f > 1.0) && (f <= (_pi()/2))){
+            newF = (_pi()/2) - f;
+            return _falseCosinus(newF);
+            }
+        //On vérifie si on est entre [PI/2, PI] :
+        if((f > (_pi()/2)) && (f <= _pi())){
+            newF = _pi() - f;
+            return sin(newF);
         }
-        return terme;
+        //On vérifie si c'est entre [Pi; 2 pi]
+        if((f > _pi()) && (f <= (2 * _pi()))){
+            newF = f - _pi();
+            return -sin(newF);
+            }
+        //Maintenant si la valeur est pas entre 0 et 2 PI
+        else{
+            if(this.getX() < 0){
+                newf = f;
+                while(newF < 0){
+                    newF =(2 * _pi()) + newF;
+                }
+            }
+            else{
+                    newF = f % (2 * _pi());
+            }
+            return sin(newF);
+        }
     }
-    float cos(float f) {
-        println("cos(f) not yet implemented");
+
+    float cos(float f){
+        float newF = 1.0;
+        //On vérifie si on est entre 0 et 1 :
+        if ((f <= 1.0) && (f >= 0.0)){
+            return _falseCosinus(f);
+            }
+        //On vérifie si on est entre [1, Pi/2] :
+        if ((f > 1.0) && (f <= (_pi()/2))){
+            newF = (_pi()/2) - f;
+            return _falseSinus(newF);
+            }
+        //On vérifie si on est entre [PI/2, PI] :
+        if((f > (_pi()/2)) && (f <= _pi())){
+            newF = _pi() - f;
+            return -cos(newF);
+        }
+        //On vérifie si c'est entre [Pi; 2 pi]
+        if((f > _pi()) && (f <= (2 * _pi()))){
+            newF = f - _pi();
+            return -cos(newF);
+            }
+        //Maintenant si la valeur est pas entre 0 et 2 PI
+        else{
+            if(this.getX() < 0){
+                newf = f;
+                while(newF < 0){
+                    newF =(2 * _pi()) + newF;
+                }
+            }
+            else{
+                    newF = f % (2 * _pi());
+            }
+            return cos(newF);
+        }
     }
+
     float asin(float f) {
         println("asin(f) not yet implemented");
     }
@@ -133,6 +190,11 @@ class Math {
             }
         return somme;
    }
+
+    float _pi(){
+        return 3.1415927;
+    }
+
 }
 
 
