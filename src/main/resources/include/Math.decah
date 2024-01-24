@@ -75,11 +75,34 @@ class Math {
     }
 
     float asin(float f) {
-        println("asin(f) not yet implemented");
+        float somme = 0.0;//On initialise la somme à 0.
+        float terme = 1.0;//On initialise à 1 le premier terme.
+        int compteur = 8;
+        int exposant = 17;
+        while(compteur >= 0){ //Tant que on a pas calculé les 5 premier termes.
+            exposant = 2 * compteur + 1;
+            float terme = (_power(f,exposant) * _factorial(2  * compteur))/(exposant * _power(factorial(compteur), 2) * _power(4 , compteur)) ;
+            somme += terme;
+            compteur -= 1;
+        }
+        return somme;
     }
+
     float atan(float f) {
-        println("atan(f) not yet implemented");
+        float somme = 0.0;//On initialise la somme à 0.
+        float terme = 1.0;//On initialise à 1 le premier terme.
+        int compteur = 30;
+        int exposant = 60;
+        while(compteur >= 0){ //Tant que on a pas calculé les 5 premier termes.
+            exposant = 2 * compteur + 1;
+            float terme = (_power(f,exposant) * _power(-1 , compteur))/(exposant);
+            somme += terme;
+            compteur -= 1;
+        }
+        return somme;
     }
+
+
     float ulp(float f) {
         int exposant = _getExposant(f);
         float ulp = _power(2, exposant);
