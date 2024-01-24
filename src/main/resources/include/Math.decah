@@ -7,10 +7,9 @@ class Math {
         float terme = 1.0;
         int compteur = 5;
         int exposant = (2 * compteur) + 1;
-        while(compteur >= 0){
+        while(compteur >= 0){ // Compteur never changes, infinite loop
             exposant = (2 * compteur) + 1;
-            terme = (_power(f, exposant)) / _factorial((2 * compteur;
-
+            terme = (_power(f, exposant)) / _factorial((2 * compteur));
         }
     }
     float cos(float f) {
@@ -111,10 +110,10 @@ class Math {
         int exposant = 11;
         float terme;
         while(compteur >= 0){ //Tant que on a pas calculé les 5 premiers termes.
-            int exposant = (2 * compteur) + 1;
-            float terme = _power(-1, compteur) *  (_power(f, exposant)/this.factorial(exposant));
-            somme += terme;//On met à jour la somme.
-            compteur -= 1;//On met à jour le compteur.
+            exposant = (2 * compteur) + 1;
+            terme = _power(-1, compteur) *  (_power(f, exposant)/this._factorial(exposant));
+            somme = somme + terme;//On met à jour la somme.
+            compteur = compteur - 1;//On met à jour le compteur.
             }
         return somme;
     }
@@ -125,10 +124,10 @@ class Math {
         int exposant = 10;
         float terme;
         while(compteur >= 0){ //Tant que on a pas calculé les 5 premiers termes.
-            int exposant = (2 * compteur);
-            float terme = _power(-1, compteur) *  (_power(f, exposant)/this.factorial(exposant));
-            somme += terme;//On met à jour la somme.
-            compteur -= 1;//On met à jour le compteur.
+            exposant = (2 * compteur);
+            terme = _power(-1, compteur) *  (_power(f, exposant)/this._factorial(exposant));
+            somme = somme + terme;//On met à jour la somme.
+            compteur = compteur - 1;//On met à jour le compteur.
             }
         return somme;
    }

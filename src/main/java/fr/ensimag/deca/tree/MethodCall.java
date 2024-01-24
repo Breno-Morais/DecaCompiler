@@ -119,13 +119,13 @@ public class MethodCall extends AbstractExpr {
         compiler.addToStack(2);
         compiler.removeFromStack(2);
 
+        compiler.addInstruction(new SUBSP(frameSize));
+        compiler.removeFromStack(frameSize);
+
         if(registerNumber > 2) {
             compiler.addInstruction(new POP(Register.R2));
             compiler.removeFromStack(1);
         }
-
-        compiler.addInstruction(new SUBSP(frameSize));
-        compiler.removeFromStack(frameSize);
 
         if(!getType().isVoid())
             compiler.addInstruction(new LOAD(Register.R0, Register.getR(registerNumber)));

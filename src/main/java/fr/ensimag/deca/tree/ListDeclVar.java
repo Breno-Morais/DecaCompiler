@@ -7,10 +7,15 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.log4j.Logger;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * List of declarations (e.g. int x; float y,z).
@@ -79,5 +84,20 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
 
             Program.incrementIndexGB();
         }
+    }
+
+    public List<GPRegister> getRegisters() {
+        List<GPRegister> regsUsed = new LinkedList<>();
+
+        for(AbstractDeclVar declVar : getList()) {
+            if (declVar.getInitialization().getExpression() != null) {
+                regsUsed.addAll(declVar.getInitialization().getExpression().getRegisters(2));
+
+                // Don't know if is faster doing only once with an enormous list
+                regsUsed = regsUsed.stream().distinct().collect(Collectors.toList());
+            }
+        }
+
+        return regsUsed;
     }
 }

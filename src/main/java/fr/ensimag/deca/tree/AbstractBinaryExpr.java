@@ -101,6 +101,8 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
             getRightOperand().codeGen(compiler, secondReg.getNumber());
         }
 
+        //System.out.println(getLocation() + ": " + firstReg.getNumber() + "," + secondReg.getNumber());
+
         addImaInstruction(compiler, value, firstReg);
 
         popRegisters(compiler, allRegisters[0]);

@@ -6,8 +6,13 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 import org.apache.log4j.Logger;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -64,5 +69,18 @@ public class ListInst extends TreeList<AbstractInst> {
 
     public void setReturnLabel(Label returnLabel) {
         this.returnLabel = returnLabel;
+    }
+
+    public List<GPRegister> getRegisters() {
+        List<GPRegister> regsUsed = new LinkedList<>();
+
+        for(AbstractInst inst : getList()) {
+            regsUsed.addAll(inst.getRegisters(2));
+
+            // Don't know if is faster doing only once with an enormous list
+            regsUsed = regsUsed.stream().distinct().collect(Collectors.toList());
+        }
+
+        return regsUsed;
     }
 }

@@ -6,15 +6,14 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
+import java.util.List;
 
 import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.BEQ;
-import fr.ensimag.ima.pseudocode.instructions.BNE;
-import fr.ensimag.ima.pseudocode.instructions.BRA;
-import fr.ensimag.ima.pseudocode.instructions.CMP;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -52,6 +51,18 @@ public class While extends AbstractInst {
         Label condLabel = new Label("E_Cond." + whileCount);
         whileCount++;
 
+        // Get all the registers used
+        List<GPRegister> regsUsed =  getBody().getRegisters();
+
+        // Register Saving
+        if(regsUsed != null && !regsUsed.isEmpty()) {
+            compiler.addComment("Sauvegarde des registres");
+            for (GPRegister reg : regsUsed) {
+                compiler.addInstruction(new PUSH(reg));
+                compiler.addToStack(1);
+            }
+        }
+
         body.setReturnLabel(getReturnLabel());
         compiler.addInstruction(new BRA(condLabel));
 
@@ -63,6 +74,15 @@ public class While extends AbstractInst {
         condition.codeGen(compiler, 1);
         compiler.addInstruction(new CMP(0, Register.R1));
         compiler.addInstruction(new BNE(startCodeLabel));
+
+        // Register Restauration
+        if(regsUsed != null && !regsUsed.isEmpty()) {
+            compiler.addComment("Restauration des registres");
+            for (GPRegister reg : regsUsed) {
+                compiler.addInstruction(new POP(reg));
+                compiler.removeFromStack(1);
+            }
+        }
     }
 
     @Override
