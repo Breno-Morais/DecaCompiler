@@ -91,7 +91,8 @@ public class Selection extends AbstractLValue {
         getObj().codeGen(compiler, registerNumber);
 
         compiler.addInstruction(new CMP(new NullOperand(), register));
-        compiler.addInstruction(new BEQ(new Label("dereferencement_null")));
+        if(!compiler.getCompilerOptions().getNoCheck())
+            compiler.addInstruction(new BEQ(new Label("dereferencement_null")));
     }
 
     public AbstractExpr getObj() {

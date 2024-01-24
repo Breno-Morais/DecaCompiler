@@ -111,7 +111,8 @@ public class MethodCall extends AbstractExpr {
         // Loads the address of the method table
         compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.SP), Register.R2));
         compiler.addInstruction(new CMP(new NullOperand(), Register.R2));
-        compiler.addInstruction(new BEQ(new Label("dereferencement_null")));
+        if(!compiler.getCompilerOptions().getNoCheck())
+            compiler.addInstruction(new BEQ(new Label("dereferencement_null")));
         compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.R2), Register.R2));
 
         // BSR to the table

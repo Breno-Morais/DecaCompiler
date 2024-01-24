@@ -7,10 +7,12 @@ class Math {
         float terme = 1.0;
         int compteur = 5;
         int exposant = (2 * compteur) + 1;
-        while(compteur >= 0){ // Compteur never changes, infinite loop
+        while(compteur >= 0){
             exposant = (2 * compteur) + 1;
             terme = (_power(f, exposant)) / _factorial((2 * compteur));
+            compteur = compteur - 1;
         }
+        return terme;
     }
     float cos(float f) {
         println("cos(f) not yet implemented");
