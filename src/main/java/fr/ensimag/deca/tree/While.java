@@ -78,8 +78,8 @@ public class While extends AbstractInst {
         // Register Restauration
         if(regsUsed != null && !regsUsed.isEmpty()) {
             compiler.addComment("Restauration des registres");
-            for (GPRegister reg : regsUsed) {
-                compiler.addInstruction(new POP(reg));
+            for (int i = regsUsed.size(); i > 1; i--) {
+                compiler.addInstruction(new POP(regsUsed.get(i - 1)));
                 compiler.removeFromStack(1);
             }
         }

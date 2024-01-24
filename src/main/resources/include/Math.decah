@@ -25,14 +25,15 @@ class Math {
             }
         //Maintenant si la valeur est pas entre 0 et 2 PI
         else{
-            if(this.getX() < 0){
-                newf = f;
+            if(f < 0){
+                newF = f;
                 while(newF < 0){
                     newF =(2 * _pi()) + newF;
                 }
             }
             else{
-                    newF = f % (2 * _pi());
+                    //newF = f % (2 * _pi());
+                    newF = modulo(f, 2 * _pi());
             }
             return sin(newF);
         }
@@ -61,14 +62,15 @@ class Math {
             }
         //Maintenant si la valeur est pas entre 0 et 2 PI
         else{
-            if(this.getX() < 0){
-                newf = f;
+            if(f < 0){
+                newF = f;
                 while(newF < 0){
-                    newF =(2 * _pi()) + newF;
+                    newF = (2 * _pi()) + newF;
                 }
             }
             else{
-                    newF = f % (2 * _pi());
+                    //newF = f % (2 * _pi());
+                    newF = modulo(f, 2 * _pi());
             }
             return cos(newF);
         }
@@ -81,9 +83,9 @@ class Math {
         int exposant = 17;
         while(compteur >= 0){ //Tant que on a pas calculé les 5 premier termes.
             exposant = 2 * compteur + 1;
-            float terme = (_power(f,exposant) * _factorial(2  * compteur))/(exposant * _power(factorial(compteur), 2) * _power(4 , compteur)) ;
-            somme += terme;
-            compteur -= 1;
+            terme = (_power(f,exposant) * _factorial(2  * compteur))/(exposant * _power(_factorial(compteur), 2) * _power(4 , compteur)) ;
+            somme = somme + terme;
+            compteur = compteur - 1;
         }
         return somme;
     }
@@ -95,9 +97,9 @@ class Math {
         int exposant = 60;
         while(compteur >= 0){ //Tant que on a pas calculé les 5 premier termes.
             exposant = 2 * compteur + 1;
-            float terme = (_power(f,exposant) * _power(-1 , compteur))/(exposant);
-            somme += terme;
-            compteur -= 1;
+            terme = (_power(f,exposant) * _power(-1 , compteur))/(exposant);
+            somme = somme + terme;
+            compteur = compteur - 1;
         }
         return somme;
     }
@@ -218,6 +220,12 @@ class Math {
         return 3.1415927;
     }
 
+    float modulo(float value, float range) {
+    	float norm = value / range;
+    	float fracPart = norm - ((int)(norm));
+    	
+    	return fracPart * range;
+    }
 }
 
 

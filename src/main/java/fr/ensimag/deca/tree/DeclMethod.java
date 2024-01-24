@@ -139,8 +139,8 @@ public class DeclMethod extends AbstractDeclMethod {
         // Register Restauration
         if(regsUsed != null && !regsUsed.isEmpty()) {
             blockCompiler.addComment("Restauration des registres");
-            for (GPRegister reg : regsUsed) {
-                blockCompiler.addInstruction(new POP(reg));
+            for (int i = regsUsed.size(); i > 1; i--) {
+                blockCompiler.addInstruction(new POP(regsUsed.get(i - 1)));
                 blockCompiler.removeFromStack(1);
             }
         }
