@@ -3,7 +3,15 @@
 
 class Math {
     float sin(float f) {
-        println("sin(f) not yet implemented");
+        float somme = 0.0;
+        float terme = 1.0;
+        int compteur = 5;
+        int exposant = (2 * compteur) + 1;
+        while(compteur >= 0){
+            exposant = (2 * compteur) + 1;
+            terme = (_power(f, exposant)) / _factorial((2 * compteur;
+
+        }
     }
     float cos(float f) {
         println("cos(f) not yet implemented");
@@ -95,6 +103,35 @@ class Math {
         }
         return -1;
     }
+
+    float _falseSinus(float f){
+    //Cette fonction sinus fonctionne seulement entre -1 et 1.
+        float somme = 0.0;//On initialise la somme à 0.
+        int compteur = 5;//On initialise le compteur a 5, et on décroit ensuite de 1 par tour de boucle pour calculer les 5 premiers termes de la somme.
+        int exposant = 11;
+        float terme;
+        while(compteur >= 0){ //Tant que on a pas calculé les 5 premiers termes.
+            int exposant = (2 * compteur) + 1;
+            float terme = _power(-1, compteur) *  (_power(f, exposant)/this.factorial(exposant));
+            somme += terme;//On met à jour la somme.
+            compteur -= 1;//On met à jour le compteur.
+            }
+        return somme;
+    }
+
+    float _falseCosinus(float f){
+        float somme = 0.0;//On initialise la somme à 0.
+        int compteur = 5;//On initialise le compteur a 5, et on décroit ensuite de 1 par tour de boucle pour calculer les 5 premiers termes de la somme.
+        int exposant = 10;
+        float terme;
+        while(compteur >= 0){ //Tant que on a pas calculé les 5 premiers termes.
+            int exposant = (2 * compteur);
+            float terme = _power(-1, compteur) *  (_power(f, exposant)/this.factorial(exposant));
+            somme += terme;//On met à jour la somme.
+            compteur -= 1;//On met à jour le compteur.
+            }
+        return somme;
+   }
 }
 
 
