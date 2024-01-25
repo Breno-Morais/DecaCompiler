@@ -34,7 +34,7 @@ public class Divide extends AbstractOpArith {
     public void addImaInstruction(DecacCompiler compiler, DVal value, GPRegister register) {
         if(getLeftOperand().getType().isFloat() || getRightOperand().getType().isFloat()) {
             compiler.addInstruction(new DIV(value, register));
-            compiler.addErrorCheck(new Label("float_imprecis"));
+            //compiler.addErrorCheck(new Label("float_imprecis")); // Should a warning, not a error
         } else if(getLeftOperand().getType().isInt() && getRightOperand().getType().isInt()) {
             compiler.addInstruction(new QUO(value, register));
             compiler.addErrorCheck(new Label("division_par_zero"));
