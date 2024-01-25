@@ -100,18 +100,19 @@ class Math {
         return somme;
     }
 
-    float atan(float f) {    	
+    float atan(float f) {
+        //Fonction qui calcule la valeur de l'arctan d'un flottant entre -1 et 1.
         float somme = 0.0;//On initialise la somme à 0.
         float terme = 1.0;//On initialise à 1 le premier terme.
-        int compteur = 30;
-        int exposant = 60;
+        int compteur = 100;
+        int exposant = 201;
         
     	if( (f < -1.0) || (f > 1.0)) {
     		println("Error: The atan function receives only values between -1 and 1");
     		return -1.0;
     	}
     	
-        while(compteur >= 0){ //Tant que on a pas calculé les 5 premier termes.
+        while(compteur >= 0){ //Tant que on a pas calculé les 100 premier termes.
             exposant = 2 * compteur + 1;
             terme = (_power(f,exposant) * _power(-1 , compteur))/(exposant);
             somme = somme + terme;
@@ -236,7 +237,7 @@ class Math {
         return 3.1415927;
     }
 
-    float modulo(float value, float range) {
+    float _modulo(float value, float range) {
     	float norm = value / range;
     	float fracPart = norm - ((int)(norm));
     	
