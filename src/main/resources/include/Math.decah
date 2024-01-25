@@ -3,6 +3,8 @@
 
 class Math {
     float sin(float f){
+        //Fonction sinus définie sur R.
+        //On commence par initialiser la variable locale.
         float newF = 1.0;
         //On vérifie si on est entre 0 et 1 :
         if ((f <= 1.0) && (f >= 0.0)){
@@ -13,17 +15,17 @@ class Math {
             newF = (_pi()/2) - f;
             return _falseCosinus(newF);
             }
-        //On vérifie si on est entre [PI/2, PI] :
+        //On vérifie si on est entre [PI/2, Pi] :
         if((f > (_pi()/2)) && (f <= _pi())){
             newF = _pi() - f;
             return sin(newF);
         }
-        //On vérifie si c'est entre [Pi; 2 pi]
+        //On vérifie si c'est entre [Pi; 2 Pi] :
         if((f > _pi()) && (f <= (2 * _pi()))){
             newF = f - _pi();
             return -sin(newF);
             }
-        //Maintenant si la valeur est pas entre 0 et 2 PI
+        //Maintenant si la valeur est pas entre 0 et 2 Pi :
         else{
             if(f < 0){
                 newF = f;
@@ -40,6 +42,7 @@ class Math {
     }
 
     float cos(float f){
+        //fonction cosinus définie sur R.
         float newF = 1.0;
         //On vérifie si on est entre 0 et 1 :
         if ((f <= 1.0) && (f >= 0.0)){
@@ -50,17 +53,17 @@ class Math {
             newF = (_pi()/2) - f;
             return _falseSinus(newF);
             }
-        //On vérifie si on est entre [PI/2, PI] :
+        //On vérifie si on est entre [Pi/2, Pi] :
         if((f > (_pi()/2)) && (f <= _pi())){
             newF = _pi() - f;
             return -cos(newF);
         }
-        //On vérifie si c'est entre [Pi; 2 pi]
+        //On vérifie si c'est entre [Pi; 2 Pi]
         if((f > _pi()) && (f <= (2 * _pi()))){
             newF = f - _pi();
             return -cos(newF);
             }
-        //Maintenant si la valeur est pas entre 0 et 2 PI
+        //Maintenant si la valeur est pas entre 0 et 2 Pi :
         else{
             if(f < 0){
                 newF = f;
