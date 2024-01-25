@@ -77,7 +77,12 @@ public class EnvironmentExp {
      */
     public void declare(Symbol name, ExpDefinition def) throws DoubleDefException {
         if (this.symbolDef.containsKey(name)){
-            throw new DoubleDefException();
+            if (this.parentEnvironment.symbolDef.containsKey(name)){
+                this.symbolDef.put(name, def);
+            } else {
+
+                throw new DoubleDefException();
+            }
         } else {
             this.symbolDef.put(name, def);
         }
