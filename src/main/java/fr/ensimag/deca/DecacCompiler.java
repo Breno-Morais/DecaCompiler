@@ -273,28 +273,22 @@ public class DecacCompiler {
     }
 
     private StackController stackController;
-
     public void initStackController(int stack) {
         stackController = new StackController(stack);
     }
-
     public void addToStack(int i) {
         stackController.addToStack(i);
     }
-
     public void removeFromStack(int i) {
         stackController.removeFromStack(i);
     }
-
     public int getMaxStack() {
         return stackController.getMaxStack();
     }
-
     public void append(DecacCompiler compiler) {
         stackController.append(compiler);
         program.append(compiler.program);
     }
-
     public int getStack() {
         return stackController.getStack();
     }

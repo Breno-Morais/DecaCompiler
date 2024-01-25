@@ -3,6 +3,8 @@
 
 class Math {
     float sin(float f){
+        //Fonction sinus définie sur R.
+        //On commence par initialiser la variable locale.
         float newF = 1.0;
         //On vérifie si on est entre 0 et 1 :
         if ((f <= 1.0) && (f >= 0.0)){
@@ -13,17 +15,17 @@ class Math {
             newF = (_pi()/2) - f;
             return _falseCosinus(newF);
             }
-        //On vérifie si on est entre [PI/2, PI] :
+        //On vérifie si on est entre [PI/2, Pi] :
         if((f > (_pi()/2)) && (f <= _pi())){
             newF = _pi() - f;
             return sin(newF);
         }
-        //On vérifie si c'est entre [Pi; 2 pi]
+        //On vérifie si c'est entre [Pi; 2 Pi] :
         if((f > _pi()) && (f <= (2 * _pi()))){
             newF = f - _pi();
             return -sin(newF);
             }
-        //Maintenant si la valeur est pas entre 0 et 2 PI
+        //Maintenant si la valeur est pas entre 0 et 2 Pi :
         else{
             if(f < 0){
                 newF = f;
@@ -40,6 +42,7 @@ class Math {
     }
 
     float cos(float f){
+        //fonction cosinus définie sur R.
         float newF = 1.0;
         //On vérifie si on est entre 0 et 1 :
         if ((f <= 1.0) && (f >= 0.0)){
@@ -50,17 +53,17 @@ class Math {
             newF = (_pi()/2) - f;
             return _falseSinus(newF);
             }
-        //On vérifie si on est entre [PI/2, PI] :
+        //On vérifie si on est entre [Pi/2, Pi] :
         if((f > (_pi()/2)) && (f <= _pi())){
             newF = _pi() - f;
             return -cos(newF);
         }
-        //On vérifie si c'est entre [Pi; 2 pi]
+        //On vérifie si c'est entre [Pi; 2 Pi]
         if((f > _pi()) && (f <= (2 * _pi()))){
             newF = f - _pi();
             return -cos(newF);
             }
-        //Maintenant si la valeur est pas entre 0 et 2 PI
+        //Maintenant si la valeur est pas entre 0 et 2 Pi :
         else{
             if(f < 0){
                 newF = f;
@@ -81,6 +84,13 @@ class Math {
         float terme = 1.0;//On initialise à 1 le premier terme.
         int compteur = 8;
         int exposant = 17;
+        
+    	if( (f < -1.0) || (f > 1.0)) {
+    		println("Error: The asin function receives only values between -1 and 1");
+    		return -1.0;
+    	}
+    	
+    	
         while(compteur >= 0){ //Tant que on a pas calculé les 5 premier termes.
             exposant = 2 * compteur + 1;
             terme = (_power(f,exposant) * _factorial(2  * compteur))/(exposant * _power(_factorial(compteur), 2) * _power(4 , compteur)) ;
@@ -90,11 +100,17 @@ class Math {
         return somme;
     }
 
-    float atan(float f) {
+    float atan(float f) {    	
         float somme = 0.0;//On initialise la somme à 0.
         float terme = 1.0;//On initialise à 1 le premier terme.
         int compteur = 30;
         int exposant = 60;
+        
+    	if( (f < -1.0) || (f > 1.0)) {
+    		println("Error: The atan function receives only values between -1 and 1");
+    		return -1.0;
+    	}
+    	
         while(compteur >= 0){ //Tant que on a pas calculé les 5 premier termes.
             exposant = 2 * compteur + 1;
             terme = (_power(f,exposant) * _power(-1 , compteur))/(exposant);
